@@ -1,0 +1,57 @@
+.reportHeader{
+	font-weight:bold; 
+	font-size:24px;
+	font-family:;
+	font-style:;
+    line-height:21px ;
+}
+.reportSubHeader{
+	font-weight:bold; 
+	font-size:18px;
+	font-family:;
+	font-style:;
+    line-height:21px ;
+}
+.reportTabHead{
+	font-weight:bold; 
+	font-size:;
+	font-family:;
+	font-style:;
+    line-height:21px ;
+}
+.reportNormal{
+	font-weight:; 
+	font-size:;
+	font-family:;
+	font-style:;
+    line-height: ;
+}
+
+.bold{
+    font-weight: bold;
+}
+.pushManual{
+    padding-left:90px;
+}
+.right span{
+	float:right ;
+}
+.border{
+	border:2px solid black;
+}
+.boldP{
+	font-weight:bold;
+}
+.lht{
+	line-height:20px;
+	
+}
+.backColor{
+	background-color:#999999;
+}
+.center{
+text-align:center;
+}
+.left{
+	float:left;
+}

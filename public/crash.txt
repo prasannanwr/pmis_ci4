@@ -1,0 +1,86 @@
+date/time         : 2022-08-17, 17:18:21, 140ms
+computer name     : DESKTOP-UO3QQ9B
+user name         : DELL
+registered owner  : DELL
+operating system  : Windows NT New Tablet PC x64 build 9200
+system language   : English
+system up time    : 2 days 5 hours
+program up time   : 1 second
+processors        : 8x Intel(R) Core(TM) i5-8300H CPU @ 2.30GHz
+physical memory   : 577/7929 MB (free/total)
+free disk space   : (C:) 10.37 GB
+display mode      : 1536x864, 32 bit
+process id        : $3a20
+allocated memory  : 46.37 MB
+command line      : "C:\xampps\sendmail\sendmail.exe" -t
+executable        : sendmail.exe
+exec. date/time   : 2012-04-16 23:15
+compiled with     : Delphi 2006/07
+madExcept version : 3.0l
+callstack crc     : $92cac08b, $cab3b318, $cab3b318
+exception number  : 1
+exception class   : EIdTLSClientTLSHandShakeFailed
+exception message : SSL is not available on this server.
+
+main thread ($25f0):
+00446004 +0044 sendmail.exe IdExplicitTLSClientServerBase  400   +4 TIdExplicitTLSClient.TLSHandShakeFailed
+00445d52 +002a sendmail.exe IdExplicitTLSClientServerBase  283   +6 TIdExplicitTLSClient.DoOnTLSHandShakeFailed
+00445e03 +000f sendmail.exe IdExplicitTLSClientServerBase  326   +3 TIdExplicitTLSClient.ProcessTLSHandShakeFailed
+00445faf +005b sendmail.exe IdExplicitTLSClientServerBase  391   +6 TIdExplicitTLSClient.TLSHandshake
+77024ee1 +0021 ntdll.dll                                            KiUserExceptionDispatcher
+0040474d +001d sendmail.exe System                         262   +0 @AfterConstruction
+00464a46 +00a6 sendmail.exe IdSSLOpenSSL                  1634  +16 SslLockingCallback
+11049f3e +006e libeay32.dll                                         ERR_get_state
+11049290 +0000 libeay32.dll                                         ERR_peek_error
+00465681 +0041 sendmail.exe IdSSLOpenSSL                  2131   +5 TIdSSLIOHandlerSocketOpenSSL.SetPassThrough
+00445f97 +0043 sendmail.exe IdExplicitTLSClientServerBase  388   +3 TIdExplicitTLSClient.TLSHandshake
+00459fc1 +0075 sendmail.exe IdSMTPBase                     395  +12 TIdSMTPBase.StartTLS
+0045a8bd +0039 sendmail.exe IdSMTP                         312  +11 TIdSMTP.Authenticate
+004b5f81 +10cd sendmail.exe sendmail                       822 +340 initialization
+7545fa27 +0017 KERNEL32.DLL                                         BaseThreadInitThunk
+
+thread $3b0:
+7545fa27 +17 KERNEL32.DLL  BaseThreadInitThunk
+
+thread $34e8:
+7545fa27 +17 KERNEL32.DLL  BaseThreadInitThunk
+
+thread $133c:
+7545fa27 +17 KERNEL32.DLL  BaseThreadInitThunk
+
+stack dump:
+0019f330  09 60 44 00 de fa ed 0e - 01 00 00 00 07 00 00 00  .`D.............
+0019f340  44 f3 19 00 09 60 44 00 - b0 50 c0 00 80 66 ba 00  D....`D..P...f..
+0019f350  00 00 00 00 58 fd 19 00 - 74 f3 19 00 60 f3 19 00  ....X...t...`...
+0019f360  58 fd 19 00 c8 4b 40 00 - 74 f3 19 00 80 66 ba 00  X....K@.t....f..
+0019f370  00 00 00 00 74 fd 19 00 - 57 5d 44 00 00 00 00 00  ....t...W]D.....
+0019f380  ac 5f 44 00 08 5e 44 00 - b4 5f 44 00 00 00 00 00  ._D..^D.._D.....
+0019f390  81 f1 45 00 e0 c9 c0 00 - b0 f4 19 00 c4 f3 19 00  ..E.............
+0019f3a0  d0 f3 19 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+0019f3b0  22 8a 03 77 b0 f4 19 00 - 58 fd 19 00 00 f5 19 00  "..w....X.......
+0019f3c0  3c f4 19 00 6c fa 19 00 - 40 8a 03 77 58 fd 19 00  <...l...@..wX...
+0019f3d0  98 f4 19 00 f4 89 03 77 - b0 f4 19 00 58 fd 19 00  .......w....X...
+0019f3e0  00 f5 19 00 3c f4 19 00 - a7 5f 44 00 58 fd 19 00  ....<...._D.X...
+0019f3f0  b0 f4 19 00 00 00 00 00 - 1f 91 01 77 b0 f4 19 00  ...........w....
+0019f400  58 fd 19 00 00 f5 19 00 - 3c f4 19 00 a7 5f 44 00  X.......<...._D.
+0019f410  a0 da bf 00 64 e7 45 00 - b0 f4 19 00 00 00 00 00  ....d.E.........
+0019f420  00 f5 19 00 58 fd 19 00 - 32 00 00 00 00 c0 19 00  ....X...2.......
+0019f430  00 00 1a 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+0019f440  00 00 00 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+0019f450  00 00 00 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+0019f460  00 00 00 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+
+disassembling:
+[...]
+00445ff0       call    -$3ea9d ($407558)      ; System.LoadResString
+00445ff5       mov     ecx, [ebp-4]
+00445ff8       mov     dl, 1
+00445ffa       mov     eax, [$445b44]
+00445fff       call    -$26608 ($41f9fc)      ; IdException.EIdException.Create
+00446004     > call    -$4131d ($404cec)      ; System.@RaiseExcept
+00446009 401   xor     eax, eax
+0044600b       pop     edx
+0044600c       pop     ecx
+0044600d       pop     ecx
+0044600e       mov     fs:[eax], edx
+[...]
