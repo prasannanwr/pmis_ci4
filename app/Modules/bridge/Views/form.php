@@ -673,7 +673,7 @@
 
 									<div class="col-lg-7 ">
 
-										<?php echo et_form_dropdown_db('bri04bridge_design_standard', 'bri02bridge_design_standard_table', 'bri02bds_type_name', 'bri02id', et_setFormVal('bri04bridge_design_standard', $objbasicRec), array('bri02_status','1'), 'class="form-control"') ?>
+										<?php echo et_form_dropdown_db('bri04bridge_design_standard', 'bri02bridge_design_standard_table', 'bri02bds_type_name', 'bri02id', et_setFormVal('bri04bridge_design_standard', $objbasicRec), array(0 => array('bri02_status','where','1')), 'class="form-control"') ?>
 
 
 
@@ -733,7 +733,7 @@
 
 								<div class="form-group clearfix">
 
-									<label class="col-lg-5  ">Main(walkway) Cable Nos(mm)</label>
+									<label class="col-lg-5  ">Main(walkway) Cable Nos</label>
 
 									<div class="col-lg-7 ">
 
@@ -1600,6 +1600,18 @@
 
 							</div>
 
+							<div class="form-group clearfix">
+
+								<span class="col-lg-4 ">Name of Contractor</span>
+
+								<div class="col-lg-8 ">
+
+									<textarea class="form-control" name="bri06uc_contractor" id="bri06uc_contractor" rows="2"><?php echo et_setFormVal('bri06uc_contractor', $objPersonalRec); ?></textarea>
+
+								</div>
+
+							</div>
+
 						</div>
 
 						<div class="col-lg-4">
@@ -1698,7 +1710,7 @@
 
 							<div class="form-group clearfix">
 
-								<span class="col-lg-4 ">DDC Technician Trained</span>
+								<span class="col-lg-4 ">Palika Technician Trained</span>
 
 								<div class="col-lg-8 ">
 
@@ -2710,7 +2722,24 @@
 			}
 		});
 
-
+		//bridge type on change
+		$("#bri03bridge_type").on('change', function() {
+			var anchorage_url = '<?php echo $anchorageUrl; ?>';
+			var btype = $(this).val();
+			console.log(anchorage_url);
+			$.ajax({
+				method: 'POST',
+				url: anchorage_url,
+				data: {
+					btype: btype
+				},
+				success: function(msg) {
+					if(msg) {
+						$("#bri04anchorage_foundation_rb,#bri04anchorage_foundation_leftbank").html(msg);
+					}
+				}
+			});
+		});
 
 	});
 </script>

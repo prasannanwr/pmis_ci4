@@ -33,7 +33,7 @@
 											</tr>
 												<th>Site Assessment &amp; Survey</th>
 												<th>Design &amp; Estimate</th>							
-												<th>Community Aggrement</th>
+												<th>Community/Contract Aggrement</th>
 												<th>C/Over</th>
 												<th>New</th>
 												<th>C/Over</th>

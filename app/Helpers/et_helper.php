@@ -88,6 +88,9 @@ if (!function_exists('et_form_dropdown_db')) {
             foreach ($arrDBRec as $objRec) {
                 $arrOptions[$objRec->{$strBindFld}] = $objRec->{$strShowFld};
             }
+            if($strName == "bri04main_ww_cable_nos") {
+                $arrOptions[9] = "Other";
+            }
         }
         //var_dump( $arrOptions );
         $strExtraParam .= ' id = "' . $strName . '" ';

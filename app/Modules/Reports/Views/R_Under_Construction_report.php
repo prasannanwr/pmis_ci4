@@ -48,7 +48,7 @@
 												<th>Type**</th>
                                                 <th  style="width:45px"><div class="vertical-text"><div class="vertical-text__inner">Width(Cm)</div></div></th>
                                                 <th  style="width:45px"><div class="vertical-text"><div class="vertical-text__inner">Site Assessment And Survey</div></div></th>
-                                                <th  style="width:45px"><div class="vertical-text"><div class="vertical-text__inner">Community Agrement</div></div></th>
+                                                <th  style="width:45px"><div class="vertical-text"><div class="vertical-text__inner">Community/Contract Agreement</div></div></th>
                                                 <th  style="width:45px"><div class="vertical-text"><div class="vertical-text__inner">DMBT</div></div></th>
                                                 <th  style="width:45px"><div class="vertical-text"><div class="vertical-text__inner">Excavation and Local Material</div></div></th>
                                                 <th  style="width:45px"><div class="vertical-text"><div class="vertical-text__inner">Material Supplied to UC</div></div></th>

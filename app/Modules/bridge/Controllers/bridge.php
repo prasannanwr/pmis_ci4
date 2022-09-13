@@ -17,6 +17,7 @@ use App\Modules\supporting_agencies\Models\supporting_agencies_model;
 use App\Modules\template\Controllers\Template;
 use App\Modules\view\Models\view_all_join_bridge_table_model;
 use App\Modules\view\Models\view_vdc_model;
+use App\Modules\bridge_anchorage_foundation\Models\bridge_anchorage_foundation_model;
 
 //use App\Modules\Reports\Models\ReportsModel;
 
@@ -128,7 +129,8 @@ class bridge extends BaseController
 		$data['objImplementationRec'] = '';
 		$data['postURL'] = "bridge/form";
 		//new updated
-		$data['savecostURL'] = base_url() . "bridge/saveCostRef/";
+		$data['savecostURL'] = base_url() . "/bridge/saveCostRef/";
+		$data['anchorageUrl'] = base_url() . "/bridge/getAnchorageFoundations/"; 
 
 		//added by prasannanwr@gmail.com
 		//under revision
@@ -810,5 +812,20 @@ class bridge extends BaseController
 		$data['dataRadio'] = $PostRadio;
 		$data['arrConstructionTypeList'] = $this->construction_model->findAll();
 		return view('\Modules\bridge\Views'. DIRECTORY_SEPARATOR .__FUNCTION__, $data);
+	}
+
+	function getAnchorageFoundations() {
+		$btype[] = $_POST['btype'];
+		$bridge_anchorage_foundation_model = new bridge_anchorage_foundation_model();
+		$anchorage_foundation_list = $bridge_anchorage_foundation_model->whereIn('anc01maf_btype', $btype)->asObject()->findAll();
+		$str = "<option value='''>-- Please select --</option>";
+		if($anchorage_foundation_list && is_array($anchorage_foundation_list)) {
+			foreach ($anchorage_foundation_list as $value) {
+				$str .= "<option value=".$value->anc01id.">".$value->anc01maf_type_name ."</option>";
+			}
+			return $str;
+		} else {
+			return false;
+		}
 	}
 }

@@ -13,4 +13,5 @@ $routes->group("bridge", ["namespace" => "App\Modules\bridge\Controllers"], func
 	$routes->post('form/(:any)', 'Bridge::form/$1', ['filter' => 'auth']);
 
 	$routes->post('saveCostRef', 'Bridge::saveCostRef', ['filter' => 'auth']);
+	$routes->post('getAnchorageFoundations', 'Bridge::getAnchorageFoundations', ['filter' => 'auth']);
 });
