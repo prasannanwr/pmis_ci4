@@ -57,10 +57,13 @@ line-height: 80px;
 float: left;
 }
 
+.login-section {
+    min-height:700px!important;
+}
 /*dashboard*/
 
 .dashboard-bg{
-    min-height:500px!important;
+    min-height:700px!important;
 }
 .panel-heading{
     background: #d1d1d1;

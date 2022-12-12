@@ -141,7 +141,6 @@
 											<th>Span</th>
 											<th>District</th>
 											<th>Completed Date</th>
-											<th>Completed check</th>
 											<th>Construction Type</th>
 											<th>Work Category</th>
 								            <th><?php echo lang('Locale.index_action_th'); ?></th> 
@@ -195,8 +194,8 @@
                 {data: 'bri03bridge_no'},
                 {data: 'bri03bridge_name'}, 
                 {data: 'bri03river_name'}, 
-                {data: 'bri03design'},
-                {name: 'dist01name', data: 'dist01name', visible: true},
+                {data: 'bri03e_span'},
+                {name: 'left_district', data: 'left_district', visible: true},
                 {name: 'bri05bridge_complete', data: 'bri05bridge_complete',
                     mRender: function( data, type, full){
                         if(data == '0000-00-00'){
@@ -205,7 +204,6 @@
                         return data;
                     }
                 },
-                {name: 'bri05bridge_complete_check', data: 'bri05bridge_complete_check', visible: false},
                 {name: 'bri03construction_type', data: 'bri03construction_type', visible: false},
                 {name: 'bri03work_category', data: 'bri03work_category', visible: false},
                 {type: 'html',
@@ -222,13 +220,13 @@
 
 	
         if(btype == '0') {
-            $('#bridgeList').DataTable().column( 7 )
+            $('#bridgeList').DataTable().column( 6 )
                 .search( btype )
                 .draw();  
             $(".bltitle").html("List of New Construction bridges");              
                 
         } else if(btype == '1') {
-            $('#bridgeList').DataTable().column( 7 )
+            $('#bridgeList').DataTable().column( 6 )
             .search( btype )
             .draw();
             $(".bltitle").html("List of Major Maintenance bridges");                 
@@ -283,7 +281,7 @@
             }   
 
             if($(this).attr("id") == "cancelled") {
-            	$('#bridgeList').DataTable().column( 8 )
+            	$('#bridgeList').DataTable().column( 7 )
                 .search( $(this).val() )
                 .draw();
                 $(".bltitle").html("List of Cancelled bridges");     
@@ -300,14 +298,15 @@
             	$('#bridgeList').DataTable().column( 6 )
                 .search(0)
                 .draw();
-                $('#bridgeList').DataTable().column( 8 )
+                $('#bridgeList').DataTable().column( 7 )
                 .search('')
                 .draw();
                 $(".bltitle").html("List of Inprogress bridges");
                 ev.preventDefault();
             	return false;
             } else {
-            	$('#bridgeList').DataTable().column( 7 )
+                //$('#bridgeList').DataTable().column( 7 )
+            	$('#bridgeList').DataTable().column( 6 )
                 .search( $(this).val() )
                 .draw();
                 ev.preventDefault();

@@ -18,6 +18,7 @@ use App\Modules\template\Controllers\Template;
 use App\Modules\view\Models\view_all_join_bridge_table_model;
 use App\Modules\view\Models\view_vdc_model;
 use App\Modules\bridge_anchorage_foundation\Models\bridge_anchorage_foundation_model;
+use App\Modules\auth\Models\sel_district_model;
 
 //use App\Modules\Reports\Models\ReportsModel;
 
@@ -51,9 +52,14 @@ class bridge extends BaseController
 			
 	private $contribution_agencies_model;
 
+	protected $table = 'view_all_join_bridge_table';
+
+	private $db;
+
 	public function __construct()
 	{
 		helper(['form', 'html', 'et_helper']);
+		$this->db = \Config\Database::connect();
 		$fiscal_year_model = new FiscalYearModel();
 		$cost_components_model = new CostComponentsModel();
 		$construction_model = new construction_model();
@@ -127,6 +133,8 @@ class bridge extends BaseController
 		$data['objbasicRec'] = '';
 		$data['objPersonalRec'] = '';
 		$data['objImplementationRec'] = '';
+		$data['arrEstCost'] = '';
+		$data['arrCstCost'] = '';
 		$data['postURL'] = "bridge/form";
 		//new updated
 		$data['savecostURL'] = base_url() . "/bridge/saveCostRef/";
@@ -151,8 +159,13 @@ class bridge extends BaseController
 			$data['objbasicRec'] = $this->bridge_technical_data_model->where('bri04bridge_no', $emp_id)->first();
 			$data['objImplementationRec'] = $this->bridge_implementation_process_model->where('bri05bridge_no', $emp_id)->first();
 			$data['objPersonalRec'] = $this->personnel_information_model->where('bri06bridge_no', $emp_id)->first();
-			$data['arrEstCost'] = $this->bridge_est_cost_model->where('bri07bridge_no', $data['objOldRec']['bri03bridge_no'])->findAll();
-			$data['arrCstCost'] = $this->contribution_agencies_model->where('bri08bridge_no', $data['objOldRec']['bri03bridge_no'])->findAll();
+			//$data['arrEstCost'] = $this->bridge_est_cost_model->where('bri07bridge_no', $data['objOldRec']['bri03bridge_no'])->where('bri07amount !=', 0)->findAll();
+			$data['arrEstCost'] = $this->bridge_est_cost_model->getBridgeEstCosts($data['objOldRec']['bri03bridge_no']);
+			//$data['arrCstCost'] = $this->contribution_agencies_model->where('bri08bridge_no', $data['objOldRec']['bri03bridge_no'])->where('bri08amount !=', 0)->findAll();
+			$data['arrCstCost'] = $this->contribution_agencies_model->getBridgeContribution($data['objOldRec']['bri03bridge_no']);
+			//echo $this->db->getLastQuery();exit;
+
+
 			$oldmajor_vdc = $data['objOldRec']['bri03major_vdc'];
 			if ($oldmajor_vdc == 1) { //right
 				$oldmajor_municipality = $data['objOldRec']['bri03municipality_rb'];
@@ -166,7 +179,8 @@ class bridge extends BaseController
 		//Load Helping data For form
 		$data['arrSupList'] = $this->supporting_agencies_model->orderBy('sup01sup_agency_type asc')->orderBy('sup01index asc')->findAll();
 		$data['arrCostCompList'] = $this->cost_components_model->findAll();
-		$data['arrVDCList'] = $this->view_vdc_model->orderBy('muni01remark DESC')->orderBy('muni01name ASC')->findAll();
+		//$data['arrVDCList'] = $this->view_vdc_model->orderBy('muni01remark DESC')->orderBy('muni01name ASC')->findAll();
+		$data['arrVDCList'] = $this->db->query("select `a`.`dist01id` AS `dist01id`,`a`.`dist01name` AS `dist01name`,`a`.`dist01zon01id` AS `dist01zon01id`,`a`.`dist01remark` AS `dist01remark`,`a`.`dist01code` AS `dist01code`,`a`.`dist01tbis01id` AS `dist01tbis01id`,`a`.`dist01state` AS `dist01state`, `b`.`muni01id`, `b`.`muni01name` from `dist01district` `a` LEFT JOIN `muni01municipality_vcd` `b` ON (`a`.`dist01id` = `b`.`muni01dist01id`) order by muni01name ASC")->getResult();
 
 		//if post
 		if ($this->request->getMethod() == 'post') {
@@ -505,17 +519,17 @@ class bridge extends BaseController
 					$form_data4 = array(
 						'bri06id' => @$this->request->getVar('bri06id'),
 						'bri06bridge_no' => $bridge_no,
-						'bri06site_surveyor' => @$this->request->getVar('bri06site_surveyor'),
-						'bri06design_approved_by' => @$this->request->getVar('bri06design_approved_by'),
-						'bri06uc_members' => @$this->request->getVar('bri06uc_members'),
-						'bri06ngo_consultants_trained' => @$this->request->getVar('bri06ngo_consultants_trained'),
-						'bri06bridge_designer' => @$this->request->getVar('bri06bridge_designer'),
-						'bri06site_supervision' => @$this->request->getVar('bri06site_supervision'),
-						'bri06bridge_craftpersons_trained' => @$this->request->getVar('bri06bridge_craftpersons_trained'),
-						'bri06bmc_chairperson' => @$this->request->getVar('bri06bmc_chairperson'),
-						'bri06uc_chairperson' => @$this->request->getVar('bri06uc_chairperson'),
-						'bri06ddc_technician_trained' => @$this->request->getVar('bri06ddc_technician_trained'),
-						'bri06bmc_members' => @$this->request->getVar('bri06bmc_members'),
+						'bri06site_surveyor' => trim(@$this->request->getVar('bri06site_surveyor')),
+						'bri06design_approved_by' => trim(@$this->request->getVar('bri06design_approved_by')),
+						'bri06uc_members' => trim(@$this->request->getVar('bri06uc_members')),
+						'bri06ngo_consultants_trained' => trim(@$this->request->getVar('bri06ngo_consultants_trained')),
+						'bri06bridge_designer' => trim(@$this->request->getVar('bri06bridge_designer')),
+						'bri06site_supervision' => trim(@$this->request->getVar('bri06site_supervision')),
+						'bri06bridge_craftpersons_trained' => trim(@$this->request->getVar('bri06bridge_craftpersons_trained')),
+						'bri06bmc_chairperson' => trim(@$this->request->getVar('bri06bmc_chairperson')),
+						'bri06uc_chairperson' => trim(@$this->request->getVar('bri06uc_chairperson')),
+						'bri06ddc_technician_trained' => trim(@$this->request->getVar('bri06ddc_technician_trained')),
+						'bri06bmc_members' => trim(@$this->request->getVar('bri06bmc_members')),
 					);
 					$this->personnel_information_model->save($form_data4);
 
@@ -693,13 +707,94 @@ class bridge extends BaseController
 		}
 	}
 
+	function ajaxDataApplyWhereOptimized()
+	{
+
+		$gtc = @$this->request->getVar('columns');
+		$sql = '';
+		if (is_array($gtc)) {
+			foreach ($gtc as $k => $v) {
+				if ($v['search']['value'] !== '' && $v['search']['value'] != 'All District') {
+					$sql .=" AND `{$v['data']}` = '{$v['search']['value']}'";
+				}
+			}
+		}
+
+		$search = $this->request->getVar('search');
+		if ($search['value'] !== '') {
+			$sql .= " AND `bri03bridge_name` LIKE '%{$search['value']}%'";
+			$sql .= " OR `bri03bridge_no` LIKE '%{$search['value']}%'";
+		}
+		return $sql;
+	}
+
 	function ajaxData()
 	{
 		//todo: count total records and put the no here
 		//Apply Where Condition for counting
 		//$this->ajaxDataApplyWhere();
+
+		//Apply Limit for data
+		$length = ($this->request->getVar('length') != ''?$this->request->getVar('length'):10);
+		$start  = ($this->request->getVar('start') != ''?$this->request->getVar('start'):0);
+		$search = $this->request->getVar('search');
+		$arrDataList = '';
+		$extra_sql = '';
+
+		//for ordering
+		//$arrColumns = array('bri03bridge_no', 'bri03bridge_name', 'bri03river_name', 'bri03design', 'dist01name', 'bri05bridge_complete', 'bri05bridge_complete_check', 'bri03construction_type');
+		$arrColumns = array('bri03bridge_no', 'bri03bridge_name', 'bri03river_name', 'bri03design', 'dist01name', 'bri05bridge_complete', 'bri05bridge_complete_check', 'bri03construction_type', 'bri03work_category');
+		$order = $this->request->getVar('order');
 		
-		//Apply Where condition for Data
+		// $arrDataList = $this->view_all_join_bridge_table_model->findAll($length, $start);
+		//$arrDataList = $this->view_all_join_bridge_table_model->getBridgesFiltered($length, $start);
+		//$sql = "SELECT * FROM {$this->table} WHERE 1=1";
+		// $sql = "select `a`.`bri03id` AS `bri03id`,`a`.`bri03bridge_name` AS `bri03bridge_name`,`a`.`bri03bridge_no` AS `bri03bridge_no`,`a`.`bri03river_name` AS `bri03river_name`,`a`.`bri03e_span` AS `bri03e_span`, `a`.`bri03major_vdc`, `a`.`bri03construction_type`,`a`.`bri03work_category`, `a`.`bri03district_name_lb` as `left_dist01id`, `a`.`bri03district_name_rb` as `right_dist01id`, `b`.`bri05bridge_complete` AS `bri05bridge_complete`,`b`.`bri05bridge_completion_fiscalyear` AS `bri05bridge_completion_fiscalyear`, `c`.`dist01id`, `c`.`dist01name` AS `left_district`, `d`.`dist01name` AS `right_district` from `bri03basic_bridge_datatable` `a` left join `bri05bridge_implementation_processtable` `b` on(`a`.`bri03bridge_no` = `b`.`bri05bridge_no`) left join `dist01district` `c` on(`a`.`bri03district_name_lb` = `c`.`dist01id`) left join `dist01district` `d` on(`a`.`bri03district_name_rb` = `d`.`dist01id`) WHERE 1=1";
+
+		$sql = "select `a`.*, case `a`.`bri03major_vdc` when 0 then `a`.`left_dist01id` else `a`.`right_dist01id` end AS `bri03major_dist_id` FROM `view_all_bridges_list` a WHERE 1=1";
+
+		// $sel_district_model = new sel_district_model();
+  //       $arrPermittedDistListFull = $sel_district_model->where('user02userid', session()->get('user_id'))->findAll();
+        
+  //       $arrPermittedDistList = array();
+  //       foreach( $arrPermittedDistListFull as $k=>$v ){
+  //           $arrPermittedDistList[] = $v['user02dist01id'];
+  //       }
+
+		$extra_sql = $this->ajaxDataApplyWhereOptimized();
+		$sql .=$extra_sql;
+		//echo $sql;
+
+		$arrPermittedDistList = $this->view_all_join_bridge_table_model->permittedDistrict();
+        $blnIsLogged = empty($this->session);
+        //var_dump(session()->get('type'));
+        $intUserType = ($blnIsLogged)? session()->get('type'): ENUM_GUEST; 
+        if($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR){
+            //comma seperated value
+            $data = '';
+            if( count( $arrPermittedDistList )> 0) {
+                $sql .= " AND `c`.`dist01id` in ($arrPermittedDistList)";
+            }
+        }
+		$sql .=" LIMIT {$start}, {$length}";
+		$arrDataList = $this->db->query($sql)->getResult();
+
+		$total = $this->view_all_join_bridge_table_model->totalBridges($search, $arrPermittedDistList, $extra_sql);
+		//$total = 100;
+		//echo($this->view_all_join_bridge_table_model->getLastQuery());exit;
+		$output['draw'] = $this->request->getVar('draw');
+		$output['recordsTotal'] = $total;
+		$output['recordsFiltered'] = $total;
+
+		$output['data'] = $arrDataList;
+		echo json_encode($output);
+		die();
+	}
+
+	function ajaxData_old()
+	{
+		//todo: count total records and put the no here
+		//Apply Where Condition for counting
 		$this->ajaxDataApplyWhere();
 
 		//Apply Limit for data
@@ -711,22 +806,35 @@ class bridge extends BaseController
 		//$arrColumns = array('bri03bridge_no', 'bri03bridge_name', 'bri03river_name', 'bri03design', 'dist01name', 'bri05bridge_complete', 'bri05bridge_complete_check', 'bri03construction_type');
 		$arrColumns = array('bri03bridge_no', 'bri03bridge_name', 'bri03river_name', 'bri03design', 'dist01name', 'bri05bridge_complete', 'bri05bridge_complete_check', 'bri03construction_type', 'bri03work_category');
 		$order = $this->request->getVar('order');
-		// var_dump($order['0']['column']);
-		// if (is_array($order)) {
-		// 	$x = $order;
-		// 	foreach ($order as $k => $v) {
-		// 		$this->view_all_join_bridge_table_model->orderBy($arrColumns[$v['column']] . ' ' .  $v['dir']);
-		// 	}
-		// } else {
-		// 	$this->view_all_join_bridge_table_model->orderBy('bri05bridge_complete_check asc')->orderBy('bri05bridge_complete desc');
-		// 	$x = false;
-		// }
+		
 		// $arrDataList = $this->view_all_join_bridge_table_model->findAll($length, $start);
 		$arrDataList = $this->view_all_join_bridge_table_model->getBridgesFiltered($length, $start);
-		$total = $this->view_all_join_bridge_table_model->totalBridges($search);
+		
+		// $sel_district_model = new sel_district_model();
+  //       $arrPermittedDistListFull = $sel_district_model->where('user02userid', session()->get('user_id'))->findAll();
+        
+  //       $arrPermittedDistList = array();
+  //       foreach( $arrPermittedDistListFull as $k=>$v ){
+  //           $arrPermittedDistList[] = $v['user02dist01id'];
+  //       }
+
+		$arrPermittedDistList = $this->view_all_join_bridge_table_model->permittedDistrict();
+        $blnIsLogged = empty($this->session);
+        //var_dump(session()->get('type'));
+        $intUserType = ($blnIsLogged)? session()->get('type'): ENUM_GUEST; 
+        if($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR){
+            //comma seperated value
+            $data = '';
+            if( count( $arrPermittedDistList )> 0) {
+                $sql .= " AND `c`.`dist01id` in ($arrPermittedDistList)";
+            }
+        }
+		$sql .=" LIMIT {$start}, {$length}";
+		$arrDataList = $this->db->query($sql)->getResult();
+
+		$total = $this->view_all_join_bridge_table_model->totalBridges($search, $arrPermittedDistList);
 		//$total = 100;
 		//echo($this->view_all_join_bridge_table_model->getLastQuery());exit;
-
 		$output['draw'] = $this->request->getVar('draw');
 		$output['recordsTotal'] = $total;
 		$output['recordsFiltered'] = $total;
@@ -815,7 +923,8 @@ class bridge extends BaseController
 	}
 
 	function getAnchorageFoundations() {
-		$btype[] = $_POST['btype'];
+		//$btype[] = $_POST['btype'];
+		$btype[] = $this->request->getVar('btype');
 		$bridge_anchorage_foundation_model = new bridge_anchorage_foundation_model();
 		$anchorage_foundation_list = $bridge_anchorage_foundation_model->whereIn('anc01maf_btype', $btype)->asObject()->findAll();
 		$str = "<option value='''>-- Please select --</option>";

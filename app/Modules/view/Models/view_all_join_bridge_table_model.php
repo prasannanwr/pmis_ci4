@@ -69,18 +69,15 @@ class view_all_join_bridge_table_model extends Model
 
     }
 
-    public function totalBridges($search) {
+    public function totalBridges($search, $arrPermittedDistList, $filter) {
         
-        $sql = "select count(`a`.`bri03id`) AS `totalbridges` from `bri03basic_bridge_datatable` `a` WHERE 1=1";
+        //$sql = "select count(`a`.`bri03id`) AS `totalbridges` FROM `view_all_bridges_list` a WHERE 1=1";
+        $sql = "select count(`d`.`bri03id`) AS `totalbridges` from (select `a`.`bri03id` AS `bri03id`,`a`.`bri03construction_type`,`a`.`bri03work_category`,`c`.`dist01name` AS `left_district` from `bri03basic_bridge_datatable` `a` left join `dist01district` `c` on(`a`.`bri03district_name_lb` = `c`.`dist01id`)) d WHERE 1=1";
+        
+        $sql .=$filter;
+        //echo $sql;
 
-         $sel_district_model = new sel_district_model();
-         $arrPermittedDistListFull = $sel_district_model->where('user02userid', session()->get('user_id'))->findAll();
-         
- 
-         $arrPermittedDistList = array();
-         foreach( $arrPermittedDistListFull as $k=>$v ){
-             $arrPermittedDistList[] = $v['user02dist01id'];
-         }
+         //$arrPermittedDistList = $this->permittedDistrict();
          $blnIsLogged = empty($this->session);
          //var_dump(session()->get('type'));
          //var_dump($arrPermittedDistList);exit;
@@ -101,5 +98,16 @@ class view_all_join_bridge_table_model extends Model
         $query = $this->db->query($sql);
         $row = $query->getRow();
         return $row->totalbridges;
+    }
+
+    public function permittedDistrict() {
+        $sel_district_model = new sel_district_model();
+        $arrPermittedDistListFull = $sel_district_model->where('user02userid', session()->get('user_id'))->findAll();
+        
+        $arrPermittedDistList = array();
+        foreach( $arrPermittedDistListFull as $k=>$v ){
+            $arrPermittedDistList[] = $v['user02dist01id'];
+        }
+        return $arrPermittedDistList;
     }
 }

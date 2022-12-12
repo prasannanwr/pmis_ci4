@@ -56,4 +56,9 @@ class contribution_agencies_model extends Model
 		$result = $query->getResult();
 		return $result;
 	}
+
+    public function getBridgeContribution($bridge_no) {
+        $result = $this->db->query("select `bri08id`,`bri08cmp01id`,`bri08sup01id`,`bri08amount` from `{$this->table}` WHERE `bri08bridge_no` = '{$bridge_no}' AND `bri08amount` != 0")->getResultArray();
+        return $result;
+    }
 }

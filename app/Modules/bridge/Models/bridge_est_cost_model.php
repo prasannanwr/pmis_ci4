@@ -47,4 +47,11 @@ class bridge_est_cost_model extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function getBridgeEstCosts($bridge_no) {
+
+        $result = $this->db->query("select `bri07id`,`bri07cmp01id`,`bri07sup01id`,`bri07amount` from `{$this->table}` WHERE `bri07bridge_no` = '{$bridge_no}' AND `bri07amount` != 0")->getResultArray();
+        return $result;
+
+    }
+
 }

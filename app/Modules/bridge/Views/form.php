@@ -96,7 +96,7 @@
 
 								<div class="col-lg-7 ">
 
-									<input type="text" class=" form-control " name="bri03bridge_name" id="bri03bridge_name" value="<?php echo et_setFormVal('bri03bridge_name', $objOldRec); ?>" />
+									<input type="text" class=" form-control " name="bri03bridge_name" id="bri03bridge_name" value="<?php echo et_setFormValBlank('bri03bridge_name', $objOldRec); ?>" />
 
 								</div>
 
@@ -212,7 +212,7 @@
 
 								<div class="col-lg-7 ">
 
-									<input type="text" class="form-control height" name="bri03road_head" id="bri03road_head" value="<?php echo et_setFormVal('bri03road_head', $objOldRec); ?>" />
+									<input type="text" class="form-control height" name="bri03road_head" id="bri03road_head" value="<?php echo et_setFormValBlank('bri03road_head', $objOldRec); ?>" />
 
 								</div>
 

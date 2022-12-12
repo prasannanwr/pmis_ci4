@@ -55,27 +55,27 @@ class bridge_technical_data_model extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function dbGetList()
-    {
-        //check if loggged in or not
-        //check if it has all district permission or not
-        //
-        $sel_district_model = new sel_district_model();
-        $arrPermittedDistListFull = $sel_district_model->where('user02userid', session()->get('user_id'))->findAll();
-        $arrPermittedDistList = array();
-        foreach ($arrPermittedDistListFull as $k => $v) {
-            $arrPermittedDistList[] = $v['user02dist01id'];
-        }
-        $blnIsLogged = empty(session());
-        $intUserType = ($blnIsLogged) ? session()->get('type') : ENUM_GUEST;
-        if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
-            //comma seperated value
-            if (count($arrPermittedDistList) > 0) {
-                $this->where_in('dist01id', $arrPermittedDistList);
-            } else {
-                $this->where('dist01id', null);
-            }
-        }
-        return parent::dbGetList();
-    }
+    // public function dbGetList()
+    // {
+    //     //check if loggged in or not
+    //     //check if it has all district permission or not
+    //     //
+    //     $sel_district_model = new sel_district_model();
+    //     $arrPermittedDistListFull = $sel_district_model->where('user02userid', session()->get('user_id'))->findAll();
+    //     $arrPermittedDistList = array();
+    //     foreach ($arrPermittedDistListFull as $k => $v) {
+    //         $arrPermittedDistList[] = $v['user02dist01id'];
+    //     }
+    //     $blnIsLogged = empty(session());
+    //     $intUserType = ($blnIsLogged) ? session()->get('type') : ENUM_GUEST;
+    //     if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
+    //         //comma seperated value
+    //         if (count($arrPermittedDistList) > 0) {
+    //             $this->where_in('dist01id', $arrPermittedDistList);
+    //         } else {
+    //             $this->where('dist01id', null);
+    //         }
+    //     }
+    //     return parent::dbGetList();
+    // }
 }
