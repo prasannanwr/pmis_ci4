@@ -49,15 +49,15 @@
                         //var_dump($dataRow);
                         if( isset($dataRow['info']) ){
                         ?>
-                       <tbody class="dist_<?php echo $dataRow['info']->dev01id; ?>">
+                       <tbody class="dist_<?php echo $dataRow['info']['dev01id']; ?>">
                     <tr>
                      <td colspan="22">
                      <div class="row">
                         <div class="col-lg-6">
-                                <b><span>District:<?php   echo  $dataRow['info']->dist01name; ?></span></b>
+                                <b><span>District:<?php echo $dataRow['info']['dist01name']; ?></span></b>
                             </div>
-                            <div class="col-lg-6">
-                                <b><span style="float:right;" >TBSU Regional Office: <?php  echo   $dataRow['info']->tbis01name; ?></span></b>
+                            <div class="col-lg-6 hide">
+                                <b><span style="float:right;" >TBSU Regional Office: <?php //echo $dataRow['info']['tbis01name']; ?></span></b>
                             </div>
                         </div>
                      </td>
@@ -76,25 +76,25 @@
 
 							<tr class="row<?php echo $i;?>">
 								<td class="center" style="width:40px;"><?php  echo $m; ?></td>
-                                <td class="center" style="width:130px;"><?php echo $dataRow1['info']->bri03bridge_no; ?></td>
-								<td class="center"><?php echo $dataRow1['info']->bri03bridge_name; ?></td>
-								<td class="center"><?php echo $dataRow1['info']->bri01bridge_type_code; ?></td>
-								<td class="center spw"><?php echo $dataRow1['info']->bri03e_span; ?></td>
-								<td class="center"><?php echo $dataRow1['info']->wal01walkway_width; ?></td>
+                                <td class="center" style="width:130px;"><?php echo $dataRow1['info']['bri03bridge_no']; ?></td>
+								<td class="center"><?php echo $dataRow1['info']['bri03bridge_name']; ?></td>
+								<td class="center"><?php echo $dataRow1['info']['bri01bridge_type_code']; ?></td>
+								<td class="center spw"><?php echo $dataRow1['info']['bri03e_span']; ?></td>
+								<td class="center"><?php echo $dataRow1['info']['wal01walkway_width']; ?></td>
                    <?php 
                         //$dataRow['arrCostData']; 
 						
                         foreach($arrCostCompList as $dataRow5){ 
                             //  print_r($dataRow5);?>
                                 
-                              <td class="center bri_<?php echo $dataRow1['info']->bri03id; ?> costAmt col<?php echo $dataRow5->sup01id; ?> dev_<?php echo $dataRow['info']->dist01id;?>">
-                                <?php echo isset($arrCostList['bri_'.$dataRow1['info']->bri03bridge_no][ 'id_' . $dataRow5->sup01id ])? round($arrCostList['bri_'.$dataRow1['info']->bri03bridge_no][ 'id_' . $dataRow5->sup01id ]->totalAmt, 2): 0; ?>
+                              <td class="center bri_<?php echo $dataRow1['info']['bri03id']; ?> costAmt col<?php echo $dataRow5->sup01id; ?> dev_<?php echo $dataRow['info']['dist01id'];?>">
+                                <?php echo isset($arrCostList['bri_'.$dataRow1['info']['bri03bridge_no']][ 'id_' . $dataRow5->sup01id ])? round($arrCostList['bri_'.$dataRow1['info']['bri03bridge_no']][ 'id_' . $dataRow5->sup01id ]->totalAmt, 2): 0; ?>
                                 
                                 </td>
                                 
                             <?php }?>
                             <td class="center est">
-                                <label class="sumCalc dev_<?php echo $dataRow['info']->dist01id;?> colSumCostAmt" data-sum=".bri_<?php echo $dataRow1['info']->bri03id; ?>.costAmt">0.00</label>
+                                <label class="sumCalc dev_<?php echo $dataRow['info']['dist01id'];?> colSumCostAmt" data-sum=".bri_<?php echo $dataRow1['info']['bri03id']; ?>.costAmt">0.00</label>
                              </td>
 							</tr>
                          
@@ -113,11 +113,11 @@
                                 
                                  <?php
                                 foreach($arrCostCompList as $dataRow5){ ?>
-                                <td class="center dev_<?php echo $dataRow['info']->dist01id; ?> sumCalc totalspan  Total_<?php echo $dataRow5->sup01id;?>" data-sum=".dev_<?php echo $dataRow['info']->dist01id; ?>.col<?php echo $dataRow5->sup01id;?>">0</td>
+                                <td class="center dev_<?php echo $dataRow['info']['dist01id']; ?> sumCalc totalspan  Total_<?php echo $dataRow5->sup01id;?>" data-sum=".dev_<?php echo $dataRow['info']['dist01id']; ?>.col<?php echo $dataRow5->sup01id;?>">0</td>
                                 <?php } ?>
-                                <td class="center sumCalc dev_<?php echo $dataRow['info']->dist01id; ?> summerytotal" data-sum=".dev_<?php echo $dataRow['info']->dist01id; ?>.colSumCostAmt"></td> 
+                                <td class="center sumCalc dev_<?php echo $dataRow['info']['dist01id']; ?> summerytotal" data-sum=".dev_<?php echo $dataRow['info']['dist01id']; ?>.colSumCostAmt"></td> 
                                  
-                                <input type="hidden" class="cntCalc totalcnt" data-cnt=".dev_<?php echo $dataRow['info']->dist01id; ?>.spw"/>
+                                <input type="hidden" class="cntCalc totalcnt" data-cnt=".dev_<?php echo $dataRow['info']['dist01id']; ?>.spw"/>
                                                                                           
                             </tr>
                             <tr>
@@ -127,7 +127,7 @@
                                                             <?php
 															$k = 1;
                                 foreach($arrCostCompList as $dataRow5){ ?>
-                                <td class="center calcPerc grstotal ppd<?php echo $k;?>" data-numerator=".dev_<?php echo $dataRow['info']->dist01id; ?>.totalspan.Total_<?php echo $dataRow5->sup01id;?>" data-denominator=".dev_<?php echo $dataRow['info']->dist01id; ?>.summerytotal">0</td>
+                                <td class="center calcPerc grstotal ppd<?php echo $k;?>" data-numerator=".dev_<?php echo $dataRow['info']['dist01id']; ?>.totalspan.Total_<?php echo $dataRow5->sup01id;?>" data-denominator=".dev_<?php echo $dataRow['info']['dist01id']; ?>.summerytotal">0</td>
                                 <?php $k++;} ?>
                                 <?php /*<td class="center sumCalc psummerytotal" data-sum=".dev_<?php echo $dataRow['info']->dist01id; ?>.grstotal">100.00</td> */ ?>
 								<td class="center psummerytotal">100.00</td> 

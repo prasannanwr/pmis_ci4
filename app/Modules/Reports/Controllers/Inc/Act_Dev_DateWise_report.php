@@ -55,6 +55,7 @@ class Act_Dev_DateWise_report extends BaseController
     $Postback = @$this->request->getVar('submit');
             $dataStart = @$this->request->getVar('start_date');
             $dateEnd = @$this->request->getVar('end_date');
+            $selProvince = @$this->request->getVar('province'); // province 
             $data['blnMM'] = $stat;
              
             // $this->load->model('view/view_bridge_detail_model');
@@ -62,6 +63,7 @@ class Act_Dev_DateWise_report extends BaseController
             // $this->load->model('view/view_bridge_detail_model');
              $data['startdate'] = $dataStart;
             $data['enddate'] = $dateEnd;
+            $data['selProvince'] = $selProvince;
 
     if ($Postback == 'Back')
     {
@@ -72,7 +74,12 @@ class Act_Dev_DateWise_report extends BaseController
         {
             $data['arrCostCompList'] = $this->cost_components_model->asObject()->findAll();
             $arrPrintList = array();
-            $data['arrDevList']= $this->district_name_model->asObject()->findAll();
+            
+            if(trim($selProvince) != '') {
+                $data['arrDevList'] = $this->district_name_model->where('dist01state',$selProvince)->findAll();
+            } else {
+                $data['arrDevList']= $this->district_name_model->asObject()->findAll();
+            }
                         
             $arrChild1=null;
             if (empty($stat))
@@ -86,6 +93,10 @@ class Act_Dev_DateWise_report extends BaseController
             }
 
             $this->view_brigde_detail_model->dbFilterCompleted();
+            if(trim($selProvince) != '') {
+                $this->view_brigde_detail_model->
+                    where('dist01state =', $selProvince);
+            }
             $arrBridgeList = $this->view_brigde_detail_model->
                 where('bri05bridge_complete >=', $dataStart)->
                 where('bri05bridge_complete <=', $dateEnd)->

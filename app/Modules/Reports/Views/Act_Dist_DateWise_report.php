@@ -2,7 +2,7 @@
 <?= $this->section("body") ?>
 <div id="page-wrapper" class="largeRpt">
 <div class="alignLeft noPrint" style="float:left;">
-    <form name="frmDistrictFilter" method="post" action="<?php echo site_url();?>/reports/Act_Dist_DateWise_report<?php echo (isset($blnMM) && $blnMM)? '/'.MM_CODE: ''; ?>">
+    <form name="frmDistrictFilter" method="get" action="<?php echo site_url();?>/reports/Act_Dist_DateWise_report<?php echo (isset($blnMM) && $blnMM)? '/'.MM_CODE: ''; ?>">
          <select name="selFilterByDistrict" class="form-control" onchange="this.form.submit();">
             <option value="">--Filter by District--</option>
        <?php foreach($arrDistList as $k=>$v){        

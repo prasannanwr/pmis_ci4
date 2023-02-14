@@ -89,14 +89,14 @@ class R_Completed_report extends BaseController
             
             if($this->request->getVar('rtype') && $this->request->getVar('rtype') == "regional") { //tbsu regional office wise
                 $dataDist = @$this->request->getVar('regionaloffice');
-				$arrRegionalInfo = $this->regional_office_model->where('tbis01id', $dataDist)->findAll();
+				$arrRegionalInfo = $this->regional_office_model->where('tbis01id', $dataDist)->asObject()->findAll();
 				
 				$data['tbsu_regional_off'] = $arrRegionalInfo[0];
                 if($dataDist ==''){
                   redirect(site_url());
                 }else{
             
-                  $arrDistList = $this->regional_office_model->findAll();
+                  $arrDistList = $this->regional_office_model->asObject()->findAll();
 
                   if (is_array($arrDistList))
                   {
@@ -122,7 +122,7 @@ class R_Completed_report extends BaseController
                   where('bri05bridge_complete_check', '1')->findAll();*/
 				  
 				   $brige_list= $this->view_brigde_detail_site_assesment_survey_r7_model->where('dist01tbis01id',$dataDist)->where('bri03construction_type',$x)->
-                        where('bri05bridge_complete_check', '1')->where('bri03work_category !=','3')->findAll();
+                        where('bri05bridge_complete_check', '1')->where('bri03work_category !=','3')->asObject()->findAll();
           
                    $arrDataList = array();
                    foreach ($brige_list as $k => $v)
@@ -148,8 +148,9 @@ class R_Completed_report extends BaseController
               } else {
                 $dataDist = @$this->request->getVar('district');
 				$arrDistInfo = $this->view_district_model->where('dist01id',$dataDist)->findAll();
-				$arrRegionalInfo = $this->regional_office_model->where('tbis01id', $arrDistInfo[0]['dist01tbis01id'])->findAll();
+				$arrRegionalInfo = $this->regional_office_model->where('tbis01id', $arrDistInfo[0]['dist01tbis01id'])->asObject()->findAll();
 				$data['arrPrintList'] = '';
+        //var_dump($arrRegionalInfo);exit;
 				if(isset($arrRegionalInfo[0])) {
 				$data['tbsu_regional_off'] = $arrRegionalInfo[0];				
                 if($dataDist ==''){
@@ -181,16 +182,16 @@ class R_Completed_report extends BaseController
                     
                                          
                         $brige_list= $this->view_brigde_detail_site_assesment_survey_model->where('dist01id', $dataDist)->where('bri03construction_type',$x)->
-                        where('bri05bridge_complete_check', '1')->findAll();
+                        where('bri05bridge_complete_check', '1')->asObject()->findAll();
                 
                          $arrDataList = array();
                          foreach ($brige_list as $k => $v)
                         
                             {
                               
-                               $arrDataList['dist_' . $v['dist01id']]['dist'] = $data['arrDistrictList'][ 'dist_' . $v['dist01id'] ];
+                               $arrDataList['dist_' . $v->dist01id]['dist'] = $data['arrDistrictList'][ 'dist_' . $v->dist01id ];
                                 
-                                $arrDataList['dist_' . $v['dist01id']]['data'][]=$v;
+                                $arrDataList['dist_' . $v->dist01id]['data'][]=$v;
                             }
                        
                         

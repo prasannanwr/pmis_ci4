@@ -112,7 +112,7 @@ class R_Under_Construction_report extends BaseController
                      where('bri05bridge_complete_check', '0')->findAll();*/
                      
                       $brige_list= $this->view_brigde_detail_site_assesment_survey_r7_model->where('dist01tbis01id',$dataDist)->where('bri03construction_type',$x)->
-                     where('bri05bridge_complete_check', '0')->where('bri03work_category !=','3')->findAll();
+                     where('bri05bridge_complete_check', '0')->where('bri03work_category !=','3')->asObject()->findAll();
                      
                      
              
@@ -172,16 +172,20 @@ class R_Under_Construction_report extends BaseController
                                       
                      /*$brige_list= $this->view_brigde_detail_site_assesment_survey_model->where('dist01id',$dataDist)->where('bri03construction_type',$x)->
                      where('bri05bridge_complete_check', '0')->findAll();*/
+                     // echo $dataDist;
+                     // echo "<br>";
+                     // echo $x;
+                     // exit;
                      $brige_list= $this->view_brigde_detail_site_assesment_survey_model->where('dist01id',$dataDist)->where('bri03construction_type',$x)->
-                     where('bri05bridge_complete_check', '0')->where('bri03work_category !=','3')->findAll();						
-                    //  var_dump($brige_list);
-                    //  exit;
+                     where('bri05bridge_complete_check', '0')->where('bri03work_category !=','3')->asObject()->findAll();
+
+
                       $arrDataList = array();
                       foreach ($brige_list as $k => $v)
                      
                          {
-                            $arrDataList['dist_' . $v['dist01id']]['dist'] = $data['arrDistrictList'][ 'dist_' . $v['dist01id'] ];
-                              $arrDataList['dist_' . $v['dist01id']]['data'][]=$v;
+                            $arrDataList['dist_' . $v->dist01id]['dist'] = $data['arrDistrictList'][ 'dist_' . $v->dist01id ];
+                              $arrDataList['dist_' . $v->dist01id]['data'][]=$v;
                          }
                     
                  

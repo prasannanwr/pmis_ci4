@@ -18,16 +18,16 @@
                     //var_dump($municipality);exit;
                     if(is_array($arrPrintList)){
                     foreach($arrPrintList as $dataRow){
-                     //   echo "<pre>";
-                   // var_dump($dataRow);exit;
+                    //    echo "<pre>";
+                    // var_dump($dataRow['dist']['dist01name']);exit;
                     
                     ?>
 
-								<div class="col-lg-6"><b><span>District: <?php echo $dataRow['dist']->dist01name;  ?></span></b></div><div class="col-lg-6"><b><span style="float:right;" >Status as of <?php echo _day(); ?></span></b></div>
-                        		<div class="col-lg-6"><b><span>Palika:&nbsp;</span><span class="bold "> <?php echo $municipality[0]->muni01name;  ?></span></b></div>
+								<div class="col-lg-6"><b><span>District: <?php echo $dataRow['dist']['dist01name'];  ?></span></b></div><div class="col-lg-6"><b><span style="float:right;" >Status as of <?php echo _day(); ?></span></b></div>
+                        		<div class="col-lg-6"><b><span>Palika:&nbsp;</span><span class="bold "> <?php echo $municipality[0]['muni01name'];  ?></span></b></div>
 
-								
-								<div class="table-responsive">
+								<!-- <div class="table-responsive"> -->
+								<div>
 									<table class="table table-bordered table-hover">
 										<thead>
 											<tr>
@@ -182,3 +182,4 @@
                 </div>
                 </div>
                 </div>
+                <?=$this->endSection();?>

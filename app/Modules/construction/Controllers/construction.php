@@ -79,30 +79,32 @@ class Construction extends BaseController
                 $data['validation'] = $this->validator;
             } else // passed validation proceed to post success logic
             {
-		 	// build array for the model
-			 $form_data = array(
-				'con02id' => $emp_id,//@$this->input->post('con02id'),
-				'con02construction_type_code' => @$this->input->post('con02construction_type_code'),
-				'con02construction_type_name' => @$this->input->post('con02construction_type_name'),
-				'con02description' => @$this->input->post('con02description'),
-		   );
-					
-			// run insert model to write data to db
-			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
-			{
-				session()->setFlashdata('message', 'Successfully created.');
-                //$session->setFlashdata('message_type','success');
-                return redirect()->to(base_url('construction/index'));
-			}
-			else
-			{
-    			//echo 'An error occurred saving your information. Please try again later';
-	       		// Or whatever error handling is necessary
-				   session()->setFlashdata('message', 'An error occurred saving your information. Please try again later');
-				   session()->setFlashdata('alert-class', 'alert-danger');
-				   return redirect()->to(base_url('construction/index'));
-			}
-		}
+    		 	// build array for the model
+    			 $form_data = array(
+    				'con02id' => $emp_id,//@$this->input->post('con02id'),
+    				'con02construction_type_code' => @$this->request->getVar('con02construction_type_code'),
+    				'con02construction_type_name' => @$this->request->getVar('con02construction_type_name'),
+    				'con02description' => @$this->request->getVar('con02description'),
+    		      );
+    					
+    			// run insert model to write data to db
+    			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
+    			{
+    				session()->setFlashdata('message', 'Successfully created.');
+                    //$session->setFlashdata('message_type','success');
+                    return redirect()->to(base_url('construction/index'));
+    			}
+    			else
+    			{
+        			//echo 'An error occurred saving your information. Please try again later';
+    	       		// Or whatever error handling is necessary
+    				   session()->setFlashdata('message', 'An error occurred saving your information. Please try again later');
+    				   session()->setFlashdata('alert-class', 'alert-danger');
+    				   return redirect()->to(base_url('construction/index'));
+    			}
+    		}
+        }
+        return view('\Modules\construction\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
     }
 
 

@@ -1,3 +1,5 @@
+<?= $this->extend("\Modules\Template\Views\my_template") ?>
+<?= $this->section("body") ?>
     <div class="container-fluid">
 		<div class="panel panel-default">
 			<div class="AddEdit-form ">
@@ -162,3 +164,4 @@ $(document).ready(function()
             });
       });
 </script>
+<?= $this->endSection() ?> 

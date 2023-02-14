@@ -30,7 +30,7 @@
                                 <th>code</th>
                                 <th>Zone</th>
                                 <th>State</th>
-                                <th><?php echo lang('index_action_th'); ?></th>
+                                <th><?php echo lang('Locale.index_action_th'); ?></th>
                             </tr>
                         </thead>
                     </table>
@@ -70,9 +70,9 @@ $(document).ready(function()
 
      <script>
     $(document).ready(function(){
-        $url = '<?php echo site_url();?>district_name/ajaxData/';
-        $del=  '<img src="<?php echo site_url();?>images/del-btn.png">';
-        $add=  '<img src="<?php echo site_url();?>images/edit-btn.png" width="15px" height= "15px" ">';
+        $url = '<?php echo site_url();?>/district_name/ajaxData/';
+        $del=  '<img src="<?php echo base_url('images/del-btn.png');?>">';
+        $add=  '<img src="<?php echo base_url('images/edit-btn.png');?>" width="15px" height= "15px" ">';
     //$('.ajaxdataTable').dataTable();
     $('.ajaxdataTable').dataTable({
         "processing": true,
@@ -87,7 +87,7 @@ $(document).ready(function()
                 data: 'dist01id',
                 mRender: function( data, type, full ){
                     //console.log( data );
-                    return '<a href="<?php echo site_url();?>district_name/create/'+ data +'">'+ $add +'</a> <a href="<?php echo site_url();?>district_name/delete/?id='+ data +'">'+ $del +'</a>';
+                    return '<a href="<?php echo site_url();?>/district_name/create/'+ data +'">'+ $add +'</a> <a href="<?php echo site_url();?>/district_name/delete/?id='+ data +'">'+ $del +'</a>';
                 }
             }
          ]

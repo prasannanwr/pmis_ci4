@@ -13,7 +13,7 @@
                     <span class="icon-bar">
                     </span>
                 </button>
-                <img src="<?php echo  base_url("images/0349198001423239216.jpg"); ?> " style="max-height: 100px;" />
+                <img src="<?php echo  base_url("images/nepal_government.jpg"); ?> " style="max-height: 100px;" />
                 <!--    <img src="<?php // echo base_url(); 
                                     ?>images/final_tbssp.gif" /> -->
                 <a href="<?php echo  base_url() ?>" class="navbar-brand"><?php //echo $logoimg['log01name']; ?></a>
@@ -367,7 +367,7 @@
 
                                                                 <li class="child-menu">
                                                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                                        State Wise<b class="caret"></b>
+                                                                        Province Wise<b class="caret"></b>
                                                                     </a>
                                                                     <ul class="dropdown-menu4">
                                                                         <li>
@@ -470,7 +470,7 @@
                                                                 <li class="divider"></li>
                                                                 <li class="child-menu">
                                                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                                        State Wise<b class="caret"></b>
+                                                                        Province Wise<b class="caret"></b>
                                                                     </a>
                                                                     <ul class="dropdown-menu4">
                                                                         <li>
@@ -486,7 +486,7 @@
                                                                 </li>
 
                                                                 <li class="divider"></li>
-                                                                <li class="child-menu">
+                                                                <li class="child-menu hide">
                                                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                                                         TBSU Wise<b class="caret"></b>
                                                                     </a>
@@ -590,7 +590,7 @@
                                                                 <li class="divider"></li>
                                                                 <li class="child-menu">
                                                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                                        State Wise<b class="caret"></b>
+                                                                        Province Wise<b class="caret"></b>
                                                                     </a>
                                                                     <ul class="dropdown-menu4">
                                                                         <li>
@@ -606,7 +606,7 @@
                                                                 </li>
 
                                                                 <li class="divider"></li>
-                                                                <li class="child-menu">
+                                                                <li class="child-menu hide">
                                                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                                                         TBSU Wise<b class="caret"></b>
                                                                     </a>
@@ -755,7 +755,7 @@
                                                         </li>
                                                         <li class="divider"></li>
                                                         <li>
-                                                            <?php echo anchor('reports/R_Under_Construction_Regional', 'TBSU Regional Office Wise'); ?>
+                                                            <?php echo anchor('reports/R_Under_Construction_Regional', 'Province Wise'); ?>
                                                         </li>
                                                         <li class="divider"></li>
                                                         <li>
@@ -776,7 +776,7 @@
                                                         </li>
                                                         <li class="divider"></li>
                                                         <li>
-                                                            <?php echo anchor('reports/R_Completed_Regional', 'TBSU Regional Office Wise'); ?>
+                                                            <?php echo anchor('reports/R_Completed_Regional', 'Province Wise'); ?>
                                                         </li>
                                                         <li class="divider"></li>
                                                         <li>
@@ -1111,7 +1111,7 @@
                                                         <li class="divider"></li>
                                                         <li class="child-menu">
                                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                                State Wise<b class="caret"></b>
+                                                                Province Wise<b class="caret"></b>
                                                             </a>
                                                             <ul class="dropdown-menu4">
                                                                 <li>
@@ -1216,7 +1216,7 @@
                                                         <li class="divider"></li>
                                                         <li class="child-menu">
                                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                                State Wise<b class="caret"></b>
+                                                                Province Wise<b class="caret"></b>
                                                             </a>
                                                             <ul class="dropdown-menu4">
                                                                 <li>
@@ -1336,7 +1336,7 @@
                                                         <li class="divider"></li>
                                                         <li class="child-menu">
                                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                                State Wise<b class="caret"></b>
+                                                                Province Wise<b class="caret"></b>
                                                             </a>
                                                             <ul class="dropdown-menu4">
                                                                 <li>
@@ -1566,9 +1566,9 @@
                                                 <?php echo anchor('bridge_designer', '
                                                                 <i class="fa fa-pencil fa-1x"></i> Bridge Designer'); ?>
                                             </li>
-                                            <li class="divider"> </li>
-                                            <li><?php echo anchor('country', ' <i class="fa fa-flag fa-1x"></i> Countries'); ?>
-                                            </li>
+                                            <!-- <li class="divider"> </li>
+                                            <li><?php //echo anchor('country', ' <i class="fa fa-flag fa-1x"></i> Countries'); ?>
+                                            </li> -->
                                             <li class="divider"></li>
                                             <li>
                                                 <?php echo anchor('cost_components', '
@@ -1580,16 +1580,11 @@
                                                                 <i class="fa fa-comments fa-1x"></i> Contruction Components'); ?>
                                             </li>
                                             <li class="divider"> </li>
-                                            <li>
+                                            <li class="hide">
                                                 <?php echo anchor('development_region', '
                                                                 <i class="fa fa-align-justify fa-1x"></i> Development Region'); ?>
                                             </li>
-                                            <li class="divider"></li>
-                                            <li>
-                                                <?php echo anchor('province', '
-                                                                <i class="fa fa-align-justify fa-1x"></i> States'); ?>
-                                            </li>
-                                            <li class="divider"></li>
+                                           <!--  <li class="divider"></li> -->
                                             <li>
                                                 <?php echo anchor('district_name', '
                                                                     <i class="fa fa-align-left fa-1x"></i> District Name'); ?>
@@ -1606,16 +1601,26 @@
                                             </li>
 
                                             <li class="divider"> </li>
-                                            <li>
+                                            <li class="hide">
                                                 <?php echo anchor('logo_upload', '
                                                                 <i class="fa fa-align-center fa-1x"></i> Logo Upload'); ?>
                                             </li>
-                                            <li class="divider"></li>
+                                            <!-- <li class="divider"></li> -->
 
                                             <li>
-                                                <?php echo anchor('vcd_municipality', '
+                                                <?php echo anchor("palika", '
                                                                 <i class="fa fa-align-right fa-1x"></i> Municipality and VDC'); ?>
 
+                                            </li>
+                                            <li class="divider"></li>
+                                            <li>
+                                                <?php echo anchor('main_walkway_cable_diam', '
+                                                                <i class="fa fa-comments fa-1x"></i> Main Walkway Cable Diam'); ?>
+                                            </li>
+                                            <li class="divider"> </li>
+                                            <li>
+                                                <?php echo anchor('main_walkway_cable_number', '
+                                                                <i class="fa fa-comments fa-1x"></i> Main Walkway Cable Number'); ?>
                                             </li>
                                             <li class="divider"></li>
 
@@ -1626,13 +1631,8 @@
                                         <div class="" style="width: 230px; overflow: hidden; float: left;">
                                             <li class="divider"></li>
                                             <li>
-                                                <?php echo anchor('main_walkway_cable_diam', '
-                                                                <i class="fa fa-comments fa-1x"></i> Main Walkway Cable Diam'); ?>
-                                            </li>
-                                            <li class="divider"> </li>
-                                            <li>
-                                                <?php echo anchor('main_walkway_cable_number', '
-                                                                <i class="fa fa-comments fa-1x"></i> Main Walkway Cable Number'); ?>
+                                                <?php echo anchor('province', '
+                                                                <i class="fa fa-align-justify fa-1x"></i> Province'); ?>
                                             </li>
                                             <li class="divider"></li>
                                             <li>
@@ -1662,7 +1662,7 @@
                                             <li class="divider"> </li>
 
                                             <li>
-                                                <?php echo anchor('user', '<i class="fa fa-user fa-1x"></i> Users'); ?>
+                                                <?php echo anchor('user/list', '<i class="fa fa-user fa-1x"></i> Users'); ?>
                                             </li>
                                             <li class="divider"></li>
                                             <li>
@@ -1686,11 +1686,11 @@
                                             </li>
                                             <li class="divider"> </li>
 
-                                            <li>
+                                            <li class="hide">
                                                 <?php echo anchor('zone', '
                                                                 <i class="fa fa-align-center fa-1x"></i> Zone'); ?>
                                             </li>
-                                            <li class="divider"></li>
+                                            <!-- <li class="divider"></li> -->
 
 
                                         </div>

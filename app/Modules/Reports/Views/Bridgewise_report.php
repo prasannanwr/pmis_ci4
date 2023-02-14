@@ -480,20 +480,21 @@
                                                 if(isset($arrEstCost) && is_array( $arrEstCost)){
 
                                                     foreach( $arrEstCost as $k=>$v){
+                                                    	if(isset($v->bri07cmp01id)) {
+                                                    		if( $v->bri07cmp01id == $dr['cmp01id'] && 
 
-                                                        if( $v->bri07cmp01id == $dr->cmp01id && 
+	                                                            $v->bri07sup01id == $dr1['sup01id']){
 
-                                                            $v->bri07sup01id == $dr1->sup01id){
+	                                                            $selrec = $v;
 
-                                                            $selrec = $v;
+	                                                            $blnFound = true;
 
-                                                            $blnFound = true;
+	                                                            //var_dump( $selrec );
 
-                                                            //var_dump( $selrec );
+	                                                            break;
 
-                                                            break;
-
-                                                        }
+	                                                        }
+                                                    	}
 
                                                     }
 

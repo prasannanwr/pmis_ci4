@@ -72,7 +72,7 @@ class Act_Con_Districtwise_FYwise_report extends BaseController
                 $arrPrintList = array();
                 $data['arrDevList'] = $this->district_name_model->asObject()->findAll();
                 $data['sel_district_filter'] = '';
-
+                $data['arrCostList'] = array();
                 $arrChild1 = null;
 
                 if (empty($stat)) {
@@ -96,7 +96,7 @@ class Act_Con_Districtwise_FYwise_report extends BaseController
                 $arrBridgeList = $this->view_bridge_detail_model->where('bri05bridge_completion_fiscalyear >=', $dataStart)->where('bri05bridge_completion_fiscalyear <=', $dateEnd)->where('bri05bridge_complete_check', 1)->asObject()->findAll();
                 $arrBridgeIdList = null;
 
-                if (is_array($arrBridgeList)) {
+                if (!empty($arrBridgeList) && is_array($arrBridgeList)) {
                     foreach ($arrBridgeList as $k2 => $v2) {
                         $arrChild2 = null;
                         $arrBridgeIdList[] = $v2->bri03bridge_no;
@@ -104,17 +104,15 @@ class Act_Con_Districtwise_FYwise_report extends BaseController
                         //$arrPrintList['dev_'.$v2->dev01id]['arrChildList']['dist_'.$v2->dist01id]['info']=$v2;
                         $arrPrintList['dist_' . $v2->dist01id]['arrChildList'][] = array('info' => $v2);
                     }
+                    $arrBridgeCostList = $this->view_bridge_actual_supporting_cost->whereIn('bri08bridge_no', $arrBridgeIdList)->asObject()->findAll();
+                    foreach ($arrBridgeCostList as $x2) {
+                        $arrCostList['bri_' . $x2->bri08bridge_no]['id_' . $x2->bri08sup01id] = $x2;
+                    }
+                    $data['arrCostList'] = $arrCostList;
                 }
-
-                $arrBridgeCostList = $this->view_bridge_actual_supporting_cost->whereIn('bri08bridge_no', $arrBridgeIdList)->asObject()->findAll();
-
-                foreach ($arrBridgeCostList as $x2) {
-                    $arrCostList['bri_' . $x2->bri08bridge_no]['id_' . $x2->bri08sup01id] = $x2;
-                }
-
 
                 $data['arrPrintList'] = $arrPrintList;
-                $data['arrCostList'] = $arrCostList;
+                
             } else {
                 redirect("reports/Act_Con_Districtwise_FYwise/" . $stat);
             }

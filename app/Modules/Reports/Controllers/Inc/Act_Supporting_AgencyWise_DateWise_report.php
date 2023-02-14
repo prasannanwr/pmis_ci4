@@ -7,10 +7,13 @@ use App\Modules\fiscal_year\Models\FiscalYearModel;
 use App\Modules\view\Models\view_bridge_actual_cost;
 use App\Modules\view\Models\view_bridge_detail_model;
 use App\Modules\view\Models\view_district_reg_office_model;
+use App\Modules\cost_components\Models\CostComponentsModel;
+use App\Modules\view\Models\view_regional_office_model;
+use App\Modules\supporting_agencies\Models\supporting_agencies_model;
 
 //use App\Modules\Reports\Models\ReportsModel;
 
-class Act_Supporting_AgencyWise_DateWise extends BaseController
+class Act_Supporting_AgencyWise_DateWise_report extends BaseController
 {
 
     private static $arrDefData = array();
@@ -20,16 +23,28 @@ class Act_Supporting_AgencyWise_DateWise extends BaseController
     private $view_district_reg_office_model;
 
     private $view_bridge_actual_cost;
-  
+
+    private $cost_components_model;
+
+    private $view_regional_office_model;
+
+    private $supporting_agencies_model;
+
     public function __construct()
     {
       helper(['form', 'html', 'et_helper']);
       $view_bridge_detail_model = new view_bridge_detail_model();
       $view_district_reg_office_model = new view_district_reg_office_model();
       $view_bridge_actual_cost = new view_bridge_actual_cost();
+      $cost_components_model = new CostComponentsModel();
+      $view_regional_office_model = new view_regional_office_model();
+      $supporting_agencies_model = new supporting_agencies_model();
       $this->view_bridge_detail_model = $view_bridge_detail_model;
       $this->view_district_reg_office_model = $view_district_reg_office_model;
       $this->view_bridge_actual_cost = $view_bridge_actual_cost;
+      $this->cost_components_model = $cost_components_model;
+      $this->view_regional_office_model = $view_regional_office_model;
+      $this->supporting_agencies_model = $supporting_agencies_model;
       if (count(self::$arrDefData) <= 0) {
         $FName = basename(__FILE__, '.php');
         $fName = strtolower($FName);
@@ -65,32 +80,37 @@ class Act_Supporting_AgencyWise_DateWise extends BaseController
             if ($dataStart != 0 || $dateEnd != 0)
             {
                 $data['arrCostCompList'] = $this->cost_components_model->asObject()->findAll();
+                //echo "<pre>";var_dump($data['arrCostCompList']);exit;
                 $arrDistList = $this->view_regional_office_model->asObject()->findAll();
                 $arrSupList = $this->supporting_agencies_model->asObject()->findAll();
                 $arrPrintList = array();
+                $ctype = ENUM_NEW_CONSTRUCTION;
                       if (empty($stat))
                 {
-                    $this->view_brigde_detail_model->where('bri03construction_type',
-                        ENUM_NEW_CONSTRUCTION);
+                    //$this->view_bridge_detail_model->where('bri03construction_type', ENUM_NEW_CONSTRUCTION);
+                    $ctype = ENUM_NEW_CONSTRUCTION;
+
                 } else
                 {
-                    $this->view_brigde_detail_model->where('bri03construction_type',
-                        ENUM_MAJOR_MAINTENANCE);
+                    //$this->view_bridge_detail_model->where('bri03construction_type', ENUM_MAJOR_MAINTENANCE);
+                    $ctype = ENUM_MAJOR_MAINTENANCE;
                 }
 
-                $this->view_brigde_detail_model->dbFilterCompleted();
+                //$this->view_bridge_detail_model->dbFilterCompleted();
 
                  if($selAgency != '' && strtolower($selAgency) != "all") {                    
-                        $data['arrDevList']= $this->view_brigde_detail_model->
-                        where('bri05bridge_complete >=',$dataStart)->
-                       where('bri05bridge_complete <=', $dateEnd)->
-                        where('bri03supporting_agency =', $selAgency)->
-                        asObject()->
-                        findAll();
+                       //  $data['arrDevList']= $this->view_bridge_detail_model->
+                       //  where('bri05bridge_complete >=',$dataStart)->
+                       // where('bri05bridge_complete <=', $dateEnd)->
+                       //  where('bri03supporting_agency =', $selAgency)->
+                       //  asObject()->
+                       //  findAll();
+                  $data['arrDevList']= $this->view_bridge_detail_model->getbridgesbysupdate($dataStart, $dateEnd, '', $ctype,'object', $selAgency);
                     } else {
-                         $data['arrDevList']= $this->view_brigde_detail_model->
-                        where('bri05bridge_complete >=',$dataStart)->
-                       where('bri05bridge_complete <=', $dateEnd)->asObject()->findAll();
+                       //   $data['arrDevList']= $this->view_bridge_detail_model->
+                       //  where('bri05bridge_complete >=',$dataStart)->
+                       // where('bri05bridge_complete <=', $dateEnd)->asObject()->findAll();
+                        $data['arrDevList']= $this->view_bridge_detail_model->getbridgesbysupdate($dataStart, $dateEnd,'', $ctype,'object');
                     }    
 
                
@@ -142,13 +162,13 @@ class Act_Supporting_AgencyWise_DateWise extends BaseController
                 
             } else
             {
-                redirect("reports/Act_Supporting_AgencyWise_DateWise/".$stat);
+                redirect("reports/Act_Supporting_AgencyWise_DateWise_report/".$stat);
             }
         } else
         {
             'start date is Smaller than End Date';
         }
-              return view('\Modules\Reports\Views\Act_Supporting_AgencyWise_DateWise_report', $data);
+        return view('\Modules\Reports\Views\Act_Supporting_AgencyWise_DateWise_report', $data);
             //$this->template->my_template($data); 
     }
 }

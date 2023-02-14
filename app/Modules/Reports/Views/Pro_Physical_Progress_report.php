@@ -15,9 +15,10 @@
 
 				<span class="reportHeader">Bridge wise Physical Progress Report (<?php echo $startyear['fis01year'] . ' to ' . $endyear['fis01year']; ?>) as of <?php echo date("j F, Y"); ?></span>
 				<p>
-				<h4>Filter by Supporting Agency</h4>
-				<form name="frmAgencyFilter" method="post" action="<?php echo site_url(); ?>/reports/Pro_Physical_Progress_report">
-					<select name="selAgency" onchange="document.frmAgencyFilter.submit();">
+				<form name="frmAgencyFilter" method="get" action="<?php echo site_url(); ?>/reports/Pro_Physical_Progress_report">
+					<div style="width: 250px; float: left">
+						<h4>Filter by Supporting Agency</h4>
+					<select name="selAgency" onchange="document.frmAgencyFilter.submit();" class="form-control">
 						<option value="">--Select--</option>
 						<?php
 						foreach ($arrsupportList as $sagency) {
@@ -26,11 +27,17 @@
 						<?php } ?>
 						<option value="all">All</option>
 					</select>
+				</div>
+				<div style="width: 200px; float: left; margin-bottom: 5px">
+					<h4>Filter by Province</h4>
+					<?php echo et_form_dropdown_db('regionaloffice', 'province', 'province_name', 'province_id','', '', 'class="form-control regional_search"') ?>
 					<input type="hidden" name="start_year" value="<?php echo $dataStart; ?>">
 					<input type="hidden" name="end_year" value="<?php echo $dateEnd; ?>">
+					</div>
+					
 				</form>
 				</p>
-				<div class="table-responsive">
+				<div class="table-responsive clear">
 					<table class="table table-bordered table-hover">
 						<thead>
 							<tr>
@@ -151,4 +158,11 @@
 	<!-- /.container-fluid -->
 
 </div>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		jQuery("#regionaloffice").on('change',function() {
+			document.frmAgencyFilter.submit();
+		});
+	});
+</script>
 <?= $this->endSection() ?>

@@ -118,7 +118,7 @@ class Act_Con_Districtwise_datewise_report extends BaseController
     } else {
         'start date is Smaller than End Date';
     }
-    return view('\Modules\Reports\Views\Act_Con_Overall_datewise_report', $data);
+    return view('\Modules\Reports\Views\Act_Con_Districtwise_datewise_report', $data);
   }
 }
 ?>

@@ -56,8 +56,12 @@ class Act_Dev_FYWise_report extends BaseController
     $dataStart = @$this->request->getVar('start_year');
     $dateEnd = @$this->request->getVar('end_year');
     $bri03municipality = @$this->request->getVar('bri03municipality');
+    $selProvince = @$this->request->getVar('province'); // province 
     $data['blnMM'] = $stat;
     $data['title'] = "Overall";
+    $data['dataStart'] = $dataStart;
+    $data['dateEnd'] = $dateEnd;
+    $data['selProvince'] = $selProvince;
 
     $data['startyear'] = $this->fiscal_year_model->where('fis01id', $dataStart)->asObject()->first();
     $data['endyear'] = $this->fiscal_year_model->where('fis01id', $dateEnd)->asObject()->first();
@@ -82,7 +86,12 @@ class Act_Dev_FYWise_report extends BaseController
         {
             $data['arrCostCompList'] = $this->cost_components_model->asObject()->findAll();
             $arrPrintList = array();
-            $data['arrDevList']= $this->district_name_model->asObject()->findAll();
+
+            if(trim($selProvince) != '') {
+                $data['arrDevList'] = $this->district_name_model->where('dist01state',$selProvince)->findAll();
+            } else {
+                $data['arrDevList']= $this->district_name_model->asObject()->findAll();
+            }
                         
             $arrChild1=null;
             if (empty($stat))
@@ -100,12 +109,15 @@ class Act_Dev_FYWise_report extends BaseController
                 where('bri03project_fiscal_year >=', $dataStart)->
                 where('bri03project_fiscal_year <=', $dateEnd)->
                 findAll();*/
-                
-                $arrBridgeList = $this->view_brigde_detail_model->
-                where('bri05bridge_completion_fiscalyear =', $dateEnd)->
-                orderBy('dist01state')->
-                asObject()->
-                findAll();
+            if(trim($selProvince) != '') {
+                $this->view_brigde_detail_model->
+                    where('dist01state =', $selProvince);
+            }
+            $arrBridgeList = $this->view_brigde_detail_model->
+            where('bri05bridge_completion_fiscalyear =', $dateEnd)->
+            orderBy('dist01state')->
+            asObject()->
+            findAll();
             
             $arrBridgeIdList = null;
             if(is_array( $arrBridgeList )){

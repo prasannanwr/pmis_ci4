@@ -14,7 +14,13 @@ class district_name_model extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        "dist01name",
+        "dist01zon01id",
+        "dist01remark",
+        "dist01code",
+        "dist01tbis01id",
+        "dist01state"];
 
     // Dates
     protected $useTimestamps = false;

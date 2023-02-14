@@ -194,7 +194,7 @@
                 {data: 'bri03bridge_no'},
                 {data: 'bri03bridge_name'}, 
                 {data: 'bri03river_name'}, 
-                {data: 'bri03e_span'},
+                {data: 'bri03design'},
                 {name: 'left_district', data: 'left_district', visible: true},
                 {name: 'bri05bridge_complete', data: 'bri05bridge_complete',
                     mRender: function( data, type, full){
@@ -210,7 +210,7 @@
                     data: 'bri03bridge_no',
                     mRender: function( data, type, full ){
                         //console.log( data );
-                        return '<a href="<?php echo site_url();?>/bridge/form/'+ data +'">'+ $add +'</a> <?php  if(session()->get('type') == ENUM_ADMINISTRATOR || session()->get('type') == ENUM_REGIONAL_MANAGER  ){ ?> <a href="<?php echo site_url();?>bridge/delete/?id='+ data +'" onclick="return confirm(\'Warning: Once deleted, the action cannot be reverted. Are you sure you want to delete the selected bridge?\');">'+ $del +'</a> <?php }?>';                        
+                        return '<a href="<?php echo site_url();?>/bridge/form/'+ data +'">'+ $add +'</a> <?php  if(session()->get('type') == ENUM_ADMINISTRATOR || session()->get('type') == ENUM_REGIONAL_MANAGER  ){ ?> <a href="<?php echo site_url();?>/bridge/delete/'+ data +'" onclick="return confirm(\'Warning: Once deleted, the action cannot be reverted. Are you sure you want to delete the selected bridge?\');">'+ $del +'</a> <?php }?>';                        
                     }
                 }
              ],       

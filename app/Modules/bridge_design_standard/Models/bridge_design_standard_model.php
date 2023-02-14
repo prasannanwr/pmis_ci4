@@ -14,7 +14,11 @@ class bridge_design_standard_model extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'bri02bds_type_code',
+        'bri02bds_type_name',
+        'bri02description'
+    ];
   
     // Dates
     protected $useTimestamps = false;

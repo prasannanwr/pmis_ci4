@@ -43,8 +43,8 @@
                           
                         if(is_array($arrPrintList)){
                         foreach($arrPrintList as $dataRow){
-                            //echo "<pre>";
-                        //var_dump($dataRow);exit;
+                           // echo "<pre>";
+                        //var_dump($dataRow->info);exit;
                         if( isset($dataRow['info']) ){
                         ?>
                        <tbody class="dist_<?php echo $dataRow['info']->dev01id; ?>">
@@ -56,7 +56,7 @@
                                 <b><span>District:<?php echo $dataRow['info']->dist01name; ?></span></b>
                             </div>
                             <div class="col-lg-6">
-                                <b><span style="float:right;" >TBSU Regional Office: <?php  echo   $dataRow['info']->tbis01name; ?></span></b>
+                                <b><span style="float:right;" >TBSU Regional Office: <?php echo $dataRow['info']->tbis01name; ?></span></b>
                             </div>
                         </div>
                      </td>

@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Modules\bridge_type\Controllers;
+namespace App\Modules\basic_supporting_agencies\Controllers;
 
 use App\Controllers\BaseController;
-use App\Modules\bridge_type\Models\bridge_type_model;
+use App\Modules\basic_supporting_agencies\Models\basic_supporting_agencies_model;
 
 class Basic_supporting_agencies extends BaseController
 {
     private static $arrDefData = array();
     protected $model;
     private static $fName = '';
+    private $basic_supporting_agencies_model;
 
     function __construct()
 	{
@@ -23,18 +24,18 @@ class Basic_supporting_agencies extends BaseController
             	'view_file'     => 'index',
             );
         }
-        helper('form');
-        $clName = get_class($this) . '_model';
-        $this->load->model( $clName );
-        $this->model = $this->{$clName};
+        helper(['form']);
+
+        $basic_supporting_agencies_model = new basic_supporting_agencies_model();
+        $this->model = $basic_supporting_agencies_model;
 	}
 	function index()
 	{
 	    //var_dump( $this->model );
         $data = self::$arrDefData;
         //$data['arrDataList']= $this->model->view_sup03_sup02();
-        $data['arrDataList']= $this->model->dbGetList();
-        $this->template->my_template($data);
+        $data['arrDataList']= $this->model->asObject()->findAll();
+        return view('\Modules\basic_supporting_agencies\Views'. DIRECTORY_SEPARATOR .__FUNCTION__, $data);
 	}
 	
     function create($emp_id = FALSE){
@@ -45,61 +46,60 @@ class Basic_supporting_agencies extends BaseController
         $data['objOldRec'] ='';
         $data['postURL'] = self::$fName."/create";
         if( $emp_id !== false){
-            $data['objOldRec'] = $this->model->where('sup03id',$emp_id)->dbGetRecord();
+            $data['objOldRec'] = $this->model->where('sup03id',$emp_id)->asObject()->first();
             $data['postURL'] .= '/'.$emp_id;
         }
+			
+		$rules = [
+                'sup03sup_agency_code' => 'required|max_length[10]',
+                'sup03sup_agency_name' => 'required|max_length[40]'
+            ];
 
-		$this->form_validation->set_rules('sup03sup_agency_code', '', 'max_length[10]');			
-		$this->form_validation->set_rules('sup03sup_agency_name', '', 'max_length[40]');			
-		$this->form_validation->set_rules('sup03sup_agency_type', '', 'max_length[30]');			
-		$this->form_validation->set_rules('sup03description', '', 'max_length[100]');
-			
-			
-		$this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
-	
-		if ($this->form_validation->run() == FALSE) // validation hasn't been passed
-		{
-            $this->template->my_template($data);
-		}
+        if (!$this->validate($rules)) {
+            $data['validation'] = $this->validator;
+        }
 		else // passed validation proceed to post success logic
 		{
 		 	// build array for the model
 			$form_data = array(
-		       	'sup03id' => $emp_id, //@$this->input->post('sup03id'),
-    	       	'sup03sup_agency_code' => @$this->input->post('sup03sup_agency_code'),
-    	       	'sup03sup_agency_name' => @$this->input->post('sup03sup_agency_name'),
-    	       	'sup03sup_agency_type' => @$this->input->post('sup03sup_agency_type'),
-    	       	'sup03description' => @$this->input->post('sup03description'),
-    	       	'sup03index' => @$this->input->post('sup03index')
+		       	'sup03id' => $emp_id, //@$this->request->getVar('sup03id'),
+    	       	'sup03sup_agency_code' => @$this->request->getVar('sup03sup_agency_code'),
+    	       	'sup03sup_agency_name' => @$this->request->getVar('sup03sup_agency_name'),
+    	       	'sup03sup_agency_type' => @$this->request->getVar('sup03sup_agency_type'),
+    	       	'sup03description' => @$this->request->getVar('sup03description'),
+    	       	'sup03index' => @$this->request->getVar('sup03index')
 			);
 					
 			// run insert model to write data to db
             //var_dump( $this->model );
-			if ($this->model->dbSave($form_data) == TRUE) // the information has therefore been successfully saved in the db
+			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
 			{
-    			set_message('Location successfully created.', 'success');
-    			redirect('basic_supporting_agencies', 'refresh');
+    			//set_message('Location successfully created.', 'success');
+                session()->setFlashdata('message', "Created successfully");
 			}
 			else
 			{
-    			echo 'An error occurred saving your information. Please try again later';
+    			//echo 'An error occurred saving your information. Please try again later';
+                session()->setFlashdata('message', "An error occurred saving your information. Please try again later");
 	       		// Or whatever error handling is necessary
 			}
+            return redirect()->to('basic_supporting_agencies');    
 		}
+        return view('\Modules\basic_supporting_agencies\Views'. DIRECTORY_SEPARATOR .__FUNCTION__, $data);
     }
-     function delete()
+     function delete($delete_id)
 	{
        //var_dump($_GET);
       
-		$delete_id = $this->input->get('id');
-        $this->load->model('basic_supporting_agencies_model');
-	      $this->basic_supporting_agencies_model->where('sup03id', $delete_id)->dbDelete();
+		if($delete_id) {
+          $this->model->where('sup03id', $delete_id)->delete();
           
-			$message = 'Selected Data Deleted.';
-			log_query($message);
-			set_message($message, 'success');
-		
+            $message = 'Selected Data Deleted.';
+            session()->setFlashdata('message', $message);
         
-		redirect('basic_supporting_agencies');
+        
+        return redirect()->to('basic_supporting_agencies');    
+        }
+        
 	}
 }

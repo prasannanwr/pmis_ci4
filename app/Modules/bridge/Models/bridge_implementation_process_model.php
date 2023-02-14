@@ -53,7 +53,9 @@ class bridge_implementation_process_model extends Model
         "bri05dmbt_check",
         "bri05second_phase_construction_check",
         "bri05third_phase_construction_check",
-        "bri05work_completion_certificate_check"
+        "bri05work_completion_certificate_check",
+        "bri05bridge_fabrication_contract_check",
+        "bri05bridge_fabrication_contract"
     ];
 
     // Dates

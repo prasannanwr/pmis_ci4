@@ -57,7 +57,8 @@ class Pro_Physical_Progress_report extends BaseController
     $Postback = @$this->request->getVar('submit');
     $dataStart = @$this->request->getVar('start_year');
     $dateEnd = @$this->request->getVar('end_year');
-    $selAgency = @$this->request->getVar('selAgency'); // supporting agency 
+    $selAgency = @$this->request->getVar('selAgency'); // supporting agency
+    $regionaloffice = @$this->request->getVar('regionaloffice'); // province 
     $data['blnMM'] = $stat;
     $data['title'] = "Overall";
     
@@ -77,7 +78,13 @@ class Pro_Physical_Progress_report extends BaseController
     $data['endyear'] = $this->fiscal_year_model->where('fis01id', $dateEnd)->first();
     
     $arrSupList = $this->supporting_agencies_model->findAll();
-    $arrDistList = $this->district_name_model->findAll();
+    if(trim($regionaloffice) != '') {
+        $arrDistList = $this->district_name_model->where('dist01state',$regionaloffice)->findAll();
+    } else {
+        $arrDistList = $this->district_name_model->findAll();
+    }
+    // echo $regionaloffice."<pre>";
+    // var_dump($arrDistList);exit;
     $x = $this->weighted_model->findAll();
     //var_dump( $x );
     //change into associatie array
@@ -150,17 +157,12 @@ class Pro_Physical_Progress_report extends BaseController
                     $data['currentfy'] = $fyarr[0]['fis01id'];
                     if($dataStart == $data['currentfy']) {
                         
-                        if($selAgency != '' && strtolower($selAgency) != "all") {                    
-                            /*$brige_list= $this->view_brigde_detail_model->where('bri03construction_type',$x)->
-                            where('bri03supporting_agency =', $selAgency)->
-                            where('bri05bridge_complete_check !=', 1)->
-                            where('bri03work_category !=', 3)->
-                            orderBy('bri03work_category desc')->
-                            findAll();*/
+                        // if($selAgency != '' && strtolower($selAgency) != "all") {                    
+                           
                                                             
-                            $brige_list = $this->view_brigde_detail_model->getcbridges($data['currentfy'],$x,$selAgency);
+                        //     $brige_list = $this->view_brigde_detail_model->getcbridges($data['currentfy'],$x,$selAgency);
                                                             
-                        } else {
+                        // } else {
                             
                             /*$brige_list= $this->view_brigde_detail_model->where('bri03construction_type',$x)->
                                 where('bri05bridge_complete_check !=', 1)->
@@ -168,8 +170,8 @@ class Pro_Physical_Progress_report extends BaseController
                                 orderBy('bri03work_category desc')->
                                 findAll();*/
                                 
-                                $brige_list = $this->view_brigde_detail_model->getcbridges($data['currentfy'],$x);
-                        }    
+                                $brige_list = $this->view_brigde_detail_model->getcbridges($data['currentfy'],$x,$selAgency,$regionaloffice);
+                       // }    
                     
                     } else {
                         $startfy = substr($data['startyear']['fis01year'], 0 , 4);
@@ -177,25 +179,21 @@ class Pro_Physical_Progress_report extends BaseController
                         $fstartfy = $startfy."-07-16";
                         $fendfy = $endfy."-07-15";
                         
-                        if($selAgency != '' && strtolower($selAgency) != "all") {                    
-                            /*$brige_list= $this->view_brigde_detail_model->where('bri03construction_type',$x)->
-                            where('bri03project_fiscal_year >=', $dataStart)->
-                            where('bri03project_fiscal_year <=', $dateEnd)->
-                            where('bri03supporting_agency =', $selAgency)->
-                            where('bri03work_category !=', 3)->
-                            orderBy('bri03work_category desc')->
-                            findAll();*/
-                            $brige_list = $this->view_brigde_detail_model->getoldcbridges($fstartfy,$fendfy,$x,$selAgency);
+                        // if($selAgency != '' && strtolower($selAgency) != "all") {                    
+                           
+                        //     $brige_list = $this->view_brigde_detail_model->getoldcbridges($fstartfy,$fendfy,$x,$selAgency);
                             
-                        } else {
+                        // } else {
                             /*$brige_list= $this->view_brigde_detail_model->where('bri03construction_type',$x)->
                                 where('bri03project_fiscal_year >=', $dataStart)->
                                 where('bri03project_fiscal_year <=', $dateEnd)->
                                 where('bri03work_category !=', 3)->
                                 orderBy('bri03work_category desc')->
                                 findAll();*/
-                            $brige_list = $this->view_brigde_detail_model->getoldcbridges($fstartfy,$fendfy,$x);
-                        }
+                                
+                            //$brige_list = $this->view_brigde_detail_model->getoldcbridges($fstartfy,$fendfy,$x);
+                                $brige_list = $this->view_brigde_detail_model->getoldcbridges($fstartfy,$fendfy,$x,$selAgency,$regionaloffice);
+                        //}
 
                     }
                     

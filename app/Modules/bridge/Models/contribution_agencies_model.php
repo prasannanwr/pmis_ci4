@@ -53,7 +53,7 @@ class contribution_agencies_model extends Model
 			                  ->where('bri08bridge_no', $bnum)
 			                  ->limit(1)
 			                  ->get();
-		$result = $query->getResult();
+		$result = $query->getRow();
 		return $result;
 	}
 

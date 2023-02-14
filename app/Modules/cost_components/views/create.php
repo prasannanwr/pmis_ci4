@@ -1,3 +1,5 @@
+<?= $this->extend("\Modules\Template\Views\my_template") ?>
+<?= $this->section("body") ?>    
     <div class="container-fluid">
 		<div class="panel panel-default">
 			<div class="AddEdit-form ">
@@ -17,8 +19,7 @@
 							Code:
 						</label>
 						<div class="col-sm-6">
-                            <input id="cmp01component_id" class="form-control" type="text" name="cmp01component_id" maxlength="5" value="<?php echo et_setFormVal('cmp01component_id', $objOldRec); ?>"  />
-                            <?php echo form_error('cmp01component_id'); ?>
+                            <input id="cmp01component_id" class="form-control" type="text" name="cmp01component_id" maxlength="5" value="<?php echo et_setFormValBlank('cmp01component_id', $objOldRec); ?>"  />
 						</div>
 					</div>
 					<div class="form-group">
@@ -26,8 +27,7 @@
 							Name:
 						</label>
 						<div class="col-sm-6">
-                            <input id="cmp01component_name" class="form-control" type="text" name="cmp01component_name" maxlength="40" value="<?php echo et_setFormVal('cmp01component_name', $objOldRec); ?>"  />
-                            <?php echo form_error('cmp01component_name'); ?>
+                            <input id="cmp01component_name" class="form-control" type="text" name="cmp01component_name" maxlength="40" value="<?php echo et_setFormValBlank('cmp01component_name', $objOldRec); ?>"  />
 						</div>
 					</div>
 					
@@ -36,8 +36,7 @@
 							Description:
 						</label>
 						<div class="col-sm-6">
-                            <textarea id="cmp01description" class="form-control" name="cmp01description" maxlength="100"><?php echo et_setFormVal('cmp01description', $objOldRec); ?></textarea>
-                            <?php echo form_error('cmp01description'); ?>
+                            <textarea id="cmp01description" class="form-control" name="cmp01description" maxlength="100"><?php echo et_setFormValBlank('cmp01description', $objOldRec); ?></textarea>
 						</div>
 					</div>
 					<div class="form-group">
@@ -54,7 +53,7 @@
                           ?>
                         <?php echo form_hidden('cmp01id', et_setFormVal('cmp01id', $objOldRec)); ?>
                         <?php echo form_button($btn_submit); ?>
-                        <?php echo anchor('rust_prev_measures', 'Cancel', array('class' => 'btn btn-default')); ?>
+                        <?php echo anchor('cost_components', 'Cancel', array('class' => 'btn btn-default')); ?>
 						</div>
 					</div>
                     <?php echo form_close();?>
@@ -101,3 +100,4 @@ $(document).ready(function()
             });
       });
 </script>
+<?= $this->endSection() ?>

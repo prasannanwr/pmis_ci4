@@ -16,7 +16,7 @@
 				<div class="col-lg-12 mainBoard">
 					<p class="reportHeader center">Actual Bridge Cost (Between <?php echo $startdate." - ".$enddate;?>)</p>
                     <p><h4>Filter by Supporting Agency</h4>
-                    <form name="frmAgencyFilter" method="post" action="<?php echo site_url();?>/reports/Act_Supporting_AgencyWise_DateWise_report">      
+                    <form name="frmAgencyFilter" method="get" action="<?php echo site_url();?>/reports/Act_Supporting_AgencyWise_DateWise_report">      
                         <select name="selAgency" onchange="document.frmAgencyFilter.submit();">
                             <option value="">--Select--</option>
                             <?php                         

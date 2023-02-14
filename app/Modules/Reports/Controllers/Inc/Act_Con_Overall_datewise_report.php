@@ -71,43 +71,46 @@ class Act_Con_Overall_datewise_report extends BaseController
             $data['arrCostCompList'] = $this->supporting_agencies_model->asObject()->findAll();
             $arrPrintList = array();
             $data['arrDevList'] = $this->district_name_model->asObject()->findAll();
-
+            $data['arrCostList'] = array();
             $arrChild1 = null;
             if (empty($stat)) {
-                $this->view_bridge_detail_model->where(
-                    'bri03construction_type',
-                    ENUM_NEW_CONSTRUCTION
-                );
+                $b_type = ENUM_NEW_CONSTRUCTION;
+                // $this->view_bridge_detail_model->where(
+                //     'bri03construction_type',
+                //     ENUM_NEW_CONSTRUCTION
+                // );
             } else {
-                $this->view_bridge_detail_model->where(
-                    'bri03construction_type',
-                    ENUM_MAJOR_MAINTENANCE
-                );
+                $b_type = ENUM_MAJOR_MAINTENANCE;
+                // $this->view_bridge_detail_model->where(
+                //     'bri03construction_type',
+                //     ENUM_MAJOR_MAINTENANCE
+                // );
             }
 
-            $this->view_bridge_detail_model->dbFilterCompleted();
-            $arrBridgeList = $this->view_bridge_detail_model->where('bri05bridge_complete >=', $dataStart)->where('bri05bridge_complete <=', $dateEnd)->where('bri05bridge_complete_check', 1)->asObject()->findAll();
+            //$this->view_bridge_detail_model->dbFilterCompleted();
+            //$arrBridgeList = $this->view_bridge_detail_model->where('bri05bridge_complete >=', $dataStart)->where('bri05bridge_complete <=', $dateEnd)->where('bri05bridge_complete_check', 1)->asObject()->findAll();
+            $arrBridgeList = $this->view_bridge_detail_model->getbridgesbydate($dataStart, $dateEnd, '', $b_type, 'asobject');
 
             $arrBridgeIdList = null;
-            if (is_array($arrBridgeList)) {
+            if (!empty($arrBridgeList) && is_array($arrBridgeList)) {
                 foreach ($arrBridgeList as $k2 => $v2) {
                     $arrChild2 = null;
+
+                    $bri03bridge_no = trim($v2->bri03bridge_no);
                     $arrBridgeIdList[] = $v2->bri03bridge_no;
                     $arrPrintList['dist_' . $v2->dist01id]['info'] = $v2;
-                    //$arrPrintList['dev_'.$v2->dev01id]['arrChildList']['dist_'.$v2->dist01id]['info']=$v2;
                     $arrPrintList['dist_' . $v2->dist01id]['arrChildList'][] = array('info' => $v2);
                 }
+                // $arrBridgeCostList = $this->view_bridge_actual_supporting_cost->whereIn('bri08bridge_no', $arrBridgeIdList)->asObject()->findAll();
+
+                // foreach ($arrBridgeCostList as $x2) {
+                //     $arrCostList['bri_' . $x2->bri08bridge_no]['id_' . $x2->bri08sup01id] = $x2;
+                // }
+                // $data['arrCostList'] = $arrCostList;
             }
-
-            $arrBridgeCostList = $this->view_bridge_actual_supporting_cost->whereIn('bri08bridge_no', $arrBridgeIdList)->asObject()->findAll();
-
-            foreach ($arrBridgeCostList as $x2) {
-                $arrCostList['bri_' . $x2->bri08bridge_no]['id_' . $x2->bri08sup01id] = $x2;
-            }
-
 
             $data['arrPrintList'] = $arrPrintList;
-            $data['arrCostList'] = $arrCostList;
+            
         } else {
             redirect("reports/Act_Con_Overall_datewise/" . $stat);
         }

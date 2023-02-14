@@ -11,7 +11,7 @@ use App\Modules\cost_components\Models\cost_components_model;
 use App\Modules\district_name\Models\district_name_model;
 use App\Modules\fiscal_year\Models\FiscalYearModel;
 use App\Modules\template\Controllers\Template;
-use App\Modules\vdc_municipality\Models\vdc_municipality_model;
+use App\Modules\palika\Models\palika_model;
 use App\Modules\view\Models\view_bridge_detail_model;
 use App\Modules\view\Models\view_district_reg_office_model;
 use App\Modules\view\Models\view_vdc_model;
@@ -93,13 +93,15 @@ class Reports extends BaseController
 
     private $view_bridge_actual_cost;
 
+    private $db;
+
     public function __construct()
     {
         helper(['form', 'html', 'et_helper']);
         $fiscal_year_model = new FiscalYearModel();
         $view_bridge_detail_model = new view_bridge_detail_model();
         $view_district_reg_office_model = new view_district_reg_office_model();
-        $vcd_municipality_model = new vdc_municipality_model();
+        $vcd_municipality_model = new palika_model();
         $district_name_model = new district_name_model();
         $view_vdc_model  = new view_vdc_model();
         $supporting_agencies_model = new supporting_agencies_model();
@@ -123,6 +125,7 @@ class Reports extends BaseController
         $view_regional_office_model = new view_regional_office_model();
         $regional_office_model = new regional_office_model();
         $view_bridge_actual_cost = new view_bridge_actual_cost();
+        $this->db = \Config\Database::connect();
         $this->fiscal_year_model = $fiscal_year_model;
         $this->fiscal_data_model = $fiscal_data_model;
         $this->view_bridge_detail_model = $view_bridge_detail_model;
@@ -307,10 +310,6 @@ class Reports extends BaseController
 
         $data['blnMM'] = $stat;
         //$data['arrDevInfo'] = $selDist;
-        $this->load->model('view/view_bridge_detail_model');
-        $this->load->model('development_region/development_region_model');
-        $this->load->model('view/view_district_model');
-        $this->load->model('view/view_vdc_model');
 
         if ($selDist != 0) {
 
@@ -2248,7 +2247,10 @@ class Reports extends BaseController
 
         $data['arrMunicipalityList'] = $this->vcd_municipality_model->findAll();
         $data['arrDistList'] = $this->district_name_model->findAll();
-        $data['arrVDCList'] = $this->view_vdc_model->findAll();
+        //$data['arrVDCList'] = $this->view_vdc_model->findAll();
+        $data['arrVDCList'] = $this->db->query("select `a`.`dist01id` AS `dist01id`,`a`.`dist01name` AS `dist01name`,`a`.`dist01code` AS `dist01code`,`b`.`muni01id`, `b`.`muni01name` from `dist01district` `a` LEFT JOIN `muni01municipality_vcd` `b` ON (`a`.`dist01id` = `b`.`muni01dist01id`) WHERE `muni01name` LIKE '%Ga Pa%' ESCAPE '!' OR `muni01name` LIKE '%Na Pa%' ESCAPE '!' order by muni01name ASC")->getResult();
+        //$data['arrVDCList'] = array();
+        $data['arrFYList'] = $this->fiscal_year_model->orderBy('fis01id DESC')->asObject()->findAll();
         return view('\Modules\Reports\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
     }
     function Act_Munc_DateWise_report($stat = '')
@@ -2266,11 +2268,13 @@ class Reports extends BaseController
         //        
         //        $data['arrDistList'] = $this->fiscal_year_model->orderBy('fis01id DESC')->asObject()->findAll();
 
-
-        $data['arrMunicipalityList'] = $this->vcd_municipality_model->asObject()->findAll();
-        $data['arrDistList'] = $this->district_name_model->asObject()->findAll();
-        //$data['arrVDCList'] = $this->view_vdc_model->asObject()->findAll();
+        $data['arrMunicipalityList'] = $this->vcd_municipality_model->findAll();
+        $data['arrDistList'] = $this->district_name_model->findAll();
+        //$data['arrVDCList'] = $this->view_vdc_model->findAll();
+        $data['arrVDCList'] = $this->db->query("select `a`.`dist01id` AS `dist01id`,`a`.`dist01name` AS `dist01name`,`a`.`dist01code` AS `dist01code`,`b`.`muni01id`, `b`.`muni01name` from `dist01district` `a` LEFT JOIN `muni01municipality_vcd` `b` ON (`a`.`dist01id` = `b`.`muni01dist01id`) WHERE `muni01name` LIKE '%Ga Pa%' ESCAPE '!' OR `muni01name` LIKE '%Na Pa%' ESCAPE '!' order by muni01name ASC")->getResult();
+        //$data['arrVDCList'] = array();
         $data['arrFYList'] = $this->fiscal_year_model->orderBy('fis01id DESC')->asObject()->findAll();
+
         $data['blnMM'] = $ext;
         return view('\Modules\Reports\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
     }
@@ -2292,7 +2296,8 @@ class Reports extends BaseController
 
         $data['arrMunicipalityList'] = $this->vcd_municipality_model->asObject()->findAll();
         $data['arrDistList'] = $this->district_name_model->asObject()->findAll();
-        $data['arrVDCList'] = $this->view_vdc_model->asObject()->findAll();
+        //$data['arrVDCList'] = $this->view_vdc_model->asObject()->findAll();
+        $data['arrVDCList'] = $this->db->query("select `a`.`dist01id` AS `dist01id`,`a`.`dist01name` AS `dist01name`,`a`.`dist01code` AS `dist01code`,`b`.`muni01id`, `b`.`muni01name` from `dist01district` `a` LEFT JOIN `muni01municipality_vcd` `b` ON (`a`.`dist01id` = `b`.`muni01dist01id`) WHERE `muni01name` LIKE '%Ga Pa%' ESCAPE '!' OR `muni01name` LIKE '%Na Pa%' ESCAPE '!' order by muni01name ASC")->getResult();
         return view('\Modules\Reports\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
     }
 
@@ -2304,7 +2309,8 @@ class Reports extends BaseController
 
         $data['arrMunicipalityList'] = $this->vcd_municipality_model->asObject()->findAll();
         $data['arrDistList'] = $this->district_name_model->asObject()->findAll();
-        $data['arrVDCList'] = $this->view_vdc_model->asObject()->findAll();
+        //$data['arrVDCList'] = $this->view_vdc_model->asObject()->findAll();
+        $data['arrVDCList'] = $this->db->query("select `a`.`dist01id` AS `dist01id`,`a`.`dist01name` AS `dist01name`,`a`.`dist01code` AS `dist01code`,`b`.`muni01id`, `b`.`muni01name` from `dist01district` `a` LEFT JOIN `muni01municipality_vcd` `b` ON (`a`.`dist01id` = `b`.`muni01dist01id`) WHERE `muni01name` LIKE '%Ga Pa%' ESCAPE '!' OR `muni01name` LIKE '%Na Pa%' ESCAPE '!' order by muni01name ASC")->getResult();
         $data['arrFYList'] = $this->fiscal_year_model->orderBy('fis01id DESC')->asObject()->findAll();
         $data['blnMM'] = $ext;
         return view('\Modules\Reports\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
@@ -2350,19 +2356,22 @@ class Reports extends BaseController
 
                 $arrChild1 = null;
                 if (empty($stat)) {
-                    $this->view_bridge_detail_model->where(
-                        'bri03construction_type',
-                        ENUM_NEW_CONSTRUCTION
-                    );
+                    $construction_type = ENUM_NEW_CONSTRUCTION;
+                    // $this->view_bridge_detail_model->where(
+                    //     'bri03construction_type',
+                    //     ENUM_NEW_CONSTRUCTION
+                    // );
                 } else {
-                    $this->view_bridge_detail_model->where(
-                        'bri03construction_type',
-                        ENUM_MAJOR_MAINTENANCE
-                    );
+                    $construction_type = ENUM_MAJOR_MAINTENANCE;
+                    // $this->view_bridge_detail_model->where(
+                    //     'bri03construction_type',
+                    //     ENUM_MAJOR_MAINTENANCE
+                    // );
                 }
 
-                $this->view_bridge_detail_model->dbFilterCompleted();
-                $arrBridgeList = $this->view_bridge_detail_model->where('left_muni01id', $bri03municipality)->where('bri05bridge_complete >=', $dataStart)->where('bri05bridge_complete <=', $dateEnd)->where('bri05bridge_complete_check', 1)->asObject()->findAll();
+                //$this->view_bridge_detail_model->dbFilterCompleted();
+                // $arrBridgeList = $this->view_bridge_detail_model->where('left_muni01id', $bri03municipality)->where('bri05bridge_complete >=', $dataStart)->where('bri05bridge_complete <=', $dateEnd)->where('bri05bridge_complete_check', 1)->asObject()->findAll();
+                $arrBridgeList = $this->view_bridge_detail_model->getbridgesMuncbydate($dataStart, $dateEnd, '', $construction_type, '', $bri03municipality);
 
                 $arrBridgeIdList = null;
                 if (is_array($arrBridgeList)) {
@@ -2409,15 +2418,17 @@ class Reports extends BaseController
         $data['endyear'] = $this->fiscal_year_model->where('fis01id', $dateEnd)->asObject()->first();
 
         if (empty($stat)) {
-            $this->view_bridge_detail_model->where(
-                'bri03construction_type',
-                ENUM_NEW_CONSTRUCTION
-            );
+            $construction_type = ENUM_NEW_CONSTRUCTION;
+            // $this->view_bridge_detail_model->where(
+            //     'bri03construction_type',
+            //     ENUM_NEW_CONSTRUCTION
+            // );
         } else {
-            $this->view_bridge_detail_model->where(
-                'bri03construction_type',
-                ENUM_MAJOR_MAINTENANCE
-            );
+            $construction_type = ENUM_MAJOR_MAINTENANCE;
+            // $this->view_bridge_detail_model->where(
+            //     'bri03construction_type',
+            //     ENUM_MAJOR_MAINTENANCE
+            // );
         }
 
         if ($Postback == 'Back') {
@@ -2425,24 +2436,19 @@ class Reports extends BaseController
         } elseif ($dataStart <= $dateEnd) {
             if ($dataStart != 0 || $dateEnd != 0) {
                 $municipality = $this->view_vdc_model->where('muni01id', $bri03municipality)->asObject()->findAll();
+                $data['municipality'] = $municipality;
                 $data['arrCostCompList'] = $this->supporting_agencies_model->asObject()->findAll();
                 $arrDistList = $this->view_regional_office_model->asObject()->findAll();
                 $arrSupList = $this->supporting_agencies_model->asObject()->findAll();
                 $arrPrintList = array();
-                if (empty($stat)) {
-                    $this->view_bridge_detail_model->where(
-                        'bri03construction_type',
-                        ENUM_NEW_CONSTRUCTION
-                    );
-                } else {
-                    $this->view_bridge_detail_model->where(
-                        'bri03construction_type',
-                        ENUM_MAJOR_MAINTENANCE
-                    );
-                }
+                
                 //$this->view_bridge_detail_model->dbFilterCompleted();
 
-                $data['arrDevList'] = $this->view_bridge_detail_model->where('left_muni01id', $bri03municipality)->where('bri05bridge_completion_fiscalyear >=', $dataStart)->where('bri05bridge_completion_fiscalyear <=', $dateEnd)->where('bri05bridge_complete_check', 1)->asObject()->findAll();
+                //$data['arrDevList'] = $this->view_bridge_detail_model->getbridgesMunc($dataStart, $dateEnd, '', $construction_type, '', $bri03municipality);
+                $arrBridgeList = $this->view_bridge_detail_model->getbridgesMunc($dataStart, $dateEnd, '', $construction_type, '', $bri03municipality);
+                // $arrBridgeList = $this->view_bridge_detail_model->where('left_muni01id', $bri03municipality)->where('bri05bridge_complete >=', $dataStart)->where('bri05bridge_complete <=', $dateEnd)->where('bri05bridge_complete_check', 1)->asObject()->findAll();
+
+                //$data['arrDevList'] = $this->view_bridge_detail_model->where('left_muni01id', $bri03municipality)->where('bri05bridge_completion_fiscalyear >=', $dataStart)->where('bri05bridge_completion_fiscalyear <=', $dateEnd)->where('bri05bridge_complete_check', 1)->asObject()->findAll();
 
                 /*$data['arrDevList']= $this->view_bridge_detail_model->
                         where('left_muni01id',$bri03municipality)->
@@ -2464,36 +2470,28 @@ class Reports extends BaseController
                 //print_r( $data['arrDistrictList']);
                 //  print_r($data['arrsupportList']);
 
-
                 $arrBridgeIdList = null;
-                if (is_array($data['arrDevList'])) {
-                    foreach ($data['arrDevList'] as $k => $v2) {
+                if (is_array($arrBridgeList)) {
+                    foreach ($arrBridgeList as $k2 => $v2) {
                         $arrChild2 = null;
                         $arrBridgeIdList[] = $v2->bri03bridge_no;
-                        //$arrPrintList['sup_'.$v2->sup01id]['info']=$v2;
-                        //$arrPrintList['sup_'.$v2->sup01id]['arrChildList']['dist_'.$v2->dist01id]['info']=$v2;
-                        $arrPrintList['sup_' . $v2->sup01id]['arrChildList']['dist_' . $v2->dist01id]['arrChildList'][] = array('info' => $v2);
+                        $arrPrintList['dist_' . $v2->dist01id]['info'] = $v2;
+                        //$arrPrintList['dev_'.$v2->dev01id]['arrChildList']['dist_'.$v2->dist01id]['info']=$v2;
+                        $arrPrintList['dist_' . $v2->dist01id]['arrChildList'][] = array('info' => $v2);
                     }
                 }
-
-                //var_dump($arrPrintList);exit;
-                if($arrBridgeIdList != NULL) {
-                    $arrBridgeCostList = $this->view_bridge_actual_cost->
-                    // where('left_muni01id',$bri03municipality)->
-                    whereIn('bri08bridge_no', $arrBridgeIdList)->asObject()->findAll();
-                } else {
-                    $arrBridgeCostList = $this->view_bridge_actual_cost->asObject()->findAll();
-                }
+                if($arrBridgeIdList != NULL)
+                $arrBridgeCostList = $this->view_bridge_actual_supporting_cost->whereIn('bri08bridge_no', $arrBridgeIdList)->asObject()->findAll();
+                else
+                $arrBridgeCostList = $this->view_bridge_actual_supporting_cost->asObject()->findAll();
 
                 foreach ($arrBridgeCostList as $x2) {
-
-                    $arrChild2['bri_' . $x2->bri08bridge_no]['id_' . $x2->bri08cmp01id] = $x2;
+                    $arrCostList['bri_' . $x2->bri08bridge_no]['id_' . $x2->bri08sup01id] = $x2;
                 }
 
-                $data['arrCostList'] = $arrChild2;
 
-                // print_r($arrPrintList);
                 $data['arrPrintList'] = $arrPrintList;
+                $data['arrCostList'] = $arrCostList;
             } else {
                 redirect("reports/Act_Con_Munc_FYWise_report/" . $stat);
             }
@@ -2622,7 +2620,8 @@ class Reports extends BaseController
         $Postback = @$this->request->getVar('submit');
         $dataStart = @$this->request->getVar('start_date');
         $dateEnd = @$this->request->getVar('end_date');
-        $data = self::$arrDefData;
+        $selProvince = @$this->request->getVar('province'); // province 
+        //$data = self::$arrDefData;
         //$data['view_file'] = __function__;
         $data['blnMM'] = $stat;
         // $this->load->model('supporting_agencies/supporting_agencies_model');
@@ -2639,13 +2638,20 @@ class Reports extends BaseController
 
         $data['startdate'] = $dataStart;
         $data['enddate'] = $dateEnd;
+        $data['selProvince'] = $selProvince;
         if ($Postback == 'Back') {
             redirect("reports");
         } elseif ($dataStart <= $dateEnd) {
+
             if ($dataStart != 0 || $dateEnd != 0) {
+                
                 $data['arrCostCompList'] = $this->supporting_agencies_model->asObject()->findAll();
                 $arrPrintList = array();
-                $data['arrDevList'] = $this->district_name_model->asObject()->findAll();
+                if(trim($selProvince) != '') {
+                    $data['arrDevList'] = $this->district_name_model->where('dist01state',$selProvince)->findAll();
+                } else {
+                    $data['arrDevList']= $this->district_name_model->asObject()->findAll();
+                }
 
                 $arrChild1 = null;
                 if (empty($stat)) {
@@ -2661,6 +2667,10 @@ class Reports extends BaseController
                 }
 
                 //$this->view_bridge_detail_model->dbFilterCompleted();
+                if(trim($selProvince) != '') {
+                    $this->view_bridge_detail_model->
+                        where('dist01state =', $selProvince);
+                }
                 $arrBridgeList = $this->view_bridge_detail_model->where('bri05bridge_complete >=', $dataStart)->where('bri05bridge_complete <=', $dateEnd)->where('bri05bridge_complete_check', 1)->asObject()->findAll();
 
                 $arrBridgeIdList = null;
@@ -2785,9 +2795,13 @@ class Reports extends BaseController
         $Postback = @$this->request->getVar('submit');
         $dataStart = @$this->request->getVar('start_year');
         $dateEnd = @$this->request->getVar('end_year');
+        $selProvince = @$this->request->getVar('province'); // province 
        // $data = self::$arrDefData;
         $data['view_file'] = __function__;
         $data['blnMM'] = $stat;
+        $data['dataStart'] = $dataStart;
+        $data['dateEnd'] = $dateEnd;
+        $data['selProvince'] = $selProvince;
 
 
         // $this->load->model('supporting_agencies/supporting_agencies_model');
@@ -2810,7 +2824,12 @@ class Reports extends BaseController
             if ($dataStart != 0 || $dateEnd != 0) {
                 $data['arrCostCompList'] = $this->supporting_agencies_model->asObject()->findAll();
                 $arrPrintList = array();
-                $data['arrDevList'] = $this->district_name_model->asObject()->findAll();
+                //$data['arrDevList'] = $this->district_name_model->asObject()->findAll();
+                if(trim($selProvince) != '') {
+                    $data['arrDevList'] = $this->district_name_model->where('dist01state',$selProvince)->findAll();
+                } else {
+                    $data['arrDevList']= $this->district_name_model->asObject()->findAll();
+                }
 
                 $arrChild1 = null;
                 if (empty($stat)) {
@@ -2825,6 +2844,10 @@ class Reports extends BaseController
                     );
                 }
 
+                if(trim($selProvince) != '') {
+                    $this->view_bridge_detail_model->
+                        where('dist01state =', $selProvince);
+                }
                 $arrBridgeList = $this->view_bridge_detail_model->where('bri05bridge_completion_fiscalyear >=', $dataStart)->where('bri05bridge_completion_fiscalyear <=', $dateEnd)->where('bri05bridge_complete_check', 1)->orderBy('dist01state')->asObject()->findAll();
 
                 $arrBridgeIdList = null;
@@ -3856,26 +3879,28 @@ class Reports extends BaseController
                 $arrDistList = $this->view_regional_office_model->asObject()->findAll();
                 $arrSupList = $this->supporting_agencies_model->asObject()->findAll();
                 $arrPrintList = array();
+                $ctype = ENUM_NEW_CONSTRUCTION;
                 if (empty($stat)) {
-                    $this->view_bridge_detail_model->where(
-                        'bri03construction_type',
-                        ENUM_NEW_CONSTRUCTION
-                    );
+                    //$this->view_bridge_detail_model->where('bri03construction_type',ENUM_NEW_CONSTRUCTION);
+                    $ctype = ENUM_NEW_CONSTRUCTION;
                 } else {
-                    $this->view_bridge_detail_model->where(
-                        'bri03construction_type',
-                        ENUM_MAJOR_MAINTENANCE
-                    );
+                    //$this->view_bridge_detail_model->where('bri03construction_type',ENUM_MAJOR_MAINTENANCE);
+                    $ctype = ENUM_MAJOR_MAINTENANCE;
                 }
 
-                $arrDevList = $this->view_bridge_detail_model->where('bri05bridge_completion_fiscalyear >=', $dataStart)->where('bri05bridge_completion_fiscalyear <=', $dateEnd)->where('bri05bridge_complete_check', 1);
+                // $arrDevList = $this->view_bridge_detail_model->where('bri05bridge_completion_fiscalyear >=', $dataStart)->where('bri05bridge_completion_fiscalyear <=', $dateEnd)->where('bri05bridge_complete_check', 1);
 
-                if ($selAgency != '' && $selAgency != "all") {
-                    $arrDevList->where('bri03supporting_agency =', $selAgency);
+                // if ($selAgency != '' && $selAgency != "all") {
+                //     $arrDevList->where('bri03supporting_agency =', $selAgency);
+                // }
+                // $arrDevList = $arrDevList->asObject()->findAll();
+                // $data['arrDevList'] = $arrDevList;
+
+                if($selAgency != '' && strtolower($selAgency) != "all") {
+                  $data['arrDevList']= $this->view_bridge_detail_model->getbridgesbysup($dataStart, $dateEnd, '', $ctype,'object', $selAgency);
+                } else {
+                    $data['arrDevList']= $this->view_bridge_detail_model->getbridgesbysup($dataStart, $dateEnd,'', $ctype,'object');
                 }
-                $arrDevList = $arrDevList->asObject()->findAll();
-                $data['arrDevList'] = $arrDevList;
-
 
                 if (is_array($arrSupList)) {
                     foreach ($arrSupList as $k => $v) {
@@ -4783,7 +4808,8 @@ class Reports extends BaseController
 
         $data['arrMunicipalityList'] = $this->vcd_municipality_model->findAll();
         $data['arrDistList'] = $this->district_name_model->findAll();
-        $data['arrVDCList'] = $this->view_vdc_model->findAll();
+        //$data['arrVDCList'] = $this->view_vdc_model->findAll();
+        $data['arrVDCList'] = $this->db->query("select `a`.`dist01id` AS `dist01id`,`a`.`dist01name` AS `dist01name`,`a`.`dist01code` AS `dist01code`,`b`.`muni01id`, `b`.`muni01name` from `dist01district` `a` LEFT JOIN `muni01municipality_vcd` `b` ON (`a`.`dist01id` = `b`.`muni01dist01id`) WHERE `muni01name` LIKE '%Ga Pa%' ESCAPE '!' OR `muni01name` LIKE '%Na Pa%' ESCAPE '!' order by muni01name ASC")->getResult();
         return view('\Modules\Reports\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
     }
     function Gen_Munc_DateWise_report($stat = '')
@@ -4803,7 +4829,12 @@ class Reports extends BaseController
 
         $data['arrMunicipalityList'] = $this->vcd_municipality_model->findAll();
         $data['arrDistList'] = $this->district_name_model->findAll();
-        $data['arrVDCList'] = $this->view_vdc_model->findAll();
+        //$data['arrVDCList'] = $this->view_vdc_model->findAll();
+
+        $data['arrVDCList'] = $this->db->query("select `a`.`dist01id` AS `dist01id`,`a`.`dist01name` AS `dist01name`,`a`.`dist01code` AS `dist01code`,`b`.`muni01id`, `b`.`muni01name` from `dist01district` `a` LEFT JOIN `muni01municipality_vcd` `b` ON (`a`.`dist01id` = `b`.`muni01dist01id`) WHERE `muni01name` LIKE '%Ga Pa%' ESCAPE '!' OR `muni01name` LIKE '%Na Pa%' ESCAPE '!' order by muni01name ASC")->getResult();
+        // echo "<pre>";
+        // var_dump($data['arrVDCList']);exit;
+        //$data['arrVDCList'] = array();
         $data['arrFYList'] = $this->fiscal_year_model->orderBy('fis01id DESC')->asObject()->findAll();
         return view('\Modules\Reports\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
     }
@@ -5073,9 +5104,10 @@ class Reports extends BaseController
         $data['view_file'] = __FUNCTION__;
         $data['blnMM'] = $stat;
 
-        $data['arrMunicipalityList'] = $this->vcd_municipality_model->findAll();
-        $data['arrDistList'] = $this->district_name_model->findAll();
-        $data['arrVDCList'] = $this->view_vdc_model->findAll();
+        $data['arrMunicipalityList'] = $this->vcd_municipality_model->asObject()->findAll();
+        $data['arrDistList'] = $this->district_name_model->asObject()->findAll();
+        //$data['arrVDCList'] = $this->view_vdc_model->asObject()->findAll();
+        $data['arrVDCList'] = $this->db->query("select `a`.`dist01id` AS `dist01id`,`a`.`dist01name` AS `dist01name`,`a`.`dist01code` AS `dist01code`,`b`.`muni01id`, `b`.`muni01name` from `dist01district` `a` LEFT JOIN `muni01municipality_vcd` `b` ON (`a`.`dist01id` = `b`.`muni01dist01id`) WHERE `muni01name` LIKE '%Ga Pa%' ESCAPE '!' OR `muni01name` LIKE '%Na Pa%' ESCAPE '!' order by muni01name ASC")->getResult();
         return view('\Modules\Reports\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
     }
 
@@ -5127,9 +5159,9 @@ class Reports extends BaseController
         $data['view_file'] = __FUNCTION__;
         $data['blnMM'] = $stat;
 
-        $data['arrMunicipalityList'] = $this->vcd_municipality_model->findAll();
-        $data['arrDistList'] = $this->district_name_model->findAll();
-        $data['arrVDCList'] = $this->view_vdc_model->findAll();
+        $data['arrMunicipalityList'] = $this->vcd_municipality_model->asObject()->findAll();
+        $data['arrDistList'] = $this->district_name_model->asObject()->findAll();
+        $data['arrVDCList'] = $this->view_vdc_model->asObject()->findAll();
         return view('\Modules\Reports\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
     }
 

@@ -65,8 +65,7 @@ class Bridge_type extends BaseController
 
 		if ($this->request->getMethod() == 'post') {
             if ($this->request->getVar('submit') == 'Cancel') {
-                //die("cancel");
-                return redirect()->to('bridge_type/index');
+                redirect('bridge_type');
             }
             //check if the form is submitted or not bri03project_fiscal_year
             $rules = [
@@ -79,37 +78,37 @@ class Bridge_type extends BaseController
                 $data['validation'] = $this->validator;
             } else // passed validation proceed to post success logic
             {
-		 	// build array for the model
-			$form_data = array(
-		       	'bri01id' =>$emp_id,
-					       	'bri01bridge_type_code' => @$this->request->getVar('bri01bridge_type_code'),
-					       	'bri01bridge_type_name' => @$this->request->getVar('bri01bridge_type_name'),
-					       	'bri01description' => @$this->request->getVar('bri01description')
-			);
-					
-			// run insert model to write data to db
-			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
-			{
-				session()->setFlashdata('message', 'Bridge successfully created.');
-                //$session->setFlashdata('message_type','success');
-                return redirect()->to(base_url('bridge_type/index'));
-			}
-			else
-			{
-	       		// Or whatever error handling is necessary
-				session()->setFlashdata('message', 'An error occurred saving your information. Please try again later');
-				session()->setFlashdata('alert-class', 'alert-danger');
-			}
-		}
-		return view('\Modules\bridge_type\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
+    		 	// build array for the model
+    			$form_data = array(
+    		       	'bri01id' =>$emp_id,
+    					       	'bri01bridge_type_code' => @$this->request->getVar('bri01bridge_type_code'),
+    					       	'bri01bridge_type_name' => @$this->request->getVar('bri01bridge_type_name'),
+    					       	'bri01description' => @$this->request->getVar('bri01description')
+    			);
+    					
+    			// run insert model to write data to db
+    			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
+    			{
+    				session()->setFlashdata('message', 'Bridge type successfully created.');
+                    redirect('bridge_type');
+    			}
+    			else
+    			{
+    	       		// Or whatever error handling is necessary
+    				session()->setFlashdata('message', 'An error occurred saving your information. Please try again later');
+    				session()->setFlashdata('alert-class', 'alert-danger');
+    			}
+    		}
+        }
+        return view('\Modules\bridge_type\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
     }
 
     function delete($delete_id)
 	{
-        $this->bridge_type_model->where('bri01id', $delete_id)->delete();
-        $message = 'Selected Data Deleted.';
+        $this->model->where('bri01id', $delete_id)->delete();
+        $message = 'Selected Data Deleted';
         session()->setFlashdata('message', $message);
-        //$session->setFlashdata('message_type','success');
-        return redirect()->to(base_url('bridge_type/index'));
+        $session->setFlashdata('message_type','success');
+        return redirect('bridge_type');
 	}
 }

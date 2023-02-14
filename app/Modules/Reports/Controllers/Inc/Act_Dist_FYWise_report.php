@@ -106,9 +106,9 @@ class Act_Dist_FYWise_report extends BaseController
                 where('bri03project_fiscal_year <=', $dateEnd)->
                 asObject()->
                 findAll();
-            
+            //var_dump($arrBridgeList);exit;
             $arrBridgeIdList = null;
-            if(is_array( $arrBridgeList )){
+            if(!empty($arrBridgeList) && is_array( $arrBridgeList )){
                 foreach ($arrBridgeList as $k2 => $v2)
                 {
                     $arrChild2=null;
@@ -116,17 +116,20 @@ class Act_Dist_FYWise_report extends BaseController
                     $arrPrintList['dist_'.$v2->dist01id]['info']=$v2;
                     $arrPrintList['dist_'.$v2->dist01id]['arrChildList'][] = array('info'=>$v2);
                 }
-            }
-            
-            $arrBridgeCostList = $this->view_bridge_actual_cost->
+                $arrBridgeCostList = $this->view_bridge_actual_cost->
                 whereIn('bri08bridge_no', $arrBridgeIdList)->
                 asObject()->
                 findAll();
-                
-            foreach ($arrBridgeCostList as $x2)
-            {
-                $arrCostList['bri_'.$x2->bri08bridge_no]['id_' . $x2->bri08cmp01id] = $x2;
+                foreach ($arrBridgeCostList as $x2)
+                {
+                    $arrCostList['bri_'.$x2->bri08bridge_no]['id_' . $x2->bri08cmp01id] = $x2;
+                }
+            } else {
+                $arrCostList = '';
             }
+           
+                
+            
                    
             
             $data['arrPrintList'] = $arrPrintList;

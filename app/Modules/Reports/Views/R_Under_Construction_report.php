@@ -26,8 +26,8 @@
 								<div class="col-lg-6"><b><span>District: <?php echo $dataRow['dist']['dist01name'];  ?></span></b></div><div class="col-lg-6"><b><span style="float:right;" >Status as of <?php echo _day(); ?></span></b></div>
                         		<div class="col-lg-6"><b><span>Development Region:&nbsp;</span><span class="bold "> <?php echo $dataRow['dist']['dev01name'];  ?></span></b></div>
 
-								
-								<div class="table-responsive">
+								<!-- <div class="table-responsive"> -->
+								<div>
 									<table class="table table-bordered table-hover">
 										<thead>
 											<tr>
@@ -74,12 +74,12 @@
                          <?php 
                         $i= 1; foreach($dataRow['data'] as $dataRow1){
 							
-							if(isset($tbsu_regional_off->tbis01name)) {
+							if(isset($tbsu_regional_off['tbis01name'])) {
                       // print_r($dataRow1);
                         
                         ?>
 											<!--<tr class="dist_<?php //echo $dataRow['dist']->tbis01name;  ?>">-->
-											<tr class="dist_<?php echo $tbsu_regional_off->tbis01name;  ?>">
+											<tr class="dist_<?php //echo $tbsu_regional_off->tbis01name;  ?>">
                                                <td><?php echo $i; ?></td>
 												<td><?php echo $dataRow1->bri03bridge_no; ?></td>												
 												<td><?php echo $dataRow1->bri03bridge_name; ?></td>
@@ -101,7 +101,7 @@
 												<td><?php echo ($dataRow1->bri05bmc_formation != '0000-00-00')?$dataRow1->bri05bmc_formation:''; ?></td>
 												<td class="Target_date"><?php echo ($dataRow1->bri05bridge_completion_target != '0000-00-00')?$dataRow1->bri05bridge_completion_target:''; ?></td>
 											
-                                                <td class="subStraCalc_dig" data-subt_first= ".dist_<?php echo $tbsu_regional_off->tbis01id;  ?> .Target_date" data-subt_second=".dist_<?php echo $tbsu_regional_off->tbis01name;  ?> .Compl_date" >0</td>                                                											
+                                                <td class="subStraCalc_dig" data-subt_first= ".dist_<?php echo $tbsu_regional_off['tbis01id'];  ?> .Target_date" data-subt_second=".dist_<?php echo $tbsu_regional_off['tbis01name'];  ?> .Compl_date" >0</td>                                                											
 											</tr>
 						<?php $i++; } } ?>    
                                         <tr><td colspan="19">Total Bridge: <?php echo $i-1;?></td></tr>                                                               
@@ -114,11 +114,11 @@
 
 
 
-                                    <div class="col-lg-6"><b><span>Regional Office: <?php echo ($tbsu_regional_off->tbis01name);  ?></span></b></div><div class="col-lg-6"><b><span style="float:right;" >Status as of <?php echo _day(); ?></span></b></div>
+                                    <div class="col-lg-6"><b><span>Regional Office: <?php echo ($tbsu_regional_off['tbis01name']);  ?></span></b></div><div class="col-lg-6"><b><span style="float:right;" >Status as of <?php echo _day(); ?></span></b></div>
 <!--                                    <div class="col-lg-6"><b><span>Development Region:&nbsp;</span><span class="bold "> --><?php ////echo $dataRow['dist']->dev01name;  ?><!--</span></b></div>-->
 
-
-                                    <div class="table-responsive">
+                                    <!-- <div class="table-responsive"> -->
+                                    <div>
                                         <table class="table table-bordered table-hover">
                                             <thead>
                                             <tr>
@@ -177,7 +177,7 @@
                                             <?php
                                              //foreach($dataRow as $dataRow1){
 
-                                                if(isset($tbsu_regional_off->tbis01name)) {
+                                                if(isset($tbsu_regional_off['tbis01name'])) {
                                                     // print_r($dataRow1);
 
                                                     ?>
@@ -204,7 +204,7 @@
                                                         <td><?php echo ($dataRow1->bri05bmc_formation != '0000-00-00')?$dataRow1->bri05bmc_formation:''; ?></td>
                                                         <td class="Target_date"><?php echo ($dataRow1->bri05bridge_completion_target != '0000-00-00')?$dataRow1->bri05bridge_completion_target:''; ?></td>
 
-                                                        <td class="subStraCalc_dig" data-subt_first= ".dist_<?php echo $tbsu_regional_off->tbis01id;  ?> .Target_date" data-subt_second=".dist_<?php echo $tbsu_regional_off->tbis01name;  ?> .Compl_date" >0</td>
+                                                        <td class="subStraCalc_dig" data-subt_first= ".dist_<?php echo $tbsu_regional_off['tbis01id'];  ?> .Target_date" data-subt_second=".dist_<?php echo $tbsu_regional_off['tbis01name'];  ?> .Compl_date" >0</td>
                                                     </tr>
                                                     <?php $i++; } //} ?>
                                 <?php  }}  ?>

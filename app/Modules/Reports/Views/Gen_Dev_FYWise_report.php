@@ -25,7 +25,7 @@
                                                 <th style="width:55px;" rowspan="2" class="center">SN</th>
                                                 <th colspan="4" class="center">Bridge</th>
                                                 <th style="width:150px;" rowspan="2" class="center">River Name</th>
-                                                <th style="width:80px;" rowspan="2" class="center">Palika</th>
+                                                <!-- <th style="width:80px;" rowspan="2" class="center">Palika</th> -->
                                                 <th colspan="2" class="center">Walk Way Deck</th>
                                                 <th rowspan="2">Topo Map sheet Number</th>
                                                 <th colspan="2" class="center">Co-ordinate</th>
@@ -96,7 +96,7 @@
                                                 <td style="width:60px;"><?php echo $dataRow1['info']['bri01bridge_type_name']; ?></td>
                                                 <td style="width:75px;"><?php echo $dataRow1['info']['bri03design']; ?></td>
                                                 <td style="width:150px;"><?php echo $dataRow1['info']['bri03river_name']; ?></td>
-                                                <td><?php echo $major_palika; ?></td>
+                                               <!--  <td><?php //echo $major_palika; ?></td> -->
                                                 <td style="width:120px;"><?php echo $dataRow1['info']['wad01walkway_deck_type_name']; ?></td>
                                                 <td style="width:100px;"><?php echo $dataRow1['info']['wal01walkway_width']; ?></td>
                                                 <td><?php echo $dataRow1['info']['bri03topo_map_no']; ?></td>

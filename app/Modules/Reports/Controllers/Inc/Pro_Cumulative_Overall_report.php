@@ -267,7 +267,7 @@ class Pro_Cumulative_Overall_report extends BaseController
         } else {
 
             $Previous_carry = $this->view_sup03_dist01_bri05_count_carry_previous->where('bri03construction_type', $x)->where('bri05bridge_complete_check !=', 1)
-                ->where('bri03work_category =', WORK_CATEGORY_CARRY)->findAll();
+                ->where('bri03work_category =', WORK_CATEGORY_CARRY)->asObject()->findAll();
 
             $site_assessmen = $this->view_all_views_model->view_sup03_dist01_bri05_count_site_assessment_dist_final($x, $dateStart, $dateEnd);
 
@@ -275,35 +275,35 @@ class Pro_Cumulative_Overall_report extends BaseController
 
             $community_agreement = $this->view_all_views_model->view_sup03_dist01_bri05_count_community_agreement_dist_final($x, $dateStart, $dateEnd);
 
-            $first_constraction_new = $this->view_dist01_bri05_count_first_constraction_fiscalyear->where('bri03construction_type', $x)->where('bri05bridge_complete_check !=', 1)->where('bri03work_category ', WORK_CATEGORY_NEW)->where('bri05first_phase_constrution_check ', '1')->findAll();
+            $first_constraction_new = $this->view_dist01_bri05_count_first_constraction_fiscalyear->where('bri03construction_type', $x)->where('bri05bridge_complete_check !=', 1)->where('bri03work_category ', WORK_CATEGORY_NEW)->where('bri05first_phase_constrution_check ', '1')->asObject()->findAll();
 
-            $first_constraction_carry = $this->view_dist01_bri05_count_first_constraction_fiscalyear->where('bri03construction_type', $x)->where('bri05bridge_complete_check !=', 1)->where('bri03work_category ', WORK_CATEGORY_CARRY)->where('bri05first_phase_constrution_check ', '1')->findAll();
+            $first_constraction_carry = $this->view_dist01_bri05_count_first_constraction_fiscalyear->where('bri03construction_type', $x)->where('bri05bridge_complete_check !=', 1)->where('bri03work_category ', WORK_CATEGORY_CARRY)->where('bri05first_phase_constrution_check ', '1')->asObject()->findAll();
 
             $material_handover_new = $this->view_count_material_handover_fiscalyear->where('bri03construction_type', $x)->where('bri05bridge_complete_check !=', 1)->where('bri03work_category ', WORK_CATEGORY_NEW)->
                 //  where('bri05material_supply_target_check ', '1')->view_dist01_bri05_count_material_handover_fiscalyear();
-                where('bri05material_supply_uc_check', '1')->findAll();
+                where('bri05material_supply_uc_check', '1')->asObject()->findAll();
 
             $material_handover_carry = $this->view_count_material_handover_fiscalyear->where('bri03construction_type', $x)->where('bri05bridge_complete_check !=', 1)->where('bri03work_category ', WORK_CATEGORY_CARRY)->
                 // where('bri05material_supply_target_check ', '1')->view_dist01_bri05_count_material_handover_fiscalyear();
-                where('bri05material_supply_uc_check', '1')->findAll();
+                where('bri05material_supply_uc_check', '1')->asObject()->findAll();
 
             //steel and fabrication
             $steel_parts_new = $this->view_count_steel_parts_fiscalyear->where('bri03construction_type', $x)->where('bri05bridge_complete_check !=', 1)->where('bri03work_category ', WORK_CATEGORY_NEW)->
                 //  where('bri05material_supply_target_check ', '1')->view_dist01_bri05_count_material_handover_fiscalyear();
-                where('bri05material_supply_target_check', '1')->findAll();
+                where('bri05material_supply_target_check', '1')->asObject()->findAll();
 
             $steel_parts_carry = $this->view_count_steel_parts_fiscalyear->where('bri03construction_type', $x)->where('bri05bridge_complete_check !=', 1)->where('bri03work_category ', WORK_CATEGORY_CARRY)->
                 // where('bri05material_supply_target_check ', '1')->view_dist01_bri05_count_material_handover_fiscalyear();
-                where('bri05material_supply_target_check', '1')->findAll();
+                where('bri05material_supply_target_check', '1')->asObject()->findAll();
 
             //cable pulling
             $cable_pulling_new = $this->view_count_cable_pulling_fiscalyear->where('bri03construction_type', $x)->where('bri05bridge_complete_check !=', 1)->where('bri03work_category ', WORK_CATEGORY_NEW)->
                 //  where('bri05material_supply_target_check ', '1')->view_dist01_bri05_count_material_handover_fiscalyear();
-                where('bri05cable_pulling_check', '1')->findAll();
+                where('bri05cable_pulling_check', '1')->asObject()->findAll();
 
             $cable_pulling_carry = $this->view_count_cable_pulling_fiscalyear->where('bri03construction_type', $x)->where('bri05bridge_complete_check !=', 1)->where('bri03work_category ', WORK_CATEGORY_CARRY)->
                 // where('bri05material_supply_target_check ', '1')->view_dist01_bri05_count_material_handover_fiscalyear();
-                where('bri05cable_pulling_check', '1')->findAll();
+                where('bri05cable_pulling_check', '1')->asObject()->findAll();
 
             $bridges_complet_total_new = $this->view_all_views_model->view_dist01_bri05_count_bridge_completion_fiscalyear1($x, $dateStart, $dateEnd, WORK_CATEGORY_NEW, $fstartfy, $fendfy);
 
@@ -315,7 +315,7 @@ class Pro_Cumulative_Overall_report extends BaseController
         $arrDataList = array();
         foreach ($Previous_carry as $k => $v) {
             //$Previous_carry = $this->fiscal_data_model->where()		
-            $arrDataList['sup_' . $v['bri03supporting_agency']]['dist_' . $v['dist01id']]['Previous_carry'] = $v['bri03total_previous_carry_count'];
+            $arrDataList['sup_' . $v->bri03supporting_agency]['dist_' . $v->dist01id]['Previous_carry'] = $v->bri03total_previous_carry_count;
         }
 
         /*foreach ($pipe_line as $k => $v)
@@ -332,17 +332,17 @@ class Pro_Cumulative_Overall_report extends BaseController
             $arrDataList['sup_' . $v->bri03supporting_agency]['dist_' . $v->dist01id]['community_agreement'] = $v->bri05total_community_agreement;
         }
         foreach ($first_constraction_new as $k => $v) {
-            $arrDataList['sup_' . $v['bri03supporting_agency']]['dist_' . $v['dist01id']]['first_constraction_new'] = $v['bri05total_first_phase_count'];
+            $arrDataList['sup_' . $v->bri03supporting_agency]['dist_' . $v->dist01id]['first_constraction_new'] = $v->bri05total_first_phase_count;
         }
         foreach ($first_constraction_carry as $k => $v) {
-            $arrDataList['sup_' . $v['bri03supporting_agency']]['dist_' . $v['dist01id']]['first_constraction_carry'] = $v['bri05total_first_phase_count'];
+            $arrDataList['sup_' . $v->bri03supporting_agency]['dist_' . $v->dist01id]['first_constraction_carry'] = $v->bri05total_first_phase_count;
         }
         foreach ($material_handover_new as $k => $v) {
-            $arrDataList['sup_' . $v['bri03supporting_agency']]['dist_' . $v['dist01id']]['material_new'] = $v['bri05total_material_handover_count'];
+            $arrDataList['sup_' . $v->bri03supporting_agency]['dist_' . $v->dist01id]['material_new'] = $v->bri05total_material_handover_count;
         }
 
         foreach ($material_handover_carry as $k => $v) {
-            $arrDataList['sup_' . $v['bri03supporting_agency']]['dist_' . $v['dist01id']]['material_carry'] = $v['bri05total_material_handover_count'];
+            $arrDataList['sup_' . $v->bri03supporting_agency]['dist_' . $v->dist01id]['material_carry'] = $v->bri05total_material_handover_count;
         }
 
         //foreach ($total_under_Constr as $k => $v)
@@ -357,17 +357,17 @@ class Pro_Cumulative_Overall_report extends BaseController
         }
 
         foreach ($steel_parts_new as $k => $v) {
-            $arrDataList['sup_' . $v['bri03supporting_agency']]['dist_' . $v['dist01id']]['steel_new'] = $v['bri05total_steel_parts_count'];
+            $arrDataList['sup_' . $v->bri03supporting_agency]['dist_' . $v->dist01id]['steel_new'] = $v->bri05total_steel_parts_count;
         }
         foreach ($steel_parts_carry as $k => $v) {
-            $arrDataList['sup_' . $v['bri03supporting_agency']]['dist_' . $v['dist01id']]['steel_carry'] = $v['bri05total_steel_parts_count'];
+            $arrDataList['sup_' . $v->bri03supporting_agency]['dist_' . $v->dist01id]['steel_carry'] = $v->bri05total_steel_parts_count;
         }
 
         foreach ($cable_pulling_new as $k => $v) {
-            $arrDataList['sup_' . $v['bri03supporting_agency']]['dist_' . $v['dist01id']]['cable_pulling_new'] = $v['bri05total_cable_pulling_count'];
+            $arrDataList['sup_' . $v->bri03supporting_agency]['dist_' . $v->dist01id]['cable_pulling_new'] = $v->bri05total_cable_pulling_count;
         }
         foreach ($cable_pulling_carry as $k => $v) {
-            $arrDataList['sup_' . $v['bri03supporting_agency']]['dist_' . $v['dist01id']]['cable_pulling_carry'] = $v['bri05total_cable_pulling_count'];
+            $arrDataList['sup_' . $v->bri03supporting_agency]['dist_' . $v->dist01id]['cable_pulling_carry'] = $v->bri05total_cable_pulling_count;
         }
 
         foreach ($total_underconstruction as $k => $v) {

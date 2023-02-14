@@ -71,18 +71,18 @@ class Gen_Overall_DateWise_report extends BaseController
                                 //foreach( $selDist as $k=>$v){
                                     foreach ($selDist as $v) {
                                     $rr=$v['dist01id'];
-                            if (empty($stat))
-                                {
-                                    $this->view_bridge_detail_model->where('bri03construction_type',
-                                        ENUM_NEW_CONSTRUCTION);
-                                } else
-                                {
-                                    $this->view_bridge_detail_model->where('bri03construction_type',
-                                        ENUM_MAJOR_MAINTENANCE);
-                                }
-                            $this->view_bridge_detail_model->where('bri05bridge_complete >=', $dataStart)->where('bri05bridge_complete <=',$dateEnd );
-                        $this->view_bridge_detail_model->where('bri05bridge_complete_check', 1)->where('bri05bridge_completion_fiscalyear_check', 1);
-                             $dist= $this->view_bridge_detail_model->where('dist01id',$rr)->orderBY('dist01state','ASC')->asObject()->findAll();
+                                    if (empty($stat)) {
+                                      //$this->view_bridge_detail_model->where('bri03construction_type',ENUM_NEW_CONSTRUCTION);
+                                      $construction_type = ENUM_NEW_CONSTRUCTION;
+                                    } else {
+                                      //$this->view_bridge_detail_model->where('bri03construction_type',ENUM_MAJOR_MAINTENANCE);
+                                      $construction_type = ENUM_MAJOR_MAINTENANCE;
+                                    }
+                        //     $this->view_bridge_detail_model->where('bri05bridge_complete >=', $dataStart)->where('bri05bridge_complete <=',$dateEnd );
+                        // $this->view_bridge_detail_model->where('bri05bridge_complete_check', 1)->where('bri05bridge_completion_fiscalyear_check', 1);
+                        //      $dist= $this->view_bridge_detail_model->where('dist01id',$rr)->orderBY('dist01state','ASC')->asObject()->findAll();
+
+                             $dist = $this->view_bridge_detail_model->getbridgesbydate($dataStart, $dateEnd, $rr, $construction_type);
                                     
                                     
                                      if(is_array($dist) && !empty($dist)){

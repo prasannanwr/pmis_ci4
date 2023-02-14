@@ -43,7 +43,7 @@ class UserModel extends Model
     protected $allowCallbacks = true;
     protected $beforeInsert   = ["beforeInsert"];
     protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
+    protected $beforeUpdate   = ["beforeInsert"];
     protected $afterUpdate    = [];
     protected $beforeFind     = [];
     protected $afterFind      = [];

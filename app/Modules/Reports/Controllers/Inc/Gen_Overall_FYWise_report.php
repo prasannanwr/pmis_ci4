@@ -83,39 +83,38 @@ class Gen_Overall_FYWise_report extends BaseController
 
 
             if (empty($stat)) {
-              $this->view_bridge_detail_model->where(
-                'bri03construction_type',
-                ENUM_NEW_CONSTRUCTION
-              );
+              //$this->view_bridge_detail_model->where('bri03construction_type',ENUM_NEW_CONSTRUCTION);
+              $construction_type = ENUM_NEW_CONSTRUCTION;
             } else {
-              $this->view_bridge_detail_model->where(
-                'bri03construction_type',
-                ENUM_MAJOR_MAINTENANCE
-              );
+              //$this->view_bridge_detail_model->where('bri03construction_type',ENUM_MAJOR_MAINTENANCE);
+              $construction_type = ENUM_MAJOR_MAINTENANCE;
             }
             $data['sel_district_filter'] = '';
-            $this->view_bridge_detail_model->where('bri05bridge_completion_fiscalyear >=', $dataStart)->where('bri05bridge_completion_fiscalyear <=', $dateEnd);
-            $this->view_bridge_detail_model->where('bri05bridge_complete_check', 1)->where('bri05bridge_completion_fiscalyear_check', 1);
+
+            // $this->view_bridge_detail_model->where('bri05bridge_completion_fiscalyear >=', $dataStart)->where('bri05bridge_completion_fiscalyear <=', $dateEnd);
+            // $this->view_bridge_detail_model->where('bri05bridge_complete_check', 1)->where('bri05bridge_completion_fiscalyear_check', 1);
 
             if ($this->request->getVar("selFilterByDistrict") != '') {
               $distFilter = $this->request->getVar("selFilterByDistrict");
-              $this->view_bridge_detail_model->where('dist01id', $distFilter);
+              //$this->view_bridge_detail_model->where('dist01id', $distFilter);
               $data['sel_district_filter'] = $distFilter;
             }
-
-
-
             if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
               //comma seperated value
               if (count($arrPermittedDistList) > 0) {
-                $dist = $this->view_bridge_detail_model->whereIn('dist01id', $arrPermittedDistList)->findAll();
+                //$dist = $this->view_bridge_detail_model->whereIn('dist01id', $arrPermittedDistList)->findAll();
+                $distFilter = $arrPermittedDistList;
               } else {
                 //$this->where('dist01id', null);
-                $dist = $this->view_bridge_detail_model->where('dist01id', $rr)->findAll();
+                //$dist = $this->view_bridge_detail_model->where('dist01id', $rr)->findAll();
+                $distFilter = $rr;
               }
             } else {
-              $dist = $this->view_bridge_detail_model->where('dist01id', $rr)->findAll();
+              //$dist = $this->view_bridge_detail_model->where('dist01id', $rr)->findAll();
+              $distFilter = $rr;
             }
+//var_dump($distFilter);exit;
+            $dist = $this->view_bridge_detail_model->getbridges($dataStart, $dateEnd, $distFilter, $construction_type);
             // $dist = $this->view_bridge_detail_model->where('dist01id', $rr)->dbGetList();
             //echo ($this->view_bridge_detail_model->getLastQuery());exit;
 

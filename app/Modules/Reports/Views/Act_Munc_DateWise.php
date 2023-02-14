@@ -16,14 +16,15 @@
                    <div class="col-lg-3 clearfix">
                     </div>
 					<div class="col-lg-5 clearfix">
-                   <form action="<?php echo site_url();?>/reports/Act_Munc_DateWise_report<?php echo (isset($blnMM) && $blnMM)? '/'.MM_CODE: ''; ?>" method="post">
+                   <form action="<?php echo site_url();?>/reports/Act_Munc_DateWise_report<?php echo (isset($blnMM) && $blnMM)? '/'.MM_CODE: ''; ?>" method="get">
                     <div class="form-group clearfix">
                 <label class="col-lg-4 ">District:</label>
                 <div class="col-lg-8 ">
                <?php if(is_array($arrDistList)){ ?>
-                        <select name="selAgency" class="form-control onChangeDist" data-targetvdc="#bri03municipality">
+                        <select name="selDist" class="form-control onChangeDist" data-targetvdc="#bri03municipality">
+                          <option>-Select-</option>
                           <?php foreach($arrDistList as $dataRow){ ?>
-                            <option value="<?php echo $dataRow->dist01id ;?>"><?php echo $dataRow->dist01name; ?></option>
+                            <option value="<?php echo $dataRow['dist01id'] ;?>"><?php echo $dataRow['dist01name']; ?></option>
                             <?php }?>
                         </select>
                         <?php }?>   </div>
@@ -31,12 +32,12 @@
                 <div class="form-group clearfix">
                 <label class="col-lg-4 ">Municipality/Palika:</label>
                 <div class="col-lg-8 ">
-               <?php if(is_array($arrMunicipalityList)){ ?>
+                <?php if(is_array($arrMunicipalityList)){ ?>
                         <select name="bri03municipality" id="bri03municipality" class="form-control">
                           <option>-Select-</option>
-                          <?php foreach($arrMunicipalityList as $dataRow){ ?>
-                            <option value="<?php echo $dataRow->muni01id ;?>"><?php echo $dataRow->muni01name; ?></option>
-                            <?php }?>
+                          <?php /*foreach($arrMunicipalityList as $dataRow){ ?>
+                            <option value="<?php echo $dataRow['muni01id'] ;?>"><?php echo $dataRow['muni01name']; ?></option>
+                            <?php }*/?>
                         </select>
                         <?php } ?>   </div>
                 </div>

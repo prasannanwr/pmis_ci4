@@ -12,18 +12,19 @@
                    <h4>Choose Date</h4>
                 </div>                 
                 <!-- /.row -->
-				<div class="row">
+        <div class="row">
                    <div class="col-lg-3 clearfix">
                     </div>
-					<div class="col-lg-5 clearfix">
-                   <form action="<?php echo site_url();?>/reports/Act_Munc_FYWise_report<?php echo (isset($blnMM) && $blnMM)? '/'.MM_CODE: ''; ?>" method="post">
+          <div class="col-lg-5 clearfix">
+                  <form action="<?php echo site_url();?>/reports/Act_Munc_FYWise_report<?php echo (isset($blnMM) && $blnMM)? '/'.MM_CODE: ''; ?>" method="get">
                     <div class="form-group clearfix">
                 <label class="col-lg-4 ">District:</label>
                 <div class="col-lg-8 ">
                <?php if(is_array($arrDistList)){ ?>
                         <select name="selAgency" class="form-control onChangeDist" data-targetvdc="#bri03municipality">
+                          <option>-Select-</option>
                           <?php foreach($arrDistList as $dataRow){ ?>
-                            <option value="<?php echo $dataRow->dist01id ;?>"><?php echo $dataRow->dist01name; ?></option>
+                            <option value="<?php echo $dataRow['dist01id'] ;?>"><?php echo $dataRow['dist01name']; ?></option>
                             <?php }?>
                         </select>
                         <?php }?>   </div>
@@ -33,14 +34,15 @@
                 <div class="col-lg-8 ">
                <?php if(is_array($arrMunicipalityList)){ ?>
                         <select name="bri03municipality" id="bri03municipality" class="form-control">
-                          <option>-Please Select-</option>
-                          <?php foreach($arrMunicipalityList as $dataRow){ ?>
-                            <option value="<?php echo $dataRow->muni01id ;?>"><?php echo $dataRow->muni01name; ?></option>
-                            <?php }?>
+                          <option>-Select-</option>
+                          <?php /*foreach($arrMunicipalityList as $dataRow){ ?>
+                            <option value="<?php echo $dataRow['muni01id'] ;?>"><?php echo $dataRow['muni01name']; ?></option>
+                            <?php }*/?>
                         </select>
                         <?php } ?>   </div>
                 </div>
-                <div class="form-group clearfix">
+
+               <div class="form-group clearfix">
                    <label class="col-lg-4 ">Start Year:</label>
                    <div class="col-lg-8">
                        <?php if(is_array($arrFYList)){ ?>
@@ -67,6 +69,7 @@
                        <?php }?>
                    </div>
                </div>
+
                 <div class="form-group clearfix">
                 <label class="col-lg-4 ">&nbsp;</label>
                 <div class="col-lg-3 ">
@@ -80,17 +83,17 @@
                   </form>
                     
                         
-					
+          
                        
-					</div>
-					
-				</div>
+          </div>
+          
+        </div>
                 <!-- /.row -->               
                 </div>
                 <!-- /.row -->
 </div>
 <script type="text/javascript">
-$arrMunicipalityList = <?php echo json_encode($arrMunicipalityList);?>;    
+$arrVDCList = <?php echo json_encode($arrVDCList);?>;    
 function popCombo( $strTarget, $arrList, $strBind, $strDisp, $strSel ){
 
   $strRet = '';
@@ -108,9 +111,9 @@ function popCombo( $strTarget, $arrList, $strBind, $strDisp, $strSel ){
 
 function onChangeDistrict($targetObj, $srcSelDist){
 
-  items = $arrMunicipalityList.filter(function(item){
+  items = $arrVDCList.filter(function(item){
 
-    return (item.muni01dist01id == $srcSelDist);
+    return (item.dist01id == $srcSelDist);
 
   });
 
@@ -128,4 +131,4 @@ onChangeDistrict( $target, $(this).val() );
 
 })
 </script>
-<?=$this->endSection();?>
+<?= $this->endSection() ?>

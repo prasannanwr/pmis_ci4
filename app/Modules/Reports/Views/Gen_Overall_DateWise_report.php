@@ -62,26 +62,23 @@
                         //var_dump($dataRow1);
                         
                         ?>                                
-
-
-
                                             <tr>
-                                                <td style="width:55px;"><?php echo $i; ?></td>
-                                                <td style="width:120px;"><?php echo $dataRow1->bri03bridge_no; ?></td>
-                                                <td style="width:120px;"><?php echo $dataRow1->bri03bridge_name; ?></td>
-                                                <td style="width:60px;"><?php echo $dataRow1->bri01bridge_type_name; ?></td>
-                                                <td style="width:75px;"><?php echo $dataRow1->bri03design; ?></td>
-                                                <td style="width:150px;"><?php echo $dataRow1->bri03river_name; ?></td>
-                                                <td style="width:120px;"><?php echo $dataRow1->wad01walkway_deck_type_name; ?></td>
-                                                <td style="width:100px;"><?php echo $dataRow1->wal01walkway_width; ?></td>
-                                                <td><?php echo $dataRow1->bri03topo_map_no; ?></td>
-                                                <td><?php echo $dataRow1->bri03coordinate_north; ?></td>
-                                                <td><?php echo $dataRow1->bri03coordinate_east; ?></td>
-                                                <td><?php echo ($dataRow1->bri03major_vdc == 0? $dataRow1->left_muni01name:$dataRow1->right_muni01name); ?></td>
-                                                <td style="width: 120px;"><?php echo $dataRow1->left_muni01name; ?></td>
-                                                <td style="width: 120px;"><?php echo $dataRow1->right_muni01name; ?></td>
-                                                <td><?php echo $dataRow1->bri05bridge_complete; ?></td>
-                                            </tr>
+                                        <td style="width:55px;"><?php echo $i; ?></td>
+                                        <td style="width:120px;"><?php echo $dataRow1['bri03bridge_no'] ?></td>
+                                        <td style="width:120px;"><?php echo $dataRow1['bri03bridge_name'] ?></td>
+                                        <td style="width:60px;"><?php echo $dataRow1['bri01bridge_type_name'] ?></td>
+                                        <td style="width:75px;"><?php echo $dataRow1['bri03design'] ?></td>
+                                        <td style="width:150px;"><?php echo $dataRow1['bri03river_name'] ?></td>
+                                        <td style="width:120px;"><?php echo $dataRow1['wad01walkway_deck_type_name'] ?></td>
+                                        <td style="width:100px;"><?php echo $dataRow1['wal01walkway_width'] ?></td>
+                                        <td><?php echo $dataRow1['bri03topo_map_no'] ?></td>
+                                        <td><?php echo $dataRow1['bri03coordinate_north'] ?></td>
+                                        <td><?php echo $dataRow1['bri03coordinate_east'] ?></td>
+                                        <td><?php echo ($dataRow1['bri03major_vdc'] == 0? $dataRow1['left_muni01name']:$dataRow1['right_muni01name']); ?></td>
+                                        <td style="width: 120px;"><?php echo $dataRow1['left_muni01name'] ?></td>
+                                        <td style="width: 120px;"><?php echo $dataRow1['right_muni01name'] ?></td>
+                                        <td><?php echo $dataRow1['bri05bridge_complete'] ?></td>
+                                    </tr>
                                             <?php $i++;$j++;} ?>
                                             <tr>
                                                 <td colspan="14"><strong>Total bridge in district: <?php echo $i-1; ?></strong></td>                                               

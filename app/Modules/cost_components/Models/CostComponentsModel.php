@@ -14,7 +14,11 @@ class CostComponentsModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'cmp01component_name',
+        'cmp01description',
+        'cmp01component_id',
+        'cmp01component_status'];
 
     // Dates
     protected $useTimestamps = false;

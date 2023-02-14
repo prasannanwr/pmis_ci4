@@ -14,5 +14,7 @@ $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth']);
 $routes->get('logout', 'User::logout', ['filter' => 'auth']);
 $routes->get('profile', 'User::profile', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'change_password', 'User::change_password', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'edit', 'User::edit', ['filter' => 'auth']);
+	$routes->match(['get', 'post'], 'edit/(:any)', 'User::edit/$1', ['filter' => 'auth']);
 
 });

@@ -144,18 +144,20 @@ class bridge extends BaseController
 		//under revision
 		$data['constypeArr'] = $this->construction_model->findAll();
 
-		$data['countLocal'] = $this->supporting_agencies_model->where('sup01sup_agency_type', ENUM_SUPPORT_LOCAL)->orderBy('sup01index asc')->findAll();
-		$data['countGovt'] = $this->supporting_agencies_model->where('sup01sup_agency_type', ENUM_SUPPORT_GOVERMENT)->orderBy('sup01index asc')->findAll();
-		$data['countOther'] = $this->supporting_agencies_model->where('sup01sup_agency_type', ENUM_SUPPORT_OTHER)->orderBy('sup01index asc')->findAll();
+		$data['countLocal'] = $this->supporting_agencies_model->where('sup01sup_agency_type', ENUM_SUPPORT_LOCAL)->where('sup01_status',1)->orderBy('sup01index asc')->findAll();
+		$data['countGovt'] = $this->supporting_agencies_model->where('sup01sup_agency_type', ENUM_SUPPORT_GOVERMENT)->where('sup01_status',1)->orderBy('sup01index asc')->findAll();
+		$data['countOther'] = $this->supporting_agencies_model->where('sup01sup_agency_type', ENUM_SUPPORT_OTHER)->where('sup01_status',1)->orderBy('sup01index asc')->findAll();
+
+		$data['brianchorage_foundation'] = $this->anchorageFoundations();
 
 		if ($emp_id !== false) {
 			$emp_id = urldecode($emp_id);
-
 			$data['objOldRec'] = $this->bridge_basic_data_model->where('bri03bridge_no', $emp_id)->first();
 			
 			if (empty($data['objOldRec'])) {
 				redirect('/bridge');
 			}
+
 			$data['objbasicRec'] = $this->bridge_technical_data_model->where('bri04bridge_no', $emp_id)->first();
 			$data['objImplementationRec'] = $this->bridge_implementation_process_model->where('bri05bridge_no', $emp_id)->first();
 			$data['objPersonalRec'] = $this->personnel_information_model->where('bri06bridge_no', $emp_id)->first();
@@ -165,6 +167,7 @@ class bridge extends BaseController
 			$data['arrCstCost'] = $this->contribution_agencies_model->getBridgeContribution($data['objOldRec']['bri03bridge_no']);
 			//echo $this->db->getLastQuery();exit;
 
+			$data['brianchorage_foundation'] = $this->anchorageFoundations($data['objOldRec']['bri03bridge_type']);
 
 			$oldmajor_vdc = $data['objOldRec']['bri03major_vdc'];
 			if ($oldmajor_vdc == 1) { //right
@@ -175,12 +178,15 @@ class bridge extends BaseController
 			//echo $oldmajor_municipality;exit;
 			$data['postURL'] .= '/' . $emp_id;
 			//var_dump( $data['arrEstCost'] );
+			$data['arrVDCList'] = $this->db->query("select `a`.`dist01id` AS `dist01id`,`a`.`dist01name` AS `dist01name`,`a`.`dist01zon01id` AS `dist01zon01id`,`a`.`dist01remark` AS `dist01remark`,`a`.`dist01code` AS `dist01code`,`a`.`dist01tbis01id` AS `dist01tbis01id`,`a`.`dist01state` AS `dist01state`, `b`.`muni01id`, `b`.`muni01name` from `dist01district` `a` LEFT JOIN `muni01municipality_vcd` `b` ON (`a`.`dist01id` = `b`.`muni01dist01id`) order by muni01name ASC")->getResult();
+		} else {
+			$data['arrVDCList'] = $this->db->query("select `a`.`dist01id` AS `dist01id`,`a`.`dist01name` AS `dist01name`,`a`.`dist01zon01id` AS `dist01zon01id`,`a`.`dist01remark` AS `dist01remark`,`a`.`dist01code` AS `dist01code`,`a`.`dist01tbis01id` AS `dist01tbis01id`,`a`.`dist01state` AS `dist01state`, `b`.`muni01id`, `b`.`muni01name` from `dist01district` `a` LEFT JOIN `muni01municipality_vcd` `b` ON (`a`.`dist01id` = `b`.`muni01dist01id`) WHERE `muni01name` LIKE '%Ga Pa%' ESCAPE '!' OR `muni01name` LIKE '%Na Pa%' ESCAPE '!' order by muni01name ASC")->getResult();
 		}
 		//Load Helping data For form
-		$data['arrSupList'] = $this->supporting_agencies_model->orderBy('sup01sup_agency_type asc')->orderBy('sup01index asc')->findAll();
-		$data['arrCostCompList'] = $this->cost_components_model->findAll();
+		$data['arrSupList'] = $this->supporting_agencies_model->where('sup01_status',1)->orderBy('sup01sup_agency_type asc')->orderBy('sup01index asc')->findAll();
+		
+		$data['arrCostCompList'] = $this->cost_components_model->where('cmp01component_status', 1)->findAll();
 		//$data['arrVDCList'] = $this->view_vdc_model->orderBy('muni01remark DESC')->orderBy('muni01name ASC')->findAll();
-		$data['arrVDCList'] = $this->db->query("select `a`.`dist01id` AS `dist01id`,`a`.`dist01name` AS `dist01name`,`a`.`dist01zon01id` AS `dist01zon01id`,`a`.`dist01remark` AS `dist01remark`,`a`.`dist01code` AS `dist01code`,`a`.`dist01tbis01id` AS `dist01tbis01id`,`a`.`dist01state` AS `dist01state`, `b`.`muni01id`, `b`.`muni01name` from `dist01district` `a` LEFT JOIN `muni01municipality_vcd` `b` ON (`a`.`dist01id` = `b`.`muni01dist01id`) order by muni01name ASC")->getResult();
 
 		//if post
 		if ($this->request->getMethod() == 'post') {
@@ -209,7 +215,6 @@ class bridge extends BaseController
 
 				if ($this->request->getVar('cmdSubmit') == 'Save' || $this->request->getVar('cmdSubmit') == 'Save and Close') {
 				//	log_message('error', 'inside the save condition');
-
 					//save
 					$bridge_no = @$this->request->getVar('bri03bridge_no');
 					$bridge_id = @$this->request->getVar('bri03id');
@@ -230,13 +235,15 @@ class bridge extends BaseController
 
 
 					if ($blnIsNew) {
+						//die("new");
 						$mVDC = @$this->request->getVar('bri03municipality_rb');
 						if ($enumMajorVDC == MAJOR_LEFT) {
 							$mVDC = @$this->request->getVar('bri03municipality_lb');
 						}
 						$bridge_no = $this->bridge_model->generate_bridge_code($mVDC);
-						//echo $bridge_no;exit;
+						//echo "bno:".$bridge_no;exit;
 					} else {
+						//die("old");
 						$mVDC = @$this->request->getVar('bri03municipality_rb');
 						if ($enumMajorVDC == MAJOR_LEFT) {
 							$mVDC = @$this->request->getVar('bri03municipality_lb');
@@ -343,7 +350,7 @@ class bridge extends BaseController
 						'bri03e_span' => @$this->request->getVar('bri03e_span'),
 
 					);
-					
+					//var_dump($form_data1);exit;
 					//if( (int) $bridge_id <= 0 ){
 					$dist_left =  @$this->request->getVar('bri03district_name_lb');
 					//var_dump( $dist_left );
@@ -511,7 +518,8 @@ class bridge extends BaseController
 						'bri05second_phase_construction_check' => @$this->request->getVar('bri05second_phase_construction_check'),
 						'bri05third_phase_construction_check' => @$this->request->getVar('bri05third_phase_construction_check'),
 						'bri05work_completion_certificate_check' => @$this->request->getVar('bri05work_completion_certificate_check'),
-
+						'bri05bridge_fabrication_contract_check' => @$this->request->getVar('bri05bridge_fabrication_contract_check'),
+						'bri05bridge_fabrication_contract' => @$this->request->getVar('bri05bridge_fabrication_contract')
 					);
 					$this->bridge_implementation_process_model->save($form_data3);
 					//var_dump($form_data3);
@@ -616,27 +624,25 @@ class bridge extends BaseController
 		$data['arrEstCost'] = $this->bridge_est_cost_model->where('bri07bridge_no', $data['objOldRec']->bri03bridge_no)->findAll();
 		$data['arrCstCost'] = $this->contribution_agencies_model->where('bri08bridge_no', $data['objOldRec']->bri03bridge_no)->findAll();
 
-		$data['arrSupList'] = $this->supporting_agencies_model->findAll();
-		$data['arrCostCompList'] = $this->cost_components_model->findAll();
+		$data['arrSupList'] = $this->supporting_agencies_model->where('sup01_status',1)->findAll();
+		$data['arrCostCompList'] = $this->cost_components_model->where('cmp01component_status',1)->findAll();
 		$data['arrVDCList'] = $this->view_vdc_model->findAll();
 
 		return view('\Modules\bridge\Views'. DIRECTORY_SEPARATOR .__FUNCTION__, $data);
 	}
 
 
-	function delete()
+	function delete($delete_id = FALSE)
 	{
-		//var_dump($_GET);
+		//return redirect()->to(base_url('bridge/lists'));exit;
 		if (session()->get('type') == 6) {
 			redirect('bridge/index', 'refresh');
 		}
 		if (session()->get('type') == ENUM_ADMINISTRATOR || session()->get('type') == ENUM_REGIONAL_MANAGER) {
 
-			$delete_id = $this->request->getVar('id');
-
-			$arrdeltable = $this->bridge_model->where('bri03bridge_no', $delete_id)->first();
-
-			$this->bridge_model->where('bri03bridge_no', $arrdeltable->bri03bridge_no)->delete();
+			$arrdeltable = $this->bridge_model->where('bri03bridge_no', $delete_id)->asObject()->first();
+			if($arrdeltable) {
+				$this->bridge_model->where('bri03bridge_no', $arrdeltable->bri03bridge_no)->delete();
 			$this->bridge_technical_data_model->where('bri04bridge_no', $arrdeltable->bri03bridge_no)->delete();
 			$this->bridge_implementation_process_model->where('bri05bridge_no', $arrdeltable->bri03bridge_no)->delete();
 			$this->personnel_information_model->where('bri06bridge_no', $arrdeltable->bri03bridge_no)->delete();
@@ -644,13 +650,15 @@ class bridge extends BaseController
 			$this->contribution_agencies_model->where('bri08bridge_no', $arrdeltable->bri03bridge_no)->delete();
 
 			$message = 'Selected Data Deleted.';
+			session()->setFlashdata('message', $message);
+    				session()->setFlashdata('alert-class', 'alert-danger');
 			// log_query($message);
 			// set_message($message, 'success');
+			}
 
-
-			redirect('bridge');
+			return redirect('bridge/lists');
 		} else {
-			redirect('bridge');
+			return redirect('bridge');
 		}
 	}
 
@@ -767,16 +775,20 @@ class bridge extends BaseController
 
 		$arrPermittedDistList = $this->view_all_join_bridge_table_model->permittedDistrict();
         $blnIsLogged = empty($this->session);
+        //var_dump($arrPermittedDistList);exit;
         //var_dump(session()->get('type'));
         $intUserType = ($blnIsLogged)? session()->get('type'): ENUM_GUEST; 
         if($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR){
             //comma seperated value
             $data = '';
             if( count( $arrPermittedDistList )> 0) {
-                $sql .= " AND `c`.`dist01id` in ($arrPermittedDistList)";
+            	$permittedDistList = implode(',', $arrPermittedDistList);
+            	//var_dump($arrPermittedDistList);exit;
+                $sql .= " AND `a`.`dist01id` in ($permittedDistList)";
             }
         }
 		$sql .=" LIMIT {$start}, {$length}";
+		//echo $sql;exit;
 		$arrDataList = $this->db->query($sql)->getResult();
 
 		$total = $this->view_all_join_bridge_table_model->totalBridges($search, $arrPermittedDistList, $extra_sql);
@@ -922,19 +934,48 @@ class bridge extends BaseController
 		return view('\Modules\bridge\Views'. DIRECTORY_SEPARATOR .__FUNCTION__, $data);
 	}
 
+	function anchorageFoundations($btype = '') {
+			
+		$bridge_anchorage_foundation_model = new bridge_anchorage_foundation_model();
+		// $anchorage_foundation_list = $bridge_anchorage_foundation_model->whereIn('anc01maf_btype', $btype)->asObject()->findAll();
+		if($btype != '') {
+			$bridge_anchorage_foundation_model->where('anc01maf_btype', $btype);
+		}
+		$anchorage_foundation_list = $bridge_anchorage_foundation_model->where('anc01maf_status', 1)->asObject()->findAll();
+		return $anchorage_foundation_list;
+	}
+
 	function getAnchorageFoundations() {
 		//$btype[] = $_POST['btype'];
-		$btype[] = $this->request->getVar('btype');
-		$bridge_anchorage_foundation_model = new bridge_anchorage_foundation_model();
-		$anchorage_foundation_list = $bridge_anchorage_foundation_model->whereIn('anc01maf_btype', $btype)->asObject()->findAll();
-		$str = "<option value='''>-- Please select --</option>";
-		if($anchorage_foundation_list && is_array($anchorage_foundation_list)) {
-			foreach ($anchorage_foundation_list as $value) {
-				$str .= "<option value=".$value->anc01id.">".$value->anc01maf_type_name ."</option>";
+		//$btype[] = $this->request->getVar('btype');
+		$btype = $this->request->getVar('btype');
+		// $anchorage_foundation_list = $bridge_anchorage_foundation_model->whereIn('anc01maf_btype', $btype)->asObject()->findAll();
+		if($btype) {
+			$anchorage_foundation_list = $this->anchorageFoundations($btype);
+			$str = "<option value='''>-- Please select --</option>";
+
+			if($anchorage_foundation_list && is_array($anchorage_foundation_list)) {
+				// if($btype == 16) {
+				// 	$str .='<optgroup label = "Main Anchorage Block">';
+				// }
+				// if($btype == 20) {
+				// 	$str .='<optgroup label = "Main Anchorage Foundation">';
+				// }
+				foreach ($anchorage_foundation_list as $value) {
+					if($value->anc01maf_type_parent != '') {
+						$str .= '<optgroup label = "'.$value->anc01maf_type_name.'">';
+					} else {
+						$str .= '<option value="'.$value->anc01id.'">'.$value->anc01maf_type_name .'</option>';
+					}
+				}
+				return $str;
+			} else {
+				return false;
 			}
-			return $str;
+
 		} else {
-			return false;
+				return false;
 		}
+		
 	}
 }

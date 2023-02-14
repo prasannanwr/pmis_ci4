@@ -166,6 +166,87 @@ class User extends BaseController
         return view('\Modules\User\Views\register', $data);
     }
 
+    public function edit($id = '')
+    {
+        $data = [];
+        $db = \Config\Database::connect();
+        //$data['arrDist'] = $this->objDist->findAll();
+        //$data['arrRights'] = array(1=>'Guest', 2=>'Editor', 3=>'Admin', 4=>'Manager', 5=>'Super Admin');
+        $data['arrRights'] = array(6=>'Guest', 4=>'Central Operator', 5=>'Regional Operator', 1=>'Admin', 2=>'Central Manager', 3=>'Regional Manager', 1=>'Super Admin');
+        $data['arrData'] = '';
+        $data['arrPalika'] = '';
+
+        if( $id != '')
+        {
+            $arrData = $this->model->where('id',$id)->first();
+            $data['arrData'] = $arrData;
+            // $arrData['palikaList'] = explode(',', $arrData['palika_id']);
+            // $data['arrPalika'] = $this->getPalikaList($arrData['dist_id']);
+            // $arrData['distList'] = explode(',', $arrData['dist_id']);
+            //$arrData['distList'] = $this->sel_district_model->where('user02userid', $id)->findAll();
+            $sql = "select a.*,b.`dist01id`,b.`dist01name` from `user02sel_dist` a LEFT JOIN `dist01district` b ON (a.`user02dist01id`= b.`dist01id`) WHERE a.`user02userid` = '$id'";
+            
+            $query = $db->query($sql);
+            $data['distList'] = $query->getResult();
+
+            if ($this->request->getMethod() == 'post') {
+                if ($this->request->getPost('submit') == 'Cancel') {
+                    //echo site_url('user/user_management');
+                    return redirect()->to(site_url('user/list'));
+                }
+                //let's do the validation here
+                $rules = [
+                    'name' => 'required|min_length[3]|max_length[20]',
+                    'email' => 'required|min_length[6]|max_length[50]|valid_email|is_unique[tbl_users.email]',
+                ];
+
+                if (!$this->validate($rules)) {
+                    $data['validation'] = $this->validator;
+                    return view('\Modules\User\Views\edit', $data);
+                } else {
+                    //$model = new UserModel();
+                    //
+                    // $arrDist = $this->request->getVar('district');
+                    // $arrDist = is_array( $arrDist )? implode(',', $arrDist): $arrDist;
+
+                    // $arrPalika = $this->request->getVar('palika');
+                    // $arrPalika = is_array( $arrPalika )? implode(',', $arrPalika): $arrPalika;
+
+                    if( $id != '')
+                    {
+                        $data = [
+                            'id' => $id,
+                            'name' => $this->request->getVar('name'),
+                            'username' => $this->request->getVar('email'),
+                            'email' => $this->request->getVar('email'),
+                            'user_rights' => $this->request->getVar('type'),
+                            //'dist_id' => $this->request->getVar('district_auth')
+                            // 'palika_id' => $arrPalika,
+                        ];
+                    } 
+                    //var_dump($newData);exit;
+                    $this->model->save($data);
+                    //$newid = $this->model->getInsertID();
+      
+                    $arrDist = $this->request->getVar('district_auth' );
+                    if(isset($arrDist)){
+                        foreach($arrDist as $k => $v ){
+                            $this->sel_district_model->insert(array('user02dist01id'=>$v, 'user02userid'=> $id));
+                        }
+                        //die;
+                    }
+                    $session = session();
+                    $session->setFlashdata('message', 'New User added successfully');
+                    //$session->setFlashdata('message_type','success');
+                    return redirect()->to(base_url('user/list'));
+                }
+            }
+            return view('\Modules\User\Views\edit', $data);
+        }else {
+            return redirect()->to(base_url('user/list'));
+        } 
+    }
+
     public function profile()
     {
 
@@ -178,7 +259,7 @@ class User extends BaseController
 
     public function change_password()
     {
-
+        $session = session();
         $data = [];
         $data['user'] = $this->model->where('id', session()->get('user_id'))->first();
 
@@ -225,11 +306,22 @@ class User extends BaseController
 			$data['validation'] = $this->validator;
 			return view('\Modules\user\list'. DIRECTORY_SEPARATOR .__FUNCTION__, $data);
 		} else {
-            
+            if($this->request->getVar('new') != $this->request->getVar('new_confirm')) {
+                
+                $session->setFlashdata('message', 'Password mismatch');
+                //return redirect()->to('user/change_password');
+            }
+                    $newData = [
+                        'id' => $data['user']['id'],
+                        'password' => $this->request->getVar('new')
+                    ];
+                
+                //var_dump($newData);exit;
+                $this->model->save($newData);
+                $session->setFlashdata('message', 'Password updated successfully');
+                return redirect()->to('user/change_password');
         }
     }
-
-        
         return view('\Modules\User\Views\change_password', $data);
     }
 

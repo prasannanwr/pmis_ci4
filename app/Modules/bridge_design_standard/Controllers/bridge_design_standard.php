@@ -64,45 +64,48 @@ class Bridge_Design_Standard extends BaseController
         }
 
 		if ($this->request->getMethod() == 'post') {
+
             if ($this->request->getVar('submit') == 'Cancel') {
                 //die("cancel");
                 return redirect()->to('bridge_design_standard/index');
             }
             //check if the form is submitted or not bri03project_fiscal_year
             $rules = [
-                'bri01bridge_design_standard_code' => 'required|max_length[4]',
-                'bri01bridge_design_standard_name' => 'required|max_length[40]',
-				'bri01description' => 'max_length[100]'
+                'bri02bds_type_code' => 'required|max_length[4]',
+                'bri02bds_type_name' => 'required|max_length[40]',
+				'bri02description' => 'max_length[100]'
             ];
 
             if (!$this->validate($rules)) {
                 $data['validation'] = $this->validator;
             } else // passed validation proceed to post success logic
             {
-		 	// build array for the model
-			$form_data = array(
-		       	'bri01id' =>$emp_id,
-					       	'bri01bridge_design_standard_code' => @$this->request->getVar('bri01bridge_design_standard_code'),
-					       	'bri01bridge_design_standard_name' => @$this->request->getVar('bri01bridge_design_standard_name'),
-					       	'bri01description' => @$this->request->getVar('bri01description')
-			);
-					
-			// run insert model to write data to db
-			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
-			{
-				session()->setFlashdata('message', 'Successfully created.');
-                //$session->setFlashdata('message_type','success');
-                return redirect()->to(base_url('bridge_design_standard/index'));
-			}
-			else
-			{
-    			//echo 'An error occurred saving your information. Please try again later';
-	       		// Or whatever error handling is necessary
-				   session()->setFlashdata('message', 'An error occurred saving your information. Please try again later');
-				   session()->setFlashdata('alert-class', 'alert-danger');
-				   return redirect()->to(base_url('bridge_design_standard/index'));
-			}
-		}
+    		 	// build array for the model
+    			$form_data = array(
+    		       	'bri01id' =>$emp_id,
+    		       	'bri02bds_type_code' => @$this->request->getVar('bri02bds_type_code'),
+    		       	'bri02bds_type_name' => @$this->request->getVar('bri02bds_type_name'),
+    		       	'bri02description' => @$this->request->getVar('bri02description')
+    			);
+    					
+    			// run insert model to write data to db
+    			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
+    			{
+    				session()->setFlashdata('message', 'Successfully created.');
+                    //$session->setFlashdata('message_type','success');
+                    return redirect()->to(base_url('bridge_design_standard/index'));
+    			}
+    			else
+    			{
+        			//echo 'An error occurred saving your information. Please try again later';
+    	       		// Or whatever error handling is necessary
+    				   session()->setFlashdata('message', 'An error occurred saving your information. Please try again later');
+    				   session()->setFlashdata('alert-class', 'alert-danger');
+    				   return redirect()->to(base_url('bridge_design_standard/index'));
+    			}
+    		}
+        }
+        return view('\Modules\bridge_design_standard\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
     }
 
 

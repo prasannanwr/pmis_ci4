@@ -13,9 +13,6 @@ class Cost_Components extends BaseController
 
 	function __construct()
 	{
-		if (!$this->ion_auth->logged_in()) {
-			redirect('auth/login', 'refresh');
-		}
 		if (count(self::$arrDefData) <= 0) {
 
 			$FName = basename(__FILE__, '.php');
@@ -27,7 +24,7 @@ class Cost_Components extends BaseController
 				'view_file'     => 'index',
 			);
 		}
-
+		helper(['form', 'html', 'et_helper']);
 		$model = new CostComponentsModel();
 		$this->model = $model;
 	}
@@ -36,7 +33,7 @@ class Cost_Components extends BaseController
 	{
 		$data = self::$arrDefData;
 		$data['view_file'] = __FUNCTION__;
-		$data['arrDataList'] = $this->model->findAll();
+		$data['arrDataList'] = $this->model->asObject()->findAll();
 		return view('\Modules\cost_components\Views'. DIRECTORY_SEPARATOR .__FUNCTION__, $data);
 	}
 
@@ -49,9 +46,9 @@ class Cost_Components extends BaseController
 		$data['title'] = 'Add Cost Components';
 		$data['view_file'] = __FUNCTION__;
 		$data['objOldRec'] = '';
-		$data['postURL'] = self::$fName . "/create";
+		$data['postURL'] = "cost_components/create";
 		if ($emp_id !== false) {
-			$data['objOldRec'] = $this->model->where('cmp01id', $emp_id)->dbGetRecord();
+			$data['objOldRec'] = $this->model->where('cmp01id', $emp_id)->first();
 			$data['postURL'] .= '/' . $emp_id;
 		}
 
@@ -71,39 +68,37 @@ class Cost_Components extends BaseController
                 $data['validation'] = $this->validator;
             } else // passed validation proceed to post success logic
             {
+				// build array for the model
 
-			// build array for the model
+				$form_data = array(
 
-			$form_data = array(
+					'cmp01id' => $emp_id,
 
-				'cmp01id' => $emp_id,
+					'cmp01component_id' => @$this->request->getVar('cmp01component_id'),
 
-				'cmp01component_id' => @$this->input->post('cmp01component_id'),
+					'cmp01component_name' => @$this->request->getVar('cmp01component_name'),
 
-				'cmp01component_name' => @$this->input->post('cmp01component_name'),
+					'cmp01description' => @$this->request->getVar('cmp01description'),
 
-				'cmp01description' => @$this->input->post('cmp01description'),
+				);
 
-			);
+				// run insert model to write data to db
+				if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
+				{
+					session()->setFlashdata('message', 'Successfully created.');
+	                //$session->setFlashdata('message_type','success');
+	                return redirect()->to(base_url('cost_components/index'));
+				} else {
+					// Or whatever error handling is necessary
+					session()->setFlashdata('message', 'An error occurred saving your information. Please try again later');
+	                //$session->setFlashdata('message_type','success');
+	                return redirect()->to(base_url('cost_components/index'));
 
-			// run insert model to write data to db
-			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
-			{
-				session()->setFlashdata('message', 'Successfully created.');
-                //$session->setFlashdata('message_type','success');
-                return redirect()->to(base_url('cost_components/index'));
-			} else {
-				// Or whatever error handling is necessary
-				session()->setFlashdata('message', 'An error occurred saving your information. Please try again later');
-                //$session->setFlashdata('message_type','success');
-                return redirect()->to(base_url('cost_components/index'));
-
+				}
 			}
 		}
 		return view('\Modules\cost_components\Views'. DIRECTORY_SEPARATOR .__FUNCTION__, $data);
 	}
-
-
 
 	function delete($delete_id)
 	{

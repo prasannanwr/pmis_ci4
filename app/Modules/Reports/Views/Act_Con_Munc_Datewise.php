@@ -15,12 +15,13 @@
                    <div class="col-lg-3 clearfix">
                     </div>
 					<div class="col-lg-5 clearfix">
-                   <form action="<?php echo site_url();?>/reports/Act_Con_Munc_Datewise_report" method="post"> 
+                   <form action="<?php echo site_url();?>/reports/Act_Con_Munc_Datewise_report" method="get"> 
                     <div class="form-group clearfix">
                 <label class="col-lg-4 ">District:</label>
                 <div class="col-lg-8 ">
                <?php if(is_array($arrDistList)){ ?>
                         <select name="selAgency" class="form-control onChangeDist" data-targetvdc="#bri03municipality">
+                          <option>-Select-</option>
                           <?php foreach($arrDistList as $dataRow){ ?>
                             <option value="<?php echo $dataRow->dist01id ;?>"><?php echo $dataRow->dist01name; ?></option>
                             <?php }?>
@@ -33,9 +34,9 @@
                <?php if(is_array($arrMunicipalityList)){ ?>
                         <select name="bri03municipality" id="bri03municipality" class="form-control">
                           <option>-Select-</option>
-                          <?php foreach($arrMunicipalityList as $dataRow){ ?>
+                          <?php /*foreach($arrMunicipalityList as $dataRow){ ?>
                             <option value="<?php echo $dataRow->muni01id ;?>"><?php echo $dataRow->muni01name; ?></option>
-                            <?php }?>
+                            <?php }*/?>
                         </select>
                         <?php } ?>   </div>
                 </div>

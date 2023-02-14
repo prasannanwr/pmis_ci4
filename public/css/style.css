@@ -17,6 +17,16 @@ body{
 }
 
 .clear{clear:both;}
+/* login box */
+.login-box {
+    border-radius: 22px;
+}
+.btn-login {
+    margin-top: 15px;
+}
+.login-input {
+    margin-bottom: 15px;
+}
 .login-form{
     background: #d6d6d6;
     margin-top: 90px;
@@ -59,6 +69,11 @@ float: left;
 
 .login-section {
     min-height:700px!important;
+    padding: 30px;
+    margin-top: 100px;
+}
+.card-body {
+    padding: 30px;
 }
 /*dashboard*/
 
@@ -445,7 +460,8 @@ color:#fff!important;
   background: black;
   color: white;
   padding: 15px;
-  position: relative;
+  /* position: fixed; */
+  bottom: 0;
   clear:both;
 }
 /*}*/

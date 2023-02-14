@@ -45,7 +45,7 @@
                                     <td><?php echo $dataRow['username']; ?></td>
                                     <!-- <td <?php //echo $dataRow['status']; ?>></td> -->
                                     <td><?php echo $arrRights[$dataRow['user_rights']]; ?></td>
-                                    <td><a href="<?= site_url('user/register/'); ?><?= $dataRow['id']; ?>">Edit</a></td>
+                                    <td><a href="<?= site_url('user/edit/'); ?><?= $dataRow['id']; ?>">Edit</a></td>
                                 </tr>
                         <?php endforeach;
                         } ?>

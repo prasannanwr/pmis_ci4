@@ -1,4 +1,4 @@
-<?= $this->extend("\Modules\Template\Views\my_template") ?>
+//bvm,,jlkiu<?= $this->extend("\Modules\Template\Views\my_template") ?>
 <?= $this->section("body") ?>
 <div id="page-wrapper" class="largeRpt">
 
@@ -102,5 +102,4 @@
 
     })
 </script>
-            
-            
+<?= $this->endSection() ?>

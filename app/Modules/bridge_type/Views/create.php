@@ -1,4 +1,6 @@
-    <div class="container-fluid">
+<?= $this->extend("\Modules\Template\Views\my_template") ?>
+<?= $this->section("body") ?>
+<div class="container-fluid">
 		<div class="panel panel-default">
 			<div class="AddEdit-form ">
 				<div class="panel-heading">
@@ -17,8 +19,7 @@
 							Bridge Type Code:
 						</label>
 						<div class="col-sm-6">
-                            <input id="bri01bridge_type_code" class="form-control" type="text" name="bri01bridge_type_code" maxlength="5" value="<?php echo et_setFormVal('bri01bridge_type_code', $objOldRec); ?>"  />
-                            <?php echo form_error('bri01bridge_type_code'); ?>
+                            <input id="bri01bridge_type_code" class="form-control" type="text" name="bri01bridge_type_code" maxlength="5" value="<?php echo et_setFormValBlank('bri01bridge_type_code', $objOldRec); ?>"  />
 						</div>
 					</div>
 					<div class="form-group">
@@ -26,8 +27,7 @@
 						  Bridge Name:
 						</label>
 						<div class="col-sm-6">
-                            <input id="bri01bridge_type_name" class="form-control" type="text" name="bri01bridge_type_name" maxlength="40" value="<?php echo et_setFormVal('bri01bridge_type_name', $objOldRec); ?>"  />
-                            <?php echo form_error('bri01bridge_type_name'); ?>
+                            <input id="bri01bridge_type_name" class="form-control" type="text" name="bri01bridge_type_name" maxlength="40" value="<?php echo et_setFormValBlank('bri01bridge_type_name', $objOldRec); ?>"  />
 						</div>
 					</div>
 					
@@ -36,8 +36,7 @@
 							Description:
 						</label>
 						<div class="col-sm-6">
-                            <textarea id="bri01description" class="form-control" type="text" name="bri01description" maxlength="100"><?php echo et_setFormVal('bri01description', $objOldRec); ?></textarea>
-                            <?php echo form_error('bri01description'); ?>
+                            <textarea id="bri01description" class="form-control" type="text" name="bri01description" maxlength="100"><?php echo et_setFormValBlank('bri01description', $objOldRec); ?></textarea>
 						</div>
 					</div>
 					<div class="form-group">
@@ -101,3 +100,4 @@ $(document).ready(function()
             });
       });
 </script>
+<?= $this->endSection() ?>

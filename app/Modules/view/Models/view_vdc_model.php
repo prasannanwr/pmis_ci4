@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class view_vdc_model extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'view_vdc';
+    protected $table            = 'view_vdc_opt';
     protected $primaryKey       = 'bri03id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;

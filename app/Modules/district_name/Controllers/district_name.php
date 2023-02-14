@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Modules\bridge_type\Controllers;
+namespace App\Modules\district_name\Controllers;
 
 use App\Controllers\BaseController;
-use App\Modules\bridge_type\Models\bridge_type_model;
 use App\Modules\district_name\Models\district_name_model;
 use App\Modules\view\Models\view_district_model;
 
@@ -49,7 +48,7 @@ class District_name extends BaseController
         $data['objOldRec'] ='';
         $data['postURL'] = self::$fName."/create";
         if( $emp_id !== false){
-            $data['objOldRec'] = $this->model->where('dist01id', $emp_id)->dbGetRecord();
+            $data['objOldRec'] = $this->model->where('dist01id', $emp_id)->first();
             $data['postURL'] .= '/'.$emp_id;
         }
 
@@ -70,44 +69,45 @@ class District_name extends BaseController
             if (!$this->validate($rules)) {
                 $data['validation'] = $this->validator;
             } else
-		{
-		 	// build array for the model
-					
-			if($emp_id != '') {
-				$form_data = array(
-					'dist01id' => $emp_id,
-					'dist01name' => @$this->request->getVar('dist01name'),
-					'dist01zon01id' => @$this->request->getVar('dist01zon01id'),
-					'dist01remark' => @$this->request->getVar('dist01remark'),
-					'dist01code' => @$this->request->getVar('dist01code'),
-					'dist01tbis01id' => @$this->request->getVar('dist01tbis01id'),
-					'dist01state' => @$this->request->getVar('province_id')
-				);
-				//print_r($form_data);exit;
-			} else {
-				 $form_data = array(
-					'dist01name' => @$this->request->getVar('dist01name'),
-					'dist01zon01id' => @$this->request->getVar('dist01zon01id'),
-					'dist01remark' => @$this->request->getVar('dist01remark'),
-					'dist01code' => @$this->request->getVar('dist01code'),
-					'dist01tbis01id' => @$this->request->getVar('dist01tbis01id'),
-					'dist01state' => @$this->request->getVar('province_id')
-				);			
-			}
-			// run insert model to write data to db
-            //var_dump( $this->model );
-			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
-			{
-    			session()->setFlashdata('message', 'Successfully updated');
-    			redirect(self::$fName, 'refresh');
-			}
-			else
-			{
-    			session()->setFlashdata('alert-class', 'alert-danger');
-				session()->setFlashdata('message', 'Error processing your request.');
-			}
-		}
-		return view('\Modules\district_name\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
+    		{
+    		 	// build array for the model
+    					
+    			if($emp_id != '') {
+    				$form_data = array(
+    					'dist01id' => $emp_id,
+    					'dist01name' => @$this->request->getVar('dist01name'),
+    					'dist01zon01id' => @$this->request->getVar('dist01zon01id'),
+    					'dist01remark' => @$this->request->getVar('dist01remark'),
+    					'dist01code' => @$this->request->getVar('dist01code'),
+    					'dist01tbis01id' => @$this->request->getVar('dist01tbis01id'),
+    					'dist01state' => @$this->request->getVar('province_id')
+    				);
+    				//print_r($form_data);exit;
+    			} else {
+    				 $form_data = array(
+    					'dist01name' => @$this->request->getVar('dist01name'),
+    					'dist01zon01id' => @$this->request->getVar('dist01zon01id'),
+    					'dist01remark' => @$this->request->getVar('dist01remark'),
+    					'dist01code' => @$this->request->getVar('dist01code'),
+    					'dist01tbis01id' => @$this->request->getVar('dist01tbis01id'),
+    					'dist01state' => @$this->request->getVar('province_id')
+    				);			
+    			}
+    			// run insert model to write data to db
+                //var_dump( $this->model );
+    			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
+    			{
+        			session()->setFlashdata('message', 'Successfully updated');
+        			redirect(self::$fName, 'refresh');
+    			}
+    			else
+    			{
+        			session()->setFlashdata('alert-class', 'alert-danger');
+    				session()->setFlashdata('message', 'Error processing your request.');
+    			}
+    		}
+        }
+        return view('\Modules\district_name\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
         
     }
 
@@ -115,11 +115,10 @@ class District_name extends BaseController
         //todo: check login, security
         //var_dump( $_GET);
         //var_dump( $_POST);
-		$length = $this->input->get('length'); 
-        $start = $this->input->get('start');
-        $search=$this->input->get('search');
+		$length = @$this->request->getVar('length'); 
+        $start = @$this->request->getVar('start');
+        $search= @$this->request->getVar('search');
         
-        $this->load->model('view/view_district_model');
         //todo: count total records and put the no here
         $total = count($this->view_district_model->findAll());
         
@@ -127,8 +126,8 @@ class District_name extends BaseController
 		if($search['value']!==''){
              $this->view_district_model->like('dist01name',$search['value']);
         }
-        $arrDataList = $this->view_district_model->findAll();
-        $output['draw']=$this->input->get('draw');
+        $arrDataList = $this->view_district_model->asObject()->findAll();
+        $output['draw']=@$this->request->getVar('draw');;
         $output['recordsTotal']=$total;
         $output['recordsFiltered']=$total;
         $output['data']=$arrDataList;

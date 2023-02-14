@@ -75,22 +75,26 @@ class Gen_Dev_DateWise_report extends BaseController
                             
                             foreach( $arrDistList as $k1=>$v1){
                                 $arrChild1=null;
+                                $ctype = ENUM_NEW_CONSTRUCTION;
                                  if (empty($stat))
                                     {
                                         $this->view_brigde_detail_model->where('bri03construction_type',
                                             ENUM_NEW_CONSTRUCTION);
+                                        $ctype = ENUM_NEW_CONSTRUCTION;
                                     } else
                                     {
                                         $this->view_brigde_detail_model->where('bri03construction_type',
                                             ENUM_MAJOR_MAINTENANCE);
+                                        $ctype = ENUM_MAJOR_MAINTENANCE;
                                     }
-                            $this->view_brigde_detail_model->where('bri05bridge_complete_check', 1)->where('bri05bridge_completion_fiscalyear_check', 1);
-                                $arrBridgeList = $this->view_brigde_detail_model->
-                                    where('bri05bridge_complete >=', $dataStart)->
-                                    where('bri05bridge_complete <=', $dateEnd)->
-                                    where('dist01id', $v1->dist01id)->
-                                    asObject()->
-                                    findAll();
+                            //$this->view_brigde_detail_model->where('bri05bridge_complete_check', 1)->where('bri05bridge_completion_fiscalyear_check', 1);
+                                // $arrBridgeList = $this->view_brigde_detail_model->
+                                //     where('bri05bridge_complete >=', $dataStart)->
+                                //     where('bri05bridge_complete <=', $dateEnd)->
+                                //     where('dist01id', $v1->dist01id)->
+                                //     asObject()->
+                                //     findAll();
+                                $arrBridgeList = $this->view_brigde_detail_model->getbridgesbydate($dataStart, $dateEnd, $v1->dist01id, $ctype);
                                 
                                 foreach ($arrBridgeList as $k2 => $v2)
                                 {

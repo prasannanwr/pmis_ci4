@@ -45,5 +45,4 @@
                 <!-- /.row -->
 
             </div>
-            
-            
+<?= $this->endSection() ?>

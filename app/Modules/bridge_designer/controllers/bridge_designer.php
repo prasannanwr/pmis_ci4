@@ -1,42 +1,36 @@
 <?php
-class Bridge_Designer extends MX_Controller {
-	private $custom_errors = array();
+namespace App\Modules\bridge_designer\Controllers;
+
+use App\Controllers\BaseController;
+use App\Modules\bridge_designer\Models\bridge_designer_model;
+
+class Bridge_Designer extends BaseController
+{
     private static $arrDefData = array();
-    private static $fName = '';
+    protected $model;
     
 	function __construct()
 	{
-		if ( ! $this->ion_auth->logged_in())
-		{
-			redirect('auth/login', 'refresh');
-		}
-        if(count(self::$arrDefData)<=0){
+        helper(['form', 'html', 'et_helper']);
+        if (count(self::$arrDefData) <= 0) {
             $FName = basename(__FILE__, '.php');
-           
-            self::$fName = strtolower($FName);
+            $fName = strtolower($FName);
             self::$arrDefData = array(
-                'title'         => $FName, 
-                'breadcrumb'    => array(array('text' => $FName, 'link' => self::$fName)),
-            	'module'        => self::$fName,
-            	'view_file'     => 'index',
+                'title'         => $FName,
+                'breadcrumb'    => array(array('text' => $FName, 'link' => $fName)),
+                'module'        => $fName,
+                'view_file'     => 'index',
             );
         }
-        parent::__construct();
-        $this->load->module('template');
-        $this->load->library('form_validation');
-        $this->load->database();
-        $this->load->helper('form');
-        $this->load->helper('url');
-        $clName = get_class($this) . '_model';
-        $this->load->model( $clName );
-        $this->model = $this->{$clName};
+        $model = new bridge_designer_model();
+        $this->model = $model;
 	}
 	function index()
 	{
  //var_dump( $this->model );
         $data = self::$arrDefData;
-        $data['arrDataList']= $this->model->dbGetList();
-        $this->template->my_template($data);
+        $data['arrDataList']= $this->model->asObject()->findAll();
+        return view('\Modules\bridge_designer\Views'. DIRECTORY_SEPARATOR .__FUNCTION__, $data);
 	}
 	
     function create($emp_id = FALSE){
@@ -46,67 +40,64 @@ class Bridge_Designer extends MX_Controller {
         $data['view_file'] = __FUNCTION__;
 
         $data['objOldRec'] ='';
-        $data['postURL'] = self::$fName."/create";
+        $data['postURL'] = "bridge_designer/create";
         if( $emp_id !== false){
             $data['objOldRec'] = $this->model->where('bdr01id',$emp_id )->dbGetRecord();
             $data['postURL'] .= '/'.$emp_id;
             //var_dump($data['postURL']);
         }
-
-            $this->form_validation->set_rules('bdr01designer_id', 'bdr01designer_id', 'max_length[5]');			
-    		$this->form_validation->set_rules('bdr01designer_name', 'bdr01designer_name', 'max_length[30]');			
-    		$this->form_validation->set_rules('bdr01birth_date', 'bdr01birth_date', 'max_length[30]');			
-    		$this->form_validation->set_rules('bdr01address', 'bdr01address', 'max_length[30]');			
-    		$this->form_validation->set_rules('bdr01agency_id', 'bdr01agency_id', 'max_length[5]');			
-    		$this->form_validation->set_rules('bdr01description', 'bdr01description', 'max_length[100]');			
 			
-		$this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
-	
-		if ($this->form_validation->run() == FALSE) // validation hasn't been passed
-		{
-            $this->template->my_template($data);
-		}
-		else // passed validation proceed to post success logic
+        $rules = [
+                'bdr01designer_name' => 'required|max_length[30]',
+                'bdr01address' => 'required|max_length[40]'
+            ];
+
+		if (!$this->validate($rules)) {
+                $data['validation'] = $this->validator;
+		} else // passed validation proceed to post success logic
 		{
 		 	// build array for the model
 			$form_data = array(
 		       	'bdr01id' => $emp_id,
-					       	'bdr01designer_id' => @$this->input->post('bdr01designer_id'),
-					       	'bdr01designer_name' => @$this->input->post('bdr01designer_name'),
-					       	'bdr01birth_date' => @$this->input->post('bdr01birth_date'),
-					       	'bdr01address' => @$this->input->post('bdr01address'),
-					       	'bdr01agency_id' => @$this->input->post('bdr01agency_id'),
-					       	'bdr01description' => @$this->input->post('bdr01description')
+					       	'bdr01designer_id' => @$this->request->getVar('bdr01designer_id'),
+					       	'bdr01designer_name' => @$this->request->getVar('bdr01designer_name'),
+					       	'bdr01birth_date' => @$this->request->getVar('bdr01birth_date'),
+					       	'bdr01address' => @$this->request->getVar('bdr01address'),
+					       	'bdr01agency_id' => @$this->request->getVar('bdr01agency_id'),
+					       	'bdr01description' => @$this->request->getVar('bdr01description')
   			);
 					
 			// run insert model to write data to db
             //var_dump( $this->model );
-			if ($this->model->dbSave($form_data) == TRUE) // the information has therefore been successfully saved in the db
+			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
 			{
-    			set_message('Bridge Designer  successfully created.', 'success');
-    			redirect(self::$fName, 'refresh');
+                session()->setFlashdata('message', 'Successfully created.');
+                //$session->setFlashdata('message_type','success');
+                return redirect()->to(base_url('bridge_designer/index'));
 			}
 			else
 			{
-    			echo 'An error occurred saving your information. Please try again later';
 	       		// Or whatever error handling is necessary
+                session()->setFlashdata('message', 'An error occurred saving your information. Please try again later');
+                //$session->setFlashdata('message_type','success');
+                return redirect()->to(base_url('bridge_designer/index'));
 			}
 		}
+        return view('\Modules\bridge_designer\Views'. DIRECTORY_SEPARATOR .__FUNCTION__, $data);
     }
-    function delete()
+    function delete($delete_id)
 	{
        //var_dump($_GET);
       
-		$delete_id = $this->input->get('id');
-        $this->load->model('bridge_designer_model');
-          $this->bridge_designer_model->where('bdr01id', $delete_id)->dbDelete();
+		if($delete_id) {
+          $this->model->where('bdr01id', $delete_id)->delete();
           
-			$message = 'Selected Data Deleted.';
-			log_query($message);
-			set_message($message, 'success');
-		
+            session()->setFlashdata('message', 'Selected data deleted.');
+                //$session->setFlashdata('message_type','success');
+        }
         
-		redirect('bridge_designer');
+		
+        return redirect()->to(base_url('bridge_designer/index'));
+	
 	}
 }
-?>

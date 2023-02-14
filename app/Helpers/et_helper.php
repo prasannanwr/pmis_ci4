@@ -98,6 +98,47 @@ if (!function_exists('et_form_dropdown_db')) {
     }
 }
 
+if (!function_exists('et_form_dropdown_palika')) {
+    function et_form_dropdown_palika($strName,  $strTableName, $strShowFld, $strBindFld, $strSelVal, $strWhere = '', $strExtraParam = '', $arrExtraOpt = '')
+    {
+        $arrOptions = array();
+        if (is_array($arrExtraOpt)) {
+            if (isset($arrExtraOpt['AddNone'])) {
+                $nonCap = (isset($arrExtraOpt['NoneCaption']) ? $arrExtraOpt['NoneCaption'] : 'None');
+                $nonVal = (isset($arrExtraOpt['NoneValue']) ? $arrExtraOpt['NoneValue'] : '');
+                $arrOptions[$nonVal] = $nonCap;
+            }
+        }
+
+        // $objVModel = new Model();
+        // $objVModel->table = $strTableName;
+        $db      = \Config\Database::connect();
+        $builder = $db->table($strTableName);
+
+        $builder->like('muni01name', 'Ga Pa');
+        $builder->orLike('muni01name', 'Na Pa');
+    
+        if (isset($arrExtraOpt['SortBy'])) {
+            $builder->orderBy($arrExtraOpt['SortBy']);
+        }
+        $output = $builder->get();
+        $arrDBRec = $output->getResult();
+        //echo $db->getLastQuery();exit;
+        if (is_array($arrDBRec)) {
+            $arrOptions[" "] = "-- Please select --";
+            foreach ($arrDBRec as $objRec) {
+                $arrOptions[$objRec->{$strBindFld}] = $objRec->{$strShowFld};
+            }
+            if($strName == "bri04main_ww_cable_nos") {
+                $arrOptions[9] = "Other";
+            }
+        }
+        //var_dump( $arrOptions );
+        $strExtraParam .= ' id = "' . $strName . '" ';
+        return form_dropdown($strName, $arrOptions, $strSelVal, $strExtraParam);
+    }
+}
+
 if (!function_exists('et_form_dropdown_db_dist')) {
     function et_form_dropdown_db_dist($strName,  $strTableName, $strShowFld, $strBindFld, $strSelVal, $strWhere = '', $strExtraParam = '', $arrExtraOpt = '')
     {

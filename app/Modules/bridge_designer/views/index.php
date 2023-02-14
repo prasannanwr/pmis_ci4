@@ -1,4 +1,6 @@
-    <div id="" class="dashboard-bg">
+<?= $this->extend("\Modules\Template\Views\my_template") ?>
+<?= $this->section("body") ?>
+<div id="" class="dashboard-bg">
     	<div class="container-fluid">
     		<div class="panel panel-default">
     			<div class="ShowForm-form ">
@@ -97,3 +99,4 @@ $(document).ready(function()
 </script>
 
 <?php endif ?>
+<?= $this->endSection() ?>

@@ -39,7 +39,7 @@ class Act_Supporting_AgencyWise_FYWise_report extends BaseController
         $supporting_agencies_model = new supporting_agencies_model();
         $view_bridge_actual_cost = new view_bridge_actual_cost();
         $this->fiscal_year_model = $fiscal_year_model;
-        $this->view_brigde_detail_model = $view_bridge_detail_model;
+        $this->view_bridge_detail_model = $view_bridge_detail_model;
         $this->cost_components_model = $cost_components_model;
         $this->view_regional_office_model = $view_regional_office_model;
         $this->supporting_agencies_model = $supporting_agencies_model;
@@ -79,27 +79,28 @@ class Act_Supporting_AgencyWise_FYWise_report extends BaseController
                 $arrDistList = $this->view_regional_office_model->asObject()->findAll();
                 $arrSupList = $this->supporting_agencies_model->asObject()->findAll();
                 $arrPrintList = array();
+                $ctype = ENUM_NEW_CONSTRUCTION;
                 if (empty($stat)) {
-                    $this->view_brigde_detail_model->where(
-                        'bri03construction_type',
-                        ENUM_NEW_CONSTRUCTION
-                    );
+                    //$this->view_brigde_detail_model->where('bri03construction_type',ENUM_NEW_CONSTRUCTION);
+                    $ctype = ENUM_NEW_CONSTRUCTION;
                 } else {
-                    $this->view_brigde_detail_model->where(
-                        'bri03construction_type',
-                        ENUM_MAJOR_MAINTENANCE
-                    );
+                    //$this->view_brigde_detail_model->where('bri03construction_type',ENUM_MAJOR_MAINTENANCE);
+                    $ctype = ENUM_MAJOR_MAINTENANCE;
                 }
 
-                $this->view_brigde_detail_model->dbFilterCompleted();
-                $arrDevList = $this->view_brigde_detail_model->where('bri03project_fiscal_year >=', $dataStart)->where('bri03project_fiscal_year <=', $dateEnd);
-                if ($selAgency != '' && strtolower($selAgency) != "all") {
-                    $arrDevList->where('bri03supporting_agency =', $selAgency);
-                }
-                $arrDevList = $arrDevList->asObject()->findAll();
-                //print_r($arrDevList);exit;
-                $data['arrDevList'] = $arrDevList;
+                // $this->view_brigde_detail_model->dbFilterCompleted();
+                // $arrDevList = $this->view_brigde_detail_model->where('bri03project_fiscal_year >=', $dataStart)->where('bri03project_fiscal_year <=', $dateEnd);
+                // if ($selAgency != '' && strtolower($selAgency) != "all") {
+                //     $arrDevList->where('bri03supporting_agency =', $selAgency);
+                // }
+                // $arrDevList = $arrDevList->asObject()->findAll();
+                // $data['arrDevList'] = $arrDevList;
 
+                if($selAgency != '' && strtolower($selAgency) != "all") {                    
+                  $data['arrDevList']= $this->view_bridge_detail_model->getbridgesbysup($dataStart, $dateEnd, '', $ctype,'object', $selAgency);
+                } else {
+                    $data['arrDevList']= $this->view_bridge_detail_model->getbridgesbysup($dataStart, $dateEnd,'', $ctype,'object');
+                }
 
                 if (is_array($arrSupList)) {
                     foreach ($arrSupList as $k => $v) {

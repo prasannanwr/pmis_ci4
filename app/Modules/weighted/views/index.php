@@ -1,3 +1,5 @@
+<?= $this->extend("\Modules\Template\Views\my_template") ?>
+<?= $this->section("body") ?>
     <div id="" class="dashboard-bg">
     	<div class="container-fluid">
     		<div class="panel panel-default">
@@ -37,7 +39,7 @@
     						<div class="col-sm-7" >
                                 <input name="id_<?php echo $data->wei01id; ?>" type="hidden" value="<?php echo $data->wei01id; ?>" />
                                 <input id="" class="form-control" type="text" name="wei01value_<?php echo $data->wei01id; ?>"  value="<?php echo et_setFormVal('wei01value', $data); ?>"  />
-                                <?php echo form_error('wei01label'); ?>
+                                
     						</div>
     					</div>
                         <?php } } ?>
@@ -99,3 +101,4 @@ $(document).ready(function()
 </script>
 
 <?php endif ?>
+<?= $this->endSection() ?>

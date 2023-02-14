@@ -55,8 +55,8 @@
                         <div class="col-lg-6">
                                 <b><span>District:<?php   echo  $dataRow['info']->dist01name; ?></span></b>
                             </div>
-                            <div class="col-lg-6">
-                                <b><span style="float:right;" >TBSU Regional Office: <?php  echo   $dataRow['info']->tbis01name; ?></span></b>
+                            <div class="col-lg-6 hide">
+                                <b><span style="float:right;" >TBSU Regional Office: <?php //echo $dataRow['info']->tbis01name; ?></span></b>
                             </div>
                         </div>
                      </td>

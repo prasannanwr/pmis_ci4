@@ -72,26 +72,33 @@ class view_all_join_bridge_table_model extends Model
     public function totalBridges($search, $arrPermittedDistList, $filter) {
         
         //$sql = "select count(`a`.`bri03id`) AS `totalbridges` FROM `view_all_bridges_list` a WHERE 1=1";
-        $sql = "select count(`d`.`bri03id`) AS `totalbridges` from (select `a`.`bri03id` AS `bri03id`,`a`.`bri03construction_type`,`a`.`bri03work_category`,`c`.`dist01name` AS `left_district` from `bri03basic_bridge_datatable` `a` left join `dist01district` `c` on(`a`.`bri03district_name_lb` = `c`.`dist01id`)) d WHERE 1=1";
-        
-        $sql .=$filter;
-        //echo $sql;
+        // $sql = "select count(`d`.`bri03id`) AS `totalbridges` from (select `a`.`bri03id` AS `bri03id`,`a`.`bri03bridge_name`,`a`.`bri03bridge_no`,`a`.`bri03construction_type`,`a`.`bri03work_category`,`c`.`dist01id`,`c`.`dist01name` AS `left_district` from `bri03basic_bridge_datatable` `a` left join `dist01district` `c` on(`a`.`bri03district_name_lb` = `c`.`dist01id`)) d WHERE 1=1";
+        $blnIsLogged = empty($this->session);
 
-         //$arrPermittedDistList = $this->permittedDistrict();
-         $blnIsLogged = empty($this->session);
-         //var_dump(session()->get('type'));
-         //var_dump($arrPermittedDistList);exit;
-         $intUserType = ($blnIsLogged)? session()->get('type'): ENUM_GUEST; 
+        $innersql = "select `a`.`bri03id` AS `bri03id`,`a`.`bri03bridge_name`,`a`.`bri03bridge_no`,`a`.`bri03construction_type`,`a`.`bri03work_category`,`c`.`dist01id`,`c`.`dist01name` AS `left_district` from `bri03basic_bridge_datatable` `a` left join `dist01district` `c` on(`a`.`bri03district_name_lb` = `c`.`dist01id`) WHERE 1=1";
+
+        $intUserType = ($blnIsLogged)? session()->get('type'): ENUM_GUEST; 
          if($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR){
              //comma seperated value
              if( count( $arrPermittedDistList )> 0) {
 
                  //$data = $this->whereIn('dist01id', $arrPermittedDistList);
-                 $sql .=" AND dist_code IN (".implode(",",$arrPermittedDistList).")";
+                 $innersql .=" AND `c`.`dist01id` IN (".implode(",",$arrPermittedDistList).")";
              }else{
                  //$data = $this->where('dist01id', null);
              }
          }
+
+         $sql = "select count(`d`.`bri03id`) AS `totalbridges` from (".$innersql.") d WHERE 1=1";
+         //echo $sql;exit;
+         $sql .=$filter;
+        //echo $sql;
+
+         //$arrPermittedDistList = $this->permittedDistrict();
+         
+         //var_dump(session()->get('type'));
+         //var_dump($arrPermittedDistList);exit;
+         
         if($search['value'] !== '') {
             $sql .=" AND bri03bridge_name LIKE '".$search['value']."' OR bri03bridge_no LIKE '".$search['value']."'";
         }
