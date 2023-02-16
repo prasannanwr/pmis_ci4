@@ -31,6 +31,7 @@ use App\Modules\view\Models\view_bridge_actual_supporting_cost;
 use App\Modules\view\Models\view_regional_office_model;
 use App\Modules\regional_office\Models\regional_office_model;
 use App\Modules\view\Models\view_bridge_actual_cost;
+use App\Modules\auth\Models\sel_district_model;
 //use App\Modules\Reports\Models\ReportsModel;
 
 class Reports extends BaseController
@@ -5710,4 +5711,15 @@ class Reports extends BaseController
         }
         return view('\Modules\Reports\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
     }
+
+    /*public function filterDistricts()
+    {
+        $sel_district_model = new sel_district_model();
+        $arrPermittedDistListFull = $sel_district_model->where('user02userid', session()->get('user_id'))->asObject()->findAll();
+        $arrPermittedDistList = array();
+        foreach ($arrPermittedDistListFull as $k => $v) {
+          $arrPermittedDistList[] = $v->user02dist01id;
+        }
+        return $arrPermittedDistList;
+    }*/
 }

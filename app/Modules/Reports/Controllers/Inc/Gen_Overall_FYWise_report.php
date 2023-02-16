@@ -7,8 +7,7 @@ use App\Modules\fiscal_year\Models\FiscalYearModel;
 use App\Modules\view\Models\view_bridge_detail_model;
 use App\Modules\view\Models\view_district_reg_office_model;
 use App\Modules\auth\Models\sel_district_model;
-
-//use App\Modules\Reports\Models\ReportsModel;
+use App\Modules\User\Models\UserModel;
 
 class Gen_Overall_FYWise_report extends BaseController
 {
@@ -21,15 +20,19 @@ class Gen_Overall_FYWise_report extends BaseController
 
   private $view_district_reg_office_model;
 
+
   public function __construct()
   {
     helper(['form', 'html', 'et_helper']);
     $fiscal_year_model = new FiscalYearModel();
     $view_bridge_detail_model = new view_bridge_detail_model();
     $view_district_reg_office_model = new view_district_reg_office_model();
+
     $this->fiscal_year_model = $fiscal_year_model;
     $this->view_bridge_detail_model = $view_bridge_detail_model;
     $this->view_district_reg_office_model = $view_district_reg_office_model;
+    //$this->reports = new Reports();
+    
     if (count(self::$arrDefData) <= 0) {
       $FName = basename(__FILE__, '.php');
       $fName = strtolower($FName);
@@ -60,7 +63,8 @@ class Gen_Overall_FYWise_report extends BaseController
 
       if ($dataStart != 0 || $dateEnd != 0) {
         //get user assigned disticts
-        $arrPermittedDistList = $this->filterDistricts();
+        $userModel = new UserModel();
+        $arrPermittedDistList = $userModel->getArrPermitedDistList();
         $intUserType = (session()->get('type')) ? session()->get('type') : ENUM_GUEST;
         if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
           //comma seperated value
@@ -99,22 +103,22 @@ class Gen_Overall_FYWise_report extends BaseController
               //$this->view_bridge_detail_model->where('dist01id', $distFilter);
               $data['sel_district_filter'] = $distFilter;
             }
-            if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
-              //comma seperated value
-              if (count($arrPermittedDistList) > 0) {
-                //$dist = $this->view_bridge_detail_model->whereIn('dist01id', $arrPermittedDistList)->findAll();
-                $distFilter = $arrPermittedDistList;
-              } else {
-                //$this->where('dist01id', null);
-                //$dist = $this->view_bridge_detail_model->where('dist01id', $rr)->findAll();
-                $distFilter = $rr;
-              }
-            } else {
-              //$dist = $this->view_bridge_detail_model->where('dist01id', $rr)->findAll();
-              $distFilter = $rr;
-            }
-//var_dump($distFilter);exit;
-            $dist = $this->view_bridge_detail_model->getbridges($dataStart, $dateEnd, $distFilter, $construction_type);
+            // if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
+            //   //comma seperated value
+            //   if (count($arrPermittedDistList) > 0) {
+            //     //$dist = $this->view_bridge_detail_model->whereIn('dist01id', $arrPermittedDistList)->findAll();
+            //     $distFilter = $arrPermittedDistList;
+            //   } else {
+            //     //$this->where('dist01id', null);
+            //     //$dist = $this->view_bridge_detail_model->where('dist01id', $rr)->findAll();
+            //     $distFilter = $rr;
+            //   }
+            // } else {
+            //   //$dist = $this->view_bridge_detail_model->where('dist01id', $rr)->findAll();
+            //   $distFilter = $rr;
+            // }
+
+            $dist = $this->view_bridge_detail_model->getbridges($dataStart, $dateEnd, $rr, $construction_type);
             // $dist = $this->view_bridge_detail_model->where('dist01id', $rr)->dbGetList();
             //echo ($this->view_bridge_detail_model->getLastQuery());exit;
 
@@ -127,6 +131,7 @@ class Gen_Overall_FYWise_report extends BaseController
             }
           }
         }
+     
         // echo "<pre>";
         // var_dump($arrPrintList);
         // exit;
@@ -144,17 +149,17 @@ class Gen_Overall_FYWise_report extends BaseController
     }
   }
 
-  public function filterDistricts()
-  {
-    //check if loggged in or not
-    //check if it has all district permission or not
-    //
-    $sel_district_model = new sel_district_model();
-    $arrPermittedDistListFull = $sel_district_model->where('user02userid', session()->get('user_id'))->asObject()->findAll();
-    $arrPermittedDistList = array();
-    foreach ($arrPermittedDistListFull as $k => $v) {
-      $arrPermittedDistList[] = $v->user02dist01id;
-    }
-    return $arrPermittedDistList;
-  }
+  // public function filterDistricts()
+  // {
+  //   //check if loggged in or not
+  //   //check if it has all district permission or not
+  //   //
+  //   $sel_district_model = new sel_district_model();
+  //   $arrPermittedDistListFull = $sel_district_model->where('user02userid', session()->get('user_id'))->asObject()->findAll();
+  //   $arrPermittedDistList = array();
+  //   foreach ($arrPermittedDistListFull as $k => $v) {
+  //     $arrPermittedDistList[] = $v->user02dist01id;
+  //   }
+  //   return $arrPermittedDistList;
+  // }
 }

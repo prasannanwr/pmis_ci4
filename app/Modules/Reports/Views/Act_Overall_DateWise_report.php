@@ -39,7 +39,7 @@
                                 <th class="center" style="width:100px">Type</th>
                                 <th class="center" style="width:100px">width(cm)</th>
                                 <?php foreach ($arrCostCompList as $dataRow) { ?>
-                                    <th class="center rotate"><?php echo $dataRow->cmp01component_name; ?></th>
+                                    <th class="center rotate"><?php echo $dataRow['cmp01component_name'];?></th>
                                 <?php } ?>
 
                             </tr>
@@ -67,19 +67,19 @@
                                 $arrDistInfo = $arrDistrictList[$k];
                                 ?>
 
-                                <tbody class="dist_<?php echo $arrDistInfo->dist01id; ?>">
+                                <tbody class="dist_<?php echo $arrDistInfo['dist01id']; ?>">
 
                                     <tr>
-                                        <td colspan="22">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <b><span>District:<?php echo $arrDistInfo->dist01name; ?></span></b>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <b><span style="float:right;">TBSU Regional Office:<?php echo  $arrDistInfo->tbis01name; ?></span></b>
-                                                </div>
-                                            </div>
-                                        </td>
+                                       <td colspan="22">
+                        <div class="row">
+                        <div class="col-lg-6">
+                                <b><span>District:<?php   echo $arrDistInfo['dist01name']; ?></span></b>
+                            </div>
+                            <div class="col-lg-6">
+                                <b><span style="float:right;" >TBSU Regional Office:<?php  echo  $arrDistInfo['tbis01name']; ?></span></b>
+                            </div>
+                        </div>     
+                        </td>
                                     </tr>
 
                                     <?php
@@ -91,34 +91,32 @@
 
                                     ?>
 
-                                        <tr class="row<?php echo $i; ?>">
-                                            <td class="center" style="width:40px;"><?php echo $i; ?></td>
-                                            <td class="center"><?php echo $dataRow1['info']->bri03bridge_no; ?></td>
-                                            <td class="center"><?php echo $dataRow1['info']->bri03bridge_name; ?></td>
-                                            <td class="center"><?php echo $dataRow1['info']->bri01bridge_type_code; ?></td>
-                                            <td class="center spw_bri_<?php echo $dataRow1['info']->bri03id; ?> spw"><?php echo $dataRow1['info']->bri03e_span; ?></td>
-                                            <td class="center"><?php echo $dataRow1['info']->bri03river_name; ?></td>
-                                            <td class="center"><?php echo $dataRow1['info']->wad01walkway_deck_type_name; ?></td>
-                                            <td class="center"><?php echo $dataRow1['info']->wal01walkway_width; ?></td>
-
-                                            <?php
-                                            //$dataRow['arrCostData']; 
-                                            foreach ($arrCostCompList as $dataRow5) {
-                                                //  print_r($dataRow5);
-                                            ?>
-                                                <td class="center bri_<?php echo $dataRow1['info']->bri03id; ?> costAmt col<?php echo $dataRow5->cmp01id; ?>">
-                                                    <?php echo isset($arrCostList['bri_' . $dataRow1['info']->bri03bridge_no]['id_' . $dataRow5->cmp01id]) ? $arrCostList['bri_' . $dataRow1['info']->bri03bridge_no]['id_' . $dataRow5->cmp01id]->totalAmt : 0; ?>
-
-                                                </td>
-
-                                            <?php } ?>
-                                            <td class="center est">
-                                                <label class="sumCalc colSumCostAmt" data-sum=".row<?php echo $i; ?> .bri_<?php echo $dataRow1['info']->bri03id; ?>.costAmt">0.00</label>
-                                            </td>
-                                            <td class="center est_per divCalc" data-numerator=".row<?php echo $i; ?> .colSumCostAmt" data-denominator=".row<?php echo $i; ?> .spw_bri_<?php echo $dataRow1['info']->bri03id; ?>"><label>0.00</label></td>
-
-                                        </tr>
-
+                                        <tr class="row<?php echo $i;?>">
+                                <td class="center" style="width:40px;"><?php  echo $i; ?></td>
+                                <td class="center"><?php echo $dataRow1['info']['bri03bridge_no']; ?></td>
+                                <td class="center"><?php echo $dataRow1['info']['bri03bridge_name']; ?></td>
+                                <td class="center"><?php echo $dataRow1['info']['bri01bridge_type_code']; ?></td>
+                                <td class="center spw_bri_<?php echo $dataRow1['info']['bri03id']; ?> spw"><?php echo $dataRow1['info']['bri03e_span']; ?></td>
+                                <td class="center"><?php echo $dataRow1['info']['bri03river_name']; ?></td>
+                                <td class="center"><?php echo $dataRow1['info']['wad01walkway_deck_type_name']; ?></td>
+                                <td class="center"><?php echo $dataRow1['info']['wal01walkway_width']; ?></td>
+                                
+                   <?php 
+                        //$dataRow['arrCostData']; 
+                        foreach($arrCostCompList as $dataRow5){ 
+                            //  print_r($dataRow5);?>
+                            <td class="center bri_<?php echo $dataRow1['info']['bri03id']; ?> costAmt col<?php echo $dataRow5['cmp01id'];?>">
+    
+                                <?php echo isset($arrCostList['bri_'.$dataRow1['info']['bri03bridge_no']][ 'id_' . $dataRow5['cmp01id'] ])? round($arrCostList['bri_'.$dataRow1['info']['bri03bridge_no']][ 'id_' . $dataRow5['cmp01id'] ]['totalAmt'],2): 0; ?>
+                                </td>
+                                
+                            <?php }?>
+                            <td class="center est">
+                                <label class="sumCalc colSumCostAmt" data-sum=".row<?php echo $i;?> .bri_<?php echo $dataRow1['info']['bri03id']; ?>.costAmt">0.00</label>
+                             </td>
+                            <td class="center est_per divCalc" data-numerator=".row<?php echo $i;?> .colSumCostAmt" data-denominator=".row<?php echo $i;?> .spw_bri_<?php echo $dataRow1['info']['bri03id']; ?>"><label>0.00</label></td>
+                            
+                            </tr>
 
 
                                     <?php
@@ -129,32 +127,32 @@
 
                                     ?>
                                     <tr>
-                                        <td colspan="4" class="center">Total span and cost per </td>
-                                        <td class="center sumCalc summeryspan" data-sum=".dist_<?php echo $arrDistInfo->dist01id; ?> .spw">0</td>
-                                        <td colspan="3" class="center"></td>
-
-                                        <?php
-                                        foreach ($arrCostCompList as $dataRow5) { ?>
-                                            <td class="center sumCalc totalspan col<?php echo $dataRow5->cmp01id; ?>" data-sum=".dist_<?php echo $arrDistInfo->dist01id; ?> .col<?php echo $dataRow5->cmp01id; ?>">0</td>
-                                        <?php } ?>
-                                        <td class="center sumCalc summerytotal" data-sum=".dist_<?php echo $arrDistInfo->dist01id; ?> .colSumCostAmt"></td>
-                                        <td>&nbsp;</td>
-                                        <input type="hidden" class="cntCalc totalcnt" data-cnt=".dist_<?php echo $arrDistInfo->dist01id; ?> .spw" />
-
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4" class="center">Average span and cost per span</td>
-                                        <td class="center divCalc grsspan" data-numerator=".dist_<?php echo $arrDistInfo->dist01id; ?> .summeryspan" data-denominator=".dist_<?php echo $arrDistInfo->dist01id; ?> .totalcnt">0</td>
-                                        <td colspan="3" class="center"></td>
-                                        <?php
-                                        foreach ($arrCostCompList as $dataRow5) { ?>
-                                            <td class="center divCalc grstotal" data-numerator=".dist_<?php echo $arrDistInfo->dist01id; ?> .totalspan.col<?php echo $dataRow5->cmp01id; ?>" data-denominator=".dist_<?php echo $arrDistInfo->dist01id; ?> .summeryspan">0</td>
-                                        <?php } ?>
-
-                                        <td>&nbsp;</td>
-                                        <td class="center sumCalc " data-sum=".dist_<?php echo $arrDistInfo->dist01id; ?> .grstotal"></td>
-
-                                    </tr>
+                                <td colspan="4" class="center">Total span and cost</td>
+                                <td class="center sumCalc summeryspan ss<?php echo $arrDistInfo['dist01id']; ?>" data-sum=".dist_<?php echo $arrDistInfo['dist01id']; ?> .spw" id="totalspancost">0</td>
+                                <td colspan="3" class="center"></td>
+                                
+                                <?php
+                                foreach($arrCostCompList as $dataRow5){ ?>
+                                <td class="center sumCalc totalspan ts<?php echo $dataRow5['cmp01id'];?> col<?php echo $dataRow5['cmp01id'];?>" data-sum=".dist_<?php echo $arrDistInfo['dist01id']; ?> .col<?php echo $dataRow5['cmp01id'];?>" id="">0</td>
+                                <?php } ?>
+                                <td class="center sumCalc summerytotal st<?php echo $arrDistInfo['dist01id'];?>" data-sum=".dist_<?php echo $arrDistInfo['dist01id']; ?> .colSumCostAmt"></td> 
+                                <td>&nbsp;</td> 
+                                <input type="hidden" class="cntCalc totalcnt" data-cnt=".dist_<?php echo $arrDistInfo['dist01id']; ?> .spw"/>
+                                                                                          
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="center">Average span and cost per span</td>
+                                <td class="center divCalc grsspan" data-numerator=".dist_<?php echo $arrDistInfo['dist01id']; ?> .summeryspan" data-denominator=".dist_<?php echo $arrDistInfo['dist01id']; ?> .totalcnt" id="averagespancost">0</td>
+                                <td colspan="3" class="center"></td>
+                                                            <?php
+                                foreach($arrCostCompList as $dataRow5){ ?>
+                                <td class="center divCalc av<?php echo $dataRow5['cmp01id'];?> grstotal<?php echo $dataRow5['cmp01id'];?>" data-numerator=".dist_<?php echo $arrDistInfo['dist01id']; ?> .totalspan.col<?php echo $dataRow5['cmp01id'];?>" data-denominator=".dist_<?php echo $arrDistInfo['dist01id']; ?> .summeryspan">0</td>
+                                <?php } ?>
+                              
+                                <td>&nbsp;</td>
+                                  <td class="center sumCalc sc<?php echo $dataRow5['cmp01id']; ?>" data-sum=".dist_<?php echo $arrDistInfo['dist01id']; ?> .grstotal" id="<?php echo $arrDistInfo['dist01id']; ?>"></td> 
+                                                                                  
+                            </tr>   
 
 
                                 </tbody>

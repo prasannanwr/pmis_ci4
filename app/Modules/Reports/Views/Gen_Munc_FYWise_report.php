@@ -49,8 +49,8 @@
                         <tr>
                             <td colspan="14" style="line-height: 18px;">
                                <div class="col-lg-12"><b><span>Palika:<?php echo $dataRow['municipality'][0]['muni01name'];  ?></span></b></div>
-                                <div class="col-lg-6"><b><span>District:<?php echo $dataRow['data']->dist01name;  ?></span></b></div>
-                                <div class="col-lg-6" style="float: right;"><b><span>Province:<?php echo $dataRow['data']->dist01state;  ?></span></b></div>
+                                <div class="col-lg-6"><b><span>District:<?php echo $dataRow['municipality'][0]['dist01name'];  ?></span></b></div>
+                                <div class="col-lg-6" style="float: right;"><b><span>Province:<?php echo $dataRow['municipality'][0]['province_name'];  ?></span></b></div>
                                 </td>
                             </tr>
 

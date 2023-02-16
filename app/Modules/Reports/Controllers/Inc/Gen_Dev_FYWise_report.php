@@ -10,6 +10,7 @@ use App\Modules\template\Controllers\Template;
 use App\Modules\view\Models\view_bridge_detail_model;
 use App\Modules\view\Models\view_district_reg_office_model;
 use App\Modules\view\Models\view_regional_office_model;
+use App\Modules\User\Models\UserModel;
 
 //use App\Modules\Reports\Models\ReportsModel;
 
@@ -79,6 +80,10 @@ class Gen_Dev_FYWise_report extends BaseController
                 $arrPrintList = array();
                 //$data['arrDevList']= $this->development_region_model->findAll();
 				$data['arrDevList']= $this->province_model->findAll();
+
+                $userModel = new UserModel();
+                $arrPermittedDistList = $userModel->getArrPermitedDistList();
+                $intUserType = (session()->get('type')) ? session()->get('type') : ENUM_GUEST;
                 
                 if (is_array($data['arrDevList'])){
                     
@@ -86,7 +91,15 @@ class Gen_Dev_FYWise_report extends BaseController
                         $arrChild=null;
                         
                         //$arrDistList=$this->view_regional_office_model->where('dev01id', $v->dev01id)->findAll();
-						$arrDistList=$this->view_regional_office_model->where('province_name', $v['province_name'])->findAll();
+                        if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
+                          //comma seperated value
+                          if (count($arrPermittedDistList) > 0) {
+                            $arrDistList=$this->view_regional_office_model->whereIn('dist01id', $arrPermittedDistList)->where('province_name', $v['province_name'])->findAll();
+                          }
+                        } else {
+                          $arrDistList=$this->view_regional_office_model->where('province_name', $v['province_name'])->findAll();
+                        }
+						
                         
                         if(is_array($arrDistList)){
                             

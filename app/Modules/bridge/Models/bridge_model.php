@@ -82,39 +82,67 @@ class bridge_model extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function dbGetList()
-    {
-        //check if loggged in or not
-        //check if it has all district permission or not
-        //
+  //   public function dbGetList()
+  //   {
+  //       //check if loggged in or not
+  //       //check if it has all district permission or not
+  //       //
+  //       $sel_district_model = new sel_district_model();
+  //       $arrPermittedDistListFull = $sel_district_model->where('user02userid', session()->get('user_id'))->findAll();
+       
+  //       $arrPermittedDistList = array();
+  //       foreach( $arrPermittedDistListFull as $k=>$v ){
+  //           $arrPermittedDistList[] = $v->user02dist01id;
+  //       }
+  //       $blnIsLogged = empty(session());
+  //       $intUserType = ($blnIsLogged)? session()->get('type'): ENUM_GUEST; 
+  //       if($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR){
+  //           //comma seperated value
+  //           /*if( count( $arrPermittedDistList )> 0){
+  //               $this->where_in('dist01id', $arrPermittedDistList);
+  //           }else{
+  //               $this->where('dist01id', null);
+  //           }*/
+			
+		// 	 if( count( $arrPermittedDistList )> 0){
+  //               $this->where_in('bri03district_name_lb', $arrPermittedDistList);
+  //           }else{
+  //               $this->where('bri03district_name_lb', null);
+  //           }
+			
+			
+  //       }
+		// //echo $this->db->last_query();		
+  //       return parent::dbGetList();
+  //   }
+
+    function findAll(int $limit = 0, int $offset = 0) {
         $sel_district_model = new sel_district_model();
         $arrPermittedDistListFull = $sel_district_model->where('user02userid', session()->get('user_id'))->findAll();
-       
+         
         $arrPermittedDistList = array();
         foreach( $arrPermittedDistListFull as $k=>$v ){
-            $arrPermittedDistList[] = $v->user02dist01id;
+            //$arrPermittedDistList[] = $v->user02dist01id;
+            $arrPermittedDistList[] = $v['user02dist01id'];
         }
-        $blnIsLogged = empty(session());
-        $intUserType = ($blnIsLogged)? session()->get('type'): ENUM_GUEST; 
+        $blnIsLogged = empty($this->session);
+        $intUserType = (session()->get('type')) ? session()->get('type') : ENUM_GUEST;
         if($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR){
             //comma seperated value
-            /*if( count( $arrPermittedDistList )> 0){
-                $this->where_in('dist01id', $arrPermittedDistList);
-            }else{
-                $this->where('dist01id', null);
-            }*/
-			
-			 if( count( $arrPermittedDistList )> 0){
-                $this->where_in('bri03district_name_lb', $arrPermittedDistList);
+            // if( count( $arrPermittedDistList )> 0){
+            //     $this->whereIn('dist01id', $arrPermittedDistList);
+            // }else{
+            //     $this->where('dist01id', null);
+            // }
+            if( count( $arrPermittedDistList )> 0){
+                $this->whereIn('bri03district_name_lb', $arrPermittedDistList);
             }else{
                 $this->where('bri03district_name_lb', null);
             }
-			
-			
         }
-		//echo $this->db->last_query();		
-        return parent::dbGetList();
+        return parent::findAll();
     }
+
     public function generate_bridge_code($intVDCNo, $ctype='')
     {
         $view_vdc_new_model = new view_vdc_new_model();

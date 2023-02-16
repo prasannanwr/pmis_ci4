@@ -8,8 +8,7 @@ use App\Modules\logo_upload\Models\logo_upload_model;
 use App\Modules\template\Controllers\Template;
 use App\Modules\view\Models\view_bridge_detail_model;
 use App\Modules\view\Models\view_district_reg_office_model;
-
-//use App\Modules\Reports\Models\ReportsModel;
+use App\Modules\User\Models\UserModel;
 
 class Gen_Overall_DateWise_report extends BaseController
 {
@@ -33,6 +32,7 @@ class Gen_Overall_DateWise_report extends BaseController
       $this->fiscal_year_model = $fiscal_year_model;
       $this->view_bridge_detail_model = $view_bridge_detail_model;
       $this->view_district_reg_office_model = $view_district_reg_office_model;
+      //$this->reports = new Reports();
       $this->template = new Template();
       if (count(self::$arrDefData) <= 0) {
         $FName = basename(__FILE__, '.php');
@@ -63,9 +63,18 @@ class Gen_Overall_DateWise_report extends BaseController
                 }
              elseif( $dataStart <= $dateEnd){
                      if($dataStart!= 0 || $dateEnd != 0 ){
-    
-                        $selDist=$this->view_district_reg_office_model->findAll();
-                        
+                        //$selDist=$this->view_district_reg_office_model->findAll();
+                        $userModel = new UserModel();
+                        $arrPermittedDistList = $userModel->getArrPermitedDistList();
+                        $intUserType = (session()->get('type')) ? session()->get('type') : ENUM_GUEST;
+                        if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
+                          //comma seperated value
+                          if (count($arrPermittedDistList) > 0) {
+                            $selDist = $this->view_district_reg_office_model->whereIn('dist01id', $arrPermittedDistList)->findAll();
+                          }
+                        } else {
+                          $selDist = $this->view_district_reg_office_model->findAll();
+                        }
                         $arrPrintList = array();
                         if(is_array( $selDist)){
                                 //foreach( $selDist as $k=>$v){

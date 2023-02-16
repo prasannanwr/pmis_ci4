@@ -81,7 +81,7 @@
                                     </tr>
                                             <?php $i++;$j++;} ?>
                                             <tr>
-                                                <td colspan="14"><strong>Total bridge in district: <?php echo $i-1; ?></strong></td>                                               
+                                                <td colspan="15"><strong>Total bridge in district: <?php echo $i-1; ?></strong></td>                                               
                                             </tr>
                                    <?php
                         }  
@@ -89,7 +89,7 @@
                         }
                         ?> 
                         <tr>
-                                                <td colspan="14"><strong>Total overall completed: <?php echo $j-1; ?></strong></td>                                               
+                                                <td colspan="15"><strong>Total overall completed: <?php echo $j-1; ?></strong></td>                                               
                                             </tr>
                         </table>
                           </div>

@@ -128,8 +128,8 @@
 
 										et_setFormVal('bri03district_name_lb', $objOldRec),
 
-										// getPermittedDists(),
-										'',
+										getPermittedDists(),
+										//'',
 
 										'class="form-control onChangeDist" data-targetvdc="#bri03municipality_lb" ' . $valDisableDist . ' ',
 										array('SortBy' => 'dist01name')
@@ -365,7 +365,7 @@
 
 								<div class="col-lg-7 ">
 
-									<?php echo et_form_dropdown_db_dist('bri03district_name_rb', 'dist01district', 'dist01name', 'dist01id', et_setFormVal('bri03district_name_rb', $objOldRec), '', 'class="form-control onChangeDist" data-targetvdc="#bri03municipality_rb" ' . $valDisableDist . '', array('SortBy' => 'dist01name')) ?>
+									<?php echo et_form_dropdown_db_dist('bri03district_name_rb', 'dist01district', 'dist01name', 'dist01id', et_setFormVal('bri03district_name_rb', $objOldRec), getPermittedDists(), 'class="form-control onChangeDist" data-targetvdc="#bri03municipality_rb" ' . $valDisableDist . '', array('SortBy' => 'dist01name')) ?>
 
 								</div>
 
@@ -2684,7 +2684,7 @@
 		$("#bri03bridge_type").on('change', function() {
 			var anchorage_url = '<?php echo $anchorageUrl; ?>';
 			var btype = $(this).val();
-			console.log(anchorage_url);
+			//console.log(anchorage_url);
 			$.ajax({
 				method: 'GET',
 				url: anchorage_url,

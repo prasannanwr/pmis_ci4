@@ -155,6 +155,7 @@ if (!function_exists('et_form_dropdown_db_dist')) {
         //$objVModel->table = $strTableName;
         $db      = \Config\Database::connect();
         $objVModel = $db->table($strTableName);
+        
         if ($strWhere != '' && is_array($strWhere)) {
             $objVModel->whereIn("dist01id", $strWhere);
         }
@@ -183,8 +184,8 @@ function _day()
 function getPermittedDistCondStr()
 {
     $CI = get_instance();
-    $CI->load->model('users/users_model');
-    $arrPerm = $CI->users_model->getArrPermitedDistList();
+    $users_model = new UserModel();
+    $arrPerm = $users_model->getArrPermitedDistList();
 
     $blnIsLogged = $CI->users_model->is_logged_in();
     $intUserType = ($blnIsLogged) ? $CI->users_model->getLoggedType() : ENUM_GUEST;
@@ -216,7 +217,7 @@ function getPermittedDists()
         if (count($arrPerm) > 0) {
             $ret = $arrPerm;
         } else {
-            $ret = null;
+            $ret = '';
         }
     } else {
         $ret = '';

@@ -95,6 +95,7 @@ class Gen_Munc_FYWise_report extends BaseController
         }
         // }
         // }
+        //echo "<pre>"; var_dump($arrPrintList);exit;
         $data['arrPrintList'] = $arrPrintList;
       } else {
         redirect("reports/Gen_Munc_FYWise/" . $stat);

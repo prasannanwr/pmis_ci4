@@ -3,6 +3,7 @@
 namespace App\Modules\view\Models;
 
 use CodeIgniter\Model;
+use App\Modules\User\Models\UserModel;
 
 class view_bridge_detail_model extends Model
 {
@@ -88,12 +89,13 @@ class view_bridge_detail_model extends Model
 	}
 
     public function getbridges($dataStart, $dateEnd, $dd = '', $ctype = ENUM_NEW_CONSTRUCTION, $resultType = 'array', $municipality = '') {
+
         $sql = "select * from `view_bridge_major_dist_completed` where `bri05bridge_completion_fiscalyear` >= '$dataStart' AND `bri05bridge_completion_fiscalyear` <= '$dateEnd' AND `bri05bridge_complete_check` = 1 AND `bri05bridge_completion_fiscalyear_check` = 1 AND `bri03construction_type` = '$ctype'";
 
         if($dd != '') {
             if(is_array($dd)) {
                 $dd = implode(',',$dd);
-                $sql .=" AND `dist01id` IN ('$dd')";
+                $sql .=" AND `dist01id` IN ($dd)";
             } else {
                 $sql .=" AND `dist01id` = '$dd'";
             }
@@ -101,9 +103,22 @@ class view_bridge_detail_model extends Model
         if($municipality != '') {
             $sql .=" AND `left_muni01id` = '$municipality'";   
         }
+        //restrict users 
+        $userModel = new UserModel();
+        $arrPermittedDistList = $userModel->getArrPermitedDistList();
+        $intUserType = (session()->get('type')) ? session()->get('type') : ENUM_GUEST;
+        if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
+          //comma seperated value
+          if (count($arrPermittedDistList) > 0) {
+            $arrPermittedDistList = implode(',', $arrPermittedDistList);
+            $sql .=" AND `dist01id` IN ($arrPermittedDistList)";
+          }
+        }
+        
         //echo $sql;exit;
+        // echo $sql;
+        // echo "<br>";
         $query = $this->db->query($sql);
-        //echo $resultType;exit;
         if($resultType == "array") {
             return $query->getResultArray();
         } else {
@@ -117,11 +132,24 @@ class view_bridge_detail_model extends Model
         if($dd != '') {
             if(is_array($dd)) {
                 $dd = implode(',',$dd);
-                $sql .=" AND `dist01id` IN ('$dd')";
+                $sql .=" AND `dist01id` IN ($dd)";
             } else {
                 $sql .=" AND `dist01id` = '$dd'";
             }
         }
+
+        //restrict users 
+        $userModel = new UserModel();
+        $arrPermittedDistList = $userModel->getArrPermitedDistList();
+        $intUserType = (session()->get('type')) ? session()->get('type') : ENUM_GUEST;
+        if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
+          //comma seperated value
+          if (count($arrPermittedDistList) > 0) {
+            $arrPermittedDistList = implode(',', $arrPermittedDistList);
+            $sql .=" AND `dist01id` IN ($arrPermittedDistList)";
+          }
+        }
+        
         $sql .=" ORDER BY `dist01state` ASC";
         //echo $sql;exit;
         $query = $this->db->query($sql);
@@ -137,7 +165,7 @@ class view_bridge_detail_model extends Model
         if($dd != '') {
             if(is_array($dd)) {
                 $dd = implode(',',$dd);
-                $sql .=" AND `dist01id` IN ('$dd')";
+                $sql .=" AND `dist01id` IN ($dd)";
             } else {
                 $sql .=" AND `dist01id` = '$dd'";
             }
@@ -161,7 +189,7 @@ class view_bridge_detail_model extends Model
         if($dd != '') {
             if(is_array($dd)) {
                 $dd = implode(',',$dd);
-                $sql .=" AND `dist01id` IN ('$dd')";
+                $sql .=" AND `dist01id` IN ($dd)";
             } else {
                 $sql .=" AND `dist01id` = '$dd'";
             }
@@ -184,7 +212,7 @@ class view_bridge_detail_model extends Model
         if($dd != '') {
             if(is_array($dd)) {
                 $dd = implode(',',$dd);
-                $sql .=" AND `dist01id` IN ('$dd')";
+                $sql .=" AND `dist01id` IN ($dd)";
             } else {
                 $sql .=" AND `dist01id` = '$dd'";
             }
@@ -207,7 +235,7 @@ class view_bridge_detail_model extends Model
         if($dd != '') {
             if(is_array($dd)) {
                 $dd = implode(',',$dd);
-                $sql .=" AND `dist01id` IN ('$dd')";
+                $sql .=" AND `dist01id` IN ($dd)";
             } else {
                 $sql .=" AND `dist01id` = '$dd'";
             }

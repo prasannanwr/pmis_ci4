@@ -180,10 +180,10 @@ $routes->post('reports/Gen_Dev_FYWise_report', '\App\Modules\Reports\Controllers
 $routes->post('reports/Gen_Dev_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_FYWise_report::index/$1', ['filter' => 'auth']);
 $routes->post('reports/Gen_Dev_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_DateWise_report::index', ['filter' => 'auth']);
 $routes->post('reports/Gen_Dev_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_DateWise_report::index/$1', ['filter' => 'auth']);
-$routes->post('reports/Gen_Munc_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Munc_FYWise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Gen_Munc_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Munc_FYWise_report::index/$1', ['filter' => 'auth']);
-$routes->post('reports/Gen_Munc_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Munc_DateWise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Gen_Munc_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Munc_DateWise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Gen_Munc_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Munc_FYWise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Gen_Munc_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Munc_FYWise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Gen_Munc_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Munc_DateWise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Gen_Munc_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Munc_DateWise_report::index/$1', ['filter' => 'auth']);
 $routes->post('reports/Act_Overall_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Act_Overall_FYWise_report::index', ['filter' => 'auth']);
 $routes->post('reports/Act_Overall_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Overall_FYWise_report::index/$1', ['filter' => 'auth']);
 $routes->post('reports/Act_Overall_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Act_Overall_DateWise_report::index', ['filter' => 'auth']);
