@@ -75,7 +75,11 @@ class view_all_join_bridge_table_model extends Model
         // $sql = "select count(`d`.`bri03id`) AS `totalbridges` from (select `a`.`bri03id` AS `bri03id`,`a`.`bri03bridge_name`,`a`.`bri03bridge_no`,`a`.`bri03construction_type`,`a`.`bri03work_category`,`c`.`dist01id`,`c`.`dist01name` AS `left_district` from `bri03basic_bridge_datatable` `a` left join `dist01district` `c` on(`a`.`bri03district_name_lb` = `c`.`dist01id`)) d WHERE 1=1";
         $blnIsLogged = empty($this->session);
 
-        $innersql = "select `a`.`bri03id` AS `bri03id`,`a`.`bri03bridge_name`,`a`.`bri03bridge_no`,`a`.`bri03construction_type`,`a`.`bri03work_category`,`c`.`dist01id`,`c`.`dist01name` AS `left_district` from `bri03basic_bridge_datatable` `a` left join `dist01district` `c` on(`a`.`bri03district_name_lb` = `c`.`dist01id`) WHERE 1=1";
+       // $innersql = "select `a`.`bri03id` AS `bri03id`,`a`.`bri03bridge_name`,`a`.`bri03bridge_no`,`a`.`bri03construction_type`,`a`.`bri03work_category`,`c`.`dist01id`,`c`.`dist01name` AS `left_district` from `bri03basic_bridge_datatable` `a` left join `dist01district` `c` on(`a`.`bri03district_name_lb` = `c`.`dist01id`) WHERE 1=1";
+
+        $innersql = "select `a`.`bri03id` AS `bri03id`,`a`.`bri03bridge_name`,`a`.`bri03bridge_no`,`a`.`bri03construction_type`,`a`.`bri03work_category`,`a`.`dist01id`,`a`.`bri03major_district` from `view_all_bridges_list_major_dist` `a` WHERE 1=1";
+
+        // $innersql = "select count(`a`.`bri03id`) AS `totalbridges`,`a`.`bri03id`,`a`.`bri03bridge_name`,`a`.`bri03bridge_no`,`a`.`bri03construction_type`,`a`.`bri03work_category`,`a`.`dist01id`,`a`.`bri03major_dist_id`,`a`.`bri03major_district` FROM `view_all_bridges_list_major_dist` `a` WHERE 1=1";
 
         $intUserType = ($blnIsLogged)? session()->get('type'): ENUM_GUEST; 
          if($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR){
@@ -83,7 +87,7 @@ class view_all_join_bridge_table_model extends Model
              if( count( $arrPermittedDistList )> 0) {
 
                  //$data = $this->whereIn('dist01id', $arrPermittedDistList);
-                 $innersql .=" AND `c`.`dist01id` IN (".implode(",",$arrPermittedDistList).")";
+                 $innersql .=" AND `a`.`dist01id` IN (".implode(",",$arrPermittedDistList).")";
              }else{
                  //$data = $this->where('dist01id', null);
              }
@@ -115,6 +119,7 @@ class view_all_join_bridge_table_model extends Model
         foreach( $arrPermittedDistListFull as $k=>$v ){
             $arrPermittedDistList[] = $v['user02dist01id'];
         }
+        //var_dump($arrPermittedDistList);exit;
         return $arrPermittedDistList;
     }
 }

@@ -7,7 +7,7 @@ use App\Modules\cost_components\Models\cost_components_model;
 use App\Modules\district_name\Models\district_name_model;
 use App\Modules\fiscal_year\Models\FiscalYearModel;
 use App\Modules\view\Models\view_bridge_actual_cost;
-use App\Modules\view\Models\view_brigde_detail_model;
+use App\Modules\view\Models\view_bridge_detail_model;
 
 //use App\Modules\Reports\Models\ReportsModel;
 
@@ -21,7 +21,7 @@ class Act_Dev_FYWise_report extends BaseController
 
   private $district_name_model;
 
-  private $view_brigde_detail_model;
+  private $view_bridge_detail_model;
 
   private $view_bridge_actual_cost;
 
@@ -31,12 +31,12 @@ class Act_Dev_FYWise_report extends BaseController
     $fiscal_year_model = new FiscalYearModel();
     $cost_components_model = new cost_components_model();
     $district_name_model = new district_name_model();
-    $view_brigde_detail_model = new view_brigde_detail_model();
+    $view_bridge_detail_model = new view_bridge_detail_model();
     $view_bridge_actual_cost = new view_bridge_actual_cost();
     $this->fiscal_year_model = $fiscal_year_model;
     $this->cost_components_model = $cost_components_model;
     $this->district_name_model = $district_name_model;
-    $this->view_brigde_detail_model = $view_brigde_detail_model;
+    $this->view_bridge_detail_model = $view_bridge_detail_model;
     $this->view_bridge_actual_cost = $view_bridge_actual_cost;
     if (count(self::$arrDefData) <= 0) {
       $FName = basename(__FILE__, '.php');
@@ -63,6 +63,9 @@ class Act_Dev_FYWise_report extends BaseController
     $data['dateEnd'] = $dateEnd;
     $data['selProvince'] = $selProvince;
 
+    $data['arrPrintList'] = array();
+    $data['arrCostList'] = array();
+
     $data['startyear'] = $this->fiscal_year_model->where('fis01id', $dataStart)->asObject()->first();
     $data['endyear'] = $this->fiscal_year_model->where('fis01id', $dateEnd)->asObject()->first();
     //    $this->load->model('fiscal_year/fiscal_year_model');
@@ -86,6 +89,7 @@ class Act_Dev_FYWise_report extends BaseController
         {
             $data['arrCostCompList'] = $this->cost_components_model->asObject()->findAll();
             $arrPrintList = array();
+            $arrCostList = array();
 
             if(trim($selProvince) != '') {
                 $data['arrDevList'] = $this->district_name_model->where('dist01state',$selProvince)->findAll();
@@ -96,28 +100,34 @@ class Act_Dev_FYWise_report extends BaseController
             $arrChild1=null;
             if (empty($stat))
             {
-                $this->view_brigde_detail_model->where('bri03construction_type',
-                ENUM_NEW_CONSTRUCTION);
+                // $this->view_brigde_detail_model->where('bri03construction_type',
+                // ENUM_NEW_CONSTRUCTION);
+                $ctype = ENUM_NEW_CONSTRUCTION;
             } else
             {
-                $this->view_brigde_detail_model->where('bri03construction_type',
-                ENUM_MAJOR_MAINTENANCE);
+                // $this->view_brigde_detail_model->where('bri03construction_type',
+                // ENUM_MAJOR_MAINTENANCE);
+                $ctype = ENUM_MAJOR_MAINTENANCE;
             }
 
-            $this->view_brigde_detail_model->dbFilterCompleted();
+            //$this->view_brigde_detail_model->dbFilterCompleted();
             /*$arrBridgeList = $this->view_brigde_detail_model->
                 where('bri03project_fiscal_year >=', $dataStart)->
                 where('bri03project_fiscal_year <=', $dateEnd)->
                 findAll();*/
             if(trim($selProvince) != '') {
-                $this->view_brigde_detail_model->
-                    where('dist01state =', $selProvince);
+                // $this->view_brigde_detail_model->
+                //     where('dist01state =', $selProvince);
+                $arrBridgeList = $this->view_bridge_detail_model->getbridgesbyProv($dataStart, $dateEnd, '', $ctype, 'asObject', $selProvince, 'dist01state');
+            } else {
+                $arrBridgeList = $this->view_bridge_detail_model->getbridgesbyProv($dataStart, $dateEnd, '', $ctype, 'asObject', '', 'dist01state');
             }
-            $arrBridgeList = $this->view_brigde_detail_model->
-            where('bri05bridge_completion_fiscalyear =', $dateEnd)->
-            orderBy('dist01state')->
-            asObject()->
-            findAll();
+            // $arrBridgeList = $this->view_brigde_detail_model->
+            // where('bri05bridge_completion_fiscalyear =', $dateEnd)->
+            // orderBy('dist01state')->
+            // asObject()->
+            // findAll();
+
             
             $arrBridgeIdList = null;
             if(is_array( $arrBridgeList )){
@@ -134,21 +144,23 @@ class Act_Dev_FYWise_report extends BaseController
                     $arrPrintList['dev_'.$v2->dist01state]['arrChildList']['dist_'.$v2->dist01id]['info']=$v2;
                     $arrPrintList['dev_'.$v2->dist01state]['arrChildList']['dist_'.$v2->dist01id]['arrChildList'][] = array('info'=>$v2);
 
+                    $arrBridgeCostList = $this->view_bridge_actual_cost->
+                    whereIn('bri08bridge_no', $arrBridgeIdList)->
+                    asObject()->
+                    findAll();
+                    
+                    foreach ($arrBridgeCostList as $x2)
+                    {
+                        $arrCostList['bri_'.$x2->bri08bridge_no]['id_' . $x2->bri08cmp01id] = $x2;
+                    }
+
                 }
+
+                $data['arrPrintList'] = $arrPrintList;
+                $data['arrCostList'] = $arrCostList;
+
             }
             
-            $arrBridgeCostList = $this->view_bridge_actual_cost->
-                whereIn('bri08bridge_no', $arrBridgeIdList)->
-                asObject()->
-                findAll();
-                
-            foreach ($arrBridgeCostList as $x2)
-            {
-                $arrCostList['bri_'.$x2->bri08bridge_no]['id_' . $x2->bri08cmp01id] = $x2;
-            }
-            
-            $data['arrPrintList'] = $arrPrintList;
-            $data['arrCostList'] = $arrCostList;
                 //print_r($arrPrintList);
         } else
         {

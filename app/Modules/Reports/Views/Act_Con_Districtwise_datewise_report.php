@@ -90,7 +90,7 @@
                                 <b><span>Development:<?php   echo $dataRow['info']->dev01name; ?></span></b>
                             </div>
                             <div class="col-lg-6">
-                                <b><span style="float:right;" >TBSU Regional Office:<?php  echo  $dataRow['info']->tbis01name; ?></span></b>
+                                <!-- <b><span style="float:right;" >TBSU Regional Office:<?php //echo  $dataRow['info']->tbis01name; ?></span></b> -->
                             </div>
                         </div>     	
                         </td>

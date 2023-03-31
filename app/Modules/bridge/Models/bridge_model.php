@@ -161,11 +161,21 @@ class bridge_model extends Model
             $x .= "M";
         }
         
-        $vdc_municipality_model = new palika_model();
-        $vdc_municipality_model->update($intVDCNo, array('muni01id'=>$intVDCNo, 'muni01last_bridge_no'=> $arrInfo['muni01last_bridge_no'] + 1 ));
+        // $vdc_municipality_model = new palika_model();
+        // $vdc_municipality_model->update($intVDCNo, array('muni01id'=>$intVDCNo, 'muni01last_bridge_no'=> $arrInfo['muni01last_bridge_no'] + 1 ));
         //echo $this->db->last_query();
         //die();
 
         return $x;
+    }
+
+    public function update_bridge_no_palika($intVDCNo) {
+        if($intVDCNo) {
+            $vdc_municipality_model = new palika_model();
+            $view_vdc_new_model = new view_vdc_new_model();
+            $arrInfo = $view_vdc_new_model->where('muni01id', $intVDCNo)->first();
+            $vdc_municipality_model->update($intVDCNo, array('muni01id'=>$intVDCNo, 'muni01last_bridge_no'=> $arrInfo['muni01last_bridge_no'] + 1 ));    
+        }
+        
     }
 }

@@ -7,7 +7,7 @@ use App\Modules\cost_components\Models\cost_components_model;
 use App\Modules\district_name\Models\district_name_model;
 use App\Modules\fiscal_year\Models\FiscalYearModel;
 use App\Modules\view\Models\view_bridge_actual_cost;
-use App\Modules\view\Models\view_brigde_detail_model;
+use App\Modules\view\Models\view_bridge_detail_model;
 use App\Modules\view\Models\view_district_reg_office_model;
 
 //use App\Modules\Reports\Models\ReportsModel;
@@ -24,7 +24,7 @@ class Act_Dist_FYWise_report extends BaseController
 
   private $view_district_reg_office_model;
 
-  private $view_brigde_detail_model;
+  private $view_bridge_detail_model;
 
   private $view_bridge_actual_cost;
 
@@ -35,13 +35,13 @@ class Act_Dist_FYWise_report extends BaseController
     $cost_components_model = new cost_components_model();
     $district_name_model = new district_name_model();
     $view_district_reg_office_model = new view_district_reg_office_model();
-    $view_brigde_detail_model = new view_brigde_detail_model();
+    $view_bridge_detail_model = new view_bridge_detail_model();
     $view_bridge_actual_cost = new view_bridge_actual_cost();
     $this->fiscal_year_model = $fiscal_year_model;
     $this->cost_components_model = $cost_components_model;
     $this->district_name_model = $district_name_model;
     $this->view_district_reg_office_model = $view_district_reg_office_model;
-    $this->view_brigde_detail_model = $view_brigde_detail_model;
+    $this->view_bridge_detail_model = $view_bridge_detail_model;
     $this->view_bridge_actual_cost = $view_bridge_actual_cost;
 
     if (count(self::$arrDefData) <= 0) {
@@ -85,27 +85,39 @@ class Act_Dist_FYWise_report extends BaseController
             $arrChild1=null;
             if (empty($stat))
             {
-                $this->view_brigde_detail_model->where('bri03construction_type',
-                ENUM_NEW_CONSTRUCTION);
+                // $this->view_brigde_detail_model->where('bri03construction_type',
+                // ENUM_NEW_CONSTRUCTION);
+                $ctype = ENUM_NEW_CONSTRUCTION;
             } else
             {
-                $this->view_brigde_detail_model->where('bri03construction_type',
-                ENUM_MAJOR_MAINTENANCE);
+                // $this->view_brigde_detail_model->where('bri03construction_type',
+                // ENUM_MAJOR_MAINTENANCE);
+                $ctype = ENUM_MAJOR_MAINTENANCE;
             }
 
-            $this->view_brigde_detail_model->dbFilterCompleted();
+            //$this->view_brigde_detail_model->dbFilterCompleted();
             
-            if($this->request->getVar("selFilterByDistrict") != '') {
-                      $distFilter = $this->request->getVar("selFilterByDistrict");
-                      $this->view_brigde_detail_model->where('dist01id',$distFilter);
-                      $data['sel_district_filter'] = $distFilter;
-                    }
+            // if($this->request->getVar("selFilterByDistrict") != '') {
+            //           $distFilter = $this->request->getVar("selFilterByDistrict");
+            //           $this->view_brigde_detail_model->where('dist01id',$distFilter);
+            //           $data['sel_district_filter'] = $distFilter;
+            //         }
                     
-            $arrBridgeList = $this->view_brigde_detail_model->
-                where('bri03project_fiscal_year >=', $dataStart)->
-                where('bri03project_fiscal_year <=', $dateEnd)->
-                asObject()->
-                findAll();
+            // $arrBridgeList = $this->view_brigde_detail_model->
+            //     where('bri03project_fiscal_year >=', $dataStart)->
+            //     where('bri03project_fiscal_year <=', $dateEnd)->
+            //     asObject()->
+            //     findAll();
+
+            if ($this->request->getVar("selFilterByDistrict") != '') {
+                $distFilter = $this->request->getVar("selFilterByDistrict");
+                //$this->view_bridge_detail_model->where('dist01id', $distFilter);
+                $data['sel_district_filter'] = $distFilter;
+                $arrBridgeList = $this->view_bridge_detail_model->getbridges($dataStart, $dateEnd, $distFilter, $ctype, 'asObject');
+            } else {
+                $arrBridgeList = $this->view_bridge_detail_model->getbridges($dataStart, $dateEnd, '', $ctype, 'asObject');
+            }
+
             //var_dump($arrBridgeList);exit;
             $arrBridgeIdList = null;
             if(!empty($arrBridgeList) && is_array( $arrBridgeList )){

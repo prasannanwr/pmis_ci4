@@ -191,16 +191,54 @@ class bridge extends BaseController
 		//if post
 		if ($this->request->getMethod() == 'post') {
 			//check if the form is submitted or not bri03project_fiscal_year
+
 			$rules = [
-				'bri03bridge_name' => 'required',
-				'bri03construction_type' => 'required',
-				'bri03district_name_lb' => 'required',
-				'bri03district_name_rb' => 'required',
-				'bri03river_name' => 'required',
-				'bri03supporting_agency' => 'required',
-				'bri03work_category' => 'required',
-				'bri03project_fiscal_year' => 'required'
-			];
+	            "bri03bridge_name" => [
+	                "label" => "Bridge name", 
+	                "rules" => "required"
+	            ],
+	            "bri03construction_type" => [
+	                "label" => "Place name", 
+	                "rules" => "required"
+	            ],
+	            "bri03river_name" => [
+	                "label" => "River name", 
+	                "rules" => "required"
+	            ],
+	            "bri03district_name_lb" => [
+	                "label" => "Left bank district", 
+	                "rules" => "required"
+	            ],
+	            "bri03district_name_rb" => [
+	                "label" => "Right bank district", 
+	                "rules" => "required"
+	            ],
+	            "bri03supporting_agency" => [
+	                "label" => "Supporing agency", 
+	                "rules" => "required"
+	            ],
+	            "bri03work_category" => [
+	                "label" => "Work category", 
+	                "rules" => "required"
+	            ],
+	            "bri03project_fiscal_year" => [
+	                "label" => "Project fiscal year", 
+	                "rules" => "required"
+	            ],
+
+	        ];
+
+			// $rules = [
+			// 	'bri03bridge_name' => 'required',
+			// 	'bri03construction_type' => 'required',
+			// 	'bri03district_name_lb' => 'required',
+			// 	'bri03district_name_rb' => 'required',
+			// 	'bri03river_name' => 'required',
+			// 	'bri03supporting_agency' => 'required',
+			// 	'bri03work_category' => 'required',
+			// 	'bri03project_fiscal_year' => 'required'
+			// ];
+
 
 		if (!$this->validate($rules)) {
 			$data['validation'] = $this->validator;
@@ -241,6 +279,21 @@ class bridge extends BaseController
 							$mVDC = @$this->request->getVar('bri03municipality_lb');
 						}
 						$bridge_no = $this->bridge_model->generate_bridge_code($mVDC);
+						//$bridge_no = '0983744';
+						//echo $bridge_no;exit;
+						//check if bridge number already exists
+						$data = $this->bridge_model->where('bri03bridge_no',$bridge_no)->first();
+						//var_dump($data);exit;
+						
+						if($data != NULL) {
+							//session()->setFlashdata('message', 'Bridge with the same number already exists.');
+							session()->setFlashdata('message', ["message" => 'Bridge with the same number already exists.', "alert-class" => 'alert-danger']); 
+							return redirect()->to('bridge/form/');
+						} else {
+							//update bridge count
+							$this->bridge_model->update_bridge_no_palika($mVDC);
+						}
+
 						//echo "bno:".$bridge_no;exit;
 					} else {
 						//die("old");
@@ -736,17 +789,14 @@ class bridge extends BaseController
 
 		$search = $this->request->getVar('search');
 		if ($search['value'] !== '') {
-			$sql .= " AND `bri03bridge_name` LIKE '%{$search['value']}%'";
-			$sql .= " OR `bri03bridge_no` LIKE '%{$search['value']}%'";
+			$sql .= " AND (`bri03bridge_name` LIKE '%{$search['value']}%'";
+			$sql .= " OR `bri03bridge_no` LIKE '%{$search['value']}%')";
 		}
 		return $sql;
 	}
 
 	function ajaxData()
 	{
-		//todo: count total records and put the no here
-		//Apply Where Condition for counting
-		//$this->ajaxDataApplyWhere();
 
 		//Apply Limit for data
 		$length = ($this->request->getVar('length') != ''?$this->request->getVar('length'):10);
@@ -759,31 +809,23 @@ class bridge extends BaseController
 		//$arrColumns = array('bri03bridge_no', 'bri03bridge_name', 'bri03river_name', 'bri03design', 'dist01name', 'bri05bridge_complete', 'bri05bridge_complete_check', 'bri03construction_type');
 		$arrColumns = array('bri03bridge_no', 'bri03bridge_name', 'bri03river_name', 'bri03design', 'dist01name', 'bri05bridge_complete', 'bri05bridge_complete_check', 'bri03construction_type', 'bri03work_category');
 		$order = $this->request->getVar('order');
-		
-		// $arrDataList = $this->view_all_join_bridge_table_model->findAll($length, $start);
-		//$arrDataList = $this->view_all_join_bridge_table_model->getBridgesFiltered($length, $start);
-		//$sql = "SELECT * FROM {$this->table} WHERE 1=1";
-		// $sql = "select `a`.`bri03id` AS `bri03id`,`a`.`bri03bridge_name` AS `bri03bridge_name`,`a`.`bri03bridge_no` AS `bri03bridge_no`,`a`.`bri03river_name` AS `bri03river_name`,`a`.`bri03e_span` AS `bri03e_span`, `a`.`bri03major_vdc`, `a`.`bri03construction_type`,`a`.`bri03work_category`, `a`.`bri03district_name_lb` as `left_dist01id`, `a`.`bri03district_name_rb` as `right_dist01id`, `b`.`bri05bridge_complete` AS `bri05bridge_complete`,`b`.`bri05bridge_completion_fiscalyear` AS `bri05bridge_completion_fiscalyear`, `c`.`dist01id`, `c`.`dist01name` AS `left_district`, `d`.`dist01name` AS `right_district` from `bri03basic_bridge_datatable` `a` left join `bri05bridge_implementation_processtable` `b` on(`a`.`bri03bridge_no` = `b`.`bri05bridge_no`) left join `dist01district` `c` on(`a`.`bri03district_name_lb` = `c`.`dist01id`) left join `dist01district` `d` on(`a`.`bri03district_name_rb` = `d`.`dist01id`) WHERE 1=1";
 
-		$sql = "select `a`.*, case `a`.`bri03major_vdc` when 0 then `a`.`left_dist01id` else `a`.`right_dist01id` end AS `bri03major_dist_id`, case `a`.`bri03major_vdc` when 0 then `a`.`left_district` else `a`.`right_district` end AS `bri03major_district` FROM `view_all_bridges_list` a WHERE 1=1";
-
-		// $sel_district_model = new sel_district_model();
-  //       $arrPermittedDistListFull = $sel_district_model->where('user02userid', session()->get('user_id'))->findAll();
-        
-  //       $arrPermittedDistList = array();
-  //       foreach( $arrPermittedDistListFull as $k=>$v ){
-  //           $arrPermittedDistList[] = $v['user02dist01id'];
-  //       }
-
+		// $sql = "select `a`.*, case `a`.`bri03major_vdc` when 0 then `a`.`left_dist01id` else `a`.`right_dist01id` end AS `bri03major_dist_id`, case `a`.`bri03major_vdc` when 0 then `a`.`left_district` else `a`.`right_district` end AS `bri03major_district` FROM `view_all_bridges_list` a WHERE 1=1";
+		$sql = "select `a`.* FROM `view_all_bridges_list_major_dist` a WHERE 1=1";
 		$extra_sql = $this->ajaxDataApplyWhereOptimized();
 		$sql .=$extra_sql;
 		//echo $sql;exit;
 
 		$arrPermittedDistList = $this->view_all_join_bridge_table_model->permittedDistrict();
         $blnIsLogged = empty($this->session);
-        //var_dump($arrPermittedDistList);exit;
+        
         //var_dump(session()->get('type'));
         $intUserType = ($blnIsLogged)? session()->get('type'): ENUM_GUEST; 
+
+        // echo $intUserType;
+        // echo "<br><br>";
+        // var_dump($arrPermittedDistList);exit;
+
         if($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR){
             //comma seperated value
             $data = '';
@@ -794,7 +836,7 @@ class bridge extends BaseController
             }
         }
 		$sql .=" LIMIT {$start}, {$length}";
-		//echo $sql;exit;
+
 		$arrDataList = $this->db->query($sql)->getResult();
 
 		$total = $this->view_all_join_bridge_table_model->totalBridges($search, $arrPermittedDistList, $extra_sql);

@@ -9,7 +9,7 @@ use App\Modules\supporting_agencies\Models\supporting_agencies_model;
 use App\Modules\template\Controllers\Template;
 use App\Modules\view\Models\view_bridge_detail_model;
 use App\Modules\weighted\Models\weighted_model;
-
+use App\Modules\view\Models\view_all_join_bridge_table_model;
 //use App\Modules\Reports\Models\ReportsModel;
 
 class Pro_Physical_Progress_report extends BaseController
@@ -24,6 +24,8 @@ class Pro_Physical_Progress_report extends BaseController
 
   private $view_brigde_detail_model;
 
+  private $view_all_join_bridge_table_model;
+
   private $template;
 
   public function __construct()
@@ -34,11 +36,13 @@ class Pro_Physical_Progress_report extends BaseController
     $district_name_model = new district_name_model();
     $weighted_model = new weighted_model();
     $view_brigde_detail_model = new view_bridge_detail_model();
+    $view_all_join_bridge_table_model = new view_all_join_bridge_table_model();
     $this->fiscal_year_model = $fiscal_year_model;
     $this->supporting_agencies_model = $supporting_agencies_model;
     $this->district_name_model = $district_name_model;
     $this->weighted_model = $weighted_model;
     $this->view_brigde_detail_model = $view_brigde_detail_model;
+    $this->view_all_join_bridge_table_model = $view_all_join_bridge_table_model;
     $this->template = new Template();
     if (count(self::$arrDefData) <= 0) {
       $FName = basename(__FILE__, '.php');
@@ -76,6 +80,19 @@ class Pro_Physical_Progress_report extends BaseController
     
     $data['startyear'] =$this->fiscal_year_model->where('fis01id', $dataStart)->first();
     $data['endyear'] = $this->fiscal_year_model->where('fis01id', $dateEnd)->first();
+
+    $arrPermittedDistList = $this->view_all_join_bridge_table_model->permittedDistrict();
+
+    //filter districts
+    $blnIsLogged = empty($this->session);
+    $intUserType = ($blnIsLogged)? session()->get('type'): ENUM_GUEST;
+    if($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR){
+        //comma seperated value
+        if( count( $arrPermittedDistList )> 0) {
+            //$permittedDistList = implode(',', $arrPermittedDistList);
+            $this->district_name_model->whereIn('dist01id',$arrPermittedDistList);
+        }
+    }
     
     $arrSupList = $this->supporting_agencies_model->findAll();
     if(trim($regionaloffice) != '') {
@@ -83,18 +100,22 @@ class Pro_Physical_Progress_report extends BaseController
     } else {
         $arrDistList = $this->district_name_model->findAll();
     }
+
     // echo $regionaloffice."<pre>";
     // var_dump($arrDistList);exit;
-    $x = $this->weighted_model->findAll();
+    $x = $this->weighted_model->asArray()->findAll();
     //var_dump( $x );
     //change into associatie array
+    $arrWeightList = array();
     foreach( $x as $v){
         $arrWeightList[ $v['wei01int_name'] ] = $v;
     }
-    //var_dump( $y );
-    //die();
+    // if(is_array($arrWeightList)) {
+    //     echo "<pre>";
+    //     var_dump($arrWeightList);exit;
+    // }
     $data['arrWeightList'] = $arrWeightList;
-    
+   
     $fldnames = array('bri05site_assessment', 'bri05bridge_design_estimate','bri05material_supply_target',
     'bri05first_phase_constrution','bri05anchorage_concreting','bri05bridge_complete','bri05bmc_formation','bri05sos_orentation',
     'bri05bridge_completion_target','bri05material_supply_uc','bri05final_inspection','bri05community_agreement','bri05dmbt'
@@ -169,8 +190,17 @@ class Pro_Physical_Progress_report extends BaseController
                                 where('bri03work_category !=', 3)->
                                 orderBy('bri03work_category desc')->
                                 findAll();*/
+
+                        if($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR){
+                            //comma seperated value
+                            if( count( $arrPermittedDistList )> 0) {
+                                //$permittedDistList = implode(',', $arrPermittedDistList);
+                                $brige_list = $this->view_brigde_detail_model->getcbridges($data['currentfy'], $x, $selAgency, $regionaloffice, $arrPermittedDistList);
+                            }
+                        } else {
+                            $brige_list = $this->view_brigde_detail_model->getcbridges($data['currentfy'], $x, $selAgency, $regionaloffice);
+                        }
                                 
-                                $brige_list = $this->view_brigde_detail_model->getcbridges($data['currentfy'],$x,$selAgency,$regionaloffice);
                        // }    
                     
                     } else {
@@ -192,25 +222,26 @@ class Pro_Physical_Progress_report extends BaseController
                                 findAll();*/
                                 
                             //$brige_list = $this->view_brigde_detail_model->getoldcbridges($fstartfy,$fendfy,$x);
-                                $brige_list = $this->view_brigde_detail_model->getoldcbridges($fstartfy,$fendfy,$x,$selAgency,$regionaloffice);
+                                
                         //}
+                        if($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR){
+                            //comma seperated value
+                            if( count( $arrPermittedDistList )> 0) {
+                                //$permittedDistList = implode(',', $arrPermittedDistList);
+                                $brige_list = $this->view_brigde_detail_model->getoldcbridges($fstartfy,$fendfy,$x,$selAgency,$regionaloffice, $arrPermittedDistList);
+                            }
+                        } else {
+                            $brige_list = $this->view_brigde_detail_model->getoldcbridges($fstartfy,$fendfy,$x,$selAgency,$regionaloffice);
+                        }
 
                     }
-                    
 
-                        
-                    
                     //echo $this->db->last_query();
-                    //echo count($brige_list);
-                    // print_r($brige_list);
-                    
-                    
-                    
+                    //echo count($brige_list);            
                         
                     $arrDataList = array();
                     $allTotal = 0;
                     
-
                     //$arrExLabel = array('');
                         foreach ($brige_list as $k => $v)
                     

@@ -68,6 +68,7 @@
                             
         <!-- 2nd table-->
         <?php 
+        $i = 1;
         if(is_array($arrPrintList)){
             foreach($arrPrintList as $dataRow){
                 if( isset($dataRow['info']) ){
@@ -95,7 +96,7 @@
                                     <b><span>District:<?php echo $dataRow2['info']->dist01name;?></span></b>
                                 </div>
                                 <div class="col-lg-6">
-                                    <b><span style="float:right;" >TBSU Regional Office:<?php  echo  $dataRow2['info']->tbis01name;?></span></b>
+                                    <!-- <b><span style="float:right;" >TBSU Regional Office:<?php  //echo  $dataRow2['info']->tbis01name;?></span></b> -->
                                 </div>
                             </div>    
                         </td>

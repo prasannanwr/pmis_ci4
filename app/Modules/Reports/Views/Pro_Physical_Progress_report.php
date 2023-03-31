@@ -72,7 +72,7 @@
 
 									//var_dump($dataRow);
 							?>
-
+									<?php if(sizeof($dataRow) > 0) { ?>
 									<tr>
 										<td colspan="22" class="">Supporting Agency : <?php echo $arrSupData['sup01sup_agency_name']; ?></td>
 									</tr>
@@ -135,6 +135,7 @@
 											}
 										}
 									}
+								}
 								}
 							}
 							?>

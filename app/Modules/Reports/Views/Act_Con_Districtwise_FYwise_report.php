@@ -80,10 +80,10 @@
                 	<td colspan="22px">                     
                         <div class="row">
                         <div class="col-lg-6">
-                                <b><span>State:<?php   echo $dataRow['info']->province_name; ?></span></b>
+                                <b><span>State:<?php echo $dataRow['info']->province_name; ?></span></b>
                             </div>
                             <!--<div class="col-lg-6" style="float:right;">
-                                <div style="float:right;">TBSU Regional Office:<?php  echo  $dataRow['info']->tbis01name; ?></div>
+                                <div style="float:right;">TBSU Regional Office:<?php  //echo  $dataRow['info']->tbis01name; ?></div>
                             </div>-->
                         </div>     
                     </td>

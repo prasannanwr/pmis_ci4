@@ -150,7 +150,8 @@ class User extends BaseController
                 $this->model->save($newData);
                 $newid = $this->model->getInsertID();
   
-                $arrDist = $this->request->getVar('district_auth' );
+                $arrDist = $this->request->getVar('district_auth');
+                //var_dump($arrDist);exit;
                 if(isset($arrDist)){
                     foreach($arrDist as $k => $v ){
                         $this->sel_district_model->insert(array('user02dist01id'=>$v, 'user02userid'=> $newid));

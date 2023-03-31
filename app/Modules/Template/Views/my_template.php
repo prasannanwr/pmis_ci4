@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>TBIS - <?php echo (isset($title)? $title : '');?></title>
     <meta charset="utf-8">
@@ -61,10 +60,16 @@
         <?=$this->include('\Modules\Reports\Views\layouts\top_navigation.php');?>
         <div id="page-wrapper" class="dashboard-section">
             <?php if (session()->getFlashdata("message")) :?>
-                <div class="container-fluid">
-                    <div class="alert <?=(session()->getFlashdata('alert-class') ? session()->getFlashdata('alert-class'): 'alert-success'); ?> alert-dismissable">
-                        <?php echo session()->getFlashdata("message"); ?>
-                    </div>
+                <div class="container-fluid">    
+                    <?php if(is_array(session()->getFlashdata("message"))) : ?>
+                        <div class="alert <?=(session()->getFlashdata('message')['alert-class'] ? session()->getFlashdata('message')['alert-class']: 'alert-success'); ?> alert-dismissable">
+                            <?php echo session()->getFlashdata('message')['message']; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="alert <?=(session()->getFlashdata('alert-class') ? session()->getFlashdata('alert-class'): 'alert-success'); ?> alert-dismissable">
+                            <?php echo session()->getFlashdata("message"); ?>
+                        </div>
+                    <?php endif;?>
                 </div>
             <?php endif ?>
 

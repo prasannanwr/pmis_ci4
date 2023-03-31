@@ -15,6 +15,14 @@
 		<?php // var_dump($objOldRec); 
 		?>
 
+		<?php if (isset($validation)) : ?>
+			<div class="">
+				<div class="alert alert-danger" role="alert">
+					<?= $validation->listErrors() ?>
+				</div>
+			</div>
+		<?php endif; ?>
+
 		<div class="row add_form_btn">
 			<?php $valDisable = ($objOldRec && $objOldRec['bri03id'] != '') ? "readonly" : " "; ?>
 			<a href="<?php echo site_url(); ?>/bridge/form" class="btn btn-md btn-primary">Add New</a>
@@ -128,8 +136,8 @@
 
 										et_setFormVal('bri03district_name_lb', $objOldRec),
 
-										getPermittedDists(),
-										//'',
+										//getPermittedDists(),
+										'',
 
 										'class="form-control onChangeDist" data-targetvdc="#bri03municipality_lb" ' . $valDisableDist . ' ',
 										array('SortBy' => 'dist01name')
@@ -217,7 +225,7 @@
 
 
 
-							
+
 
 							<div class="form-group clearfix">
 
@@ -251,7 +259,7 @@
 
 
 
-							
+
 
 
 
@@ -278,7 +286,7 @@
 
 								<div class="col-lg-7 ">
 
-									<?php echo et_form_dropdown_db('bri03supporting_agency', 'sup03basic_supporting_agency', 'sup03sup_agency_name', 'sup03id', et_setFormVal('bri03supporting_agency', $objOldRec), array(array('sup03status','where',1)), 'class="form-control"', array('SortBy' => 'sup03index')) ?>
+									<?php echo et_form_dropdown_db('bri03supporting_agency', 'sup03basic_supporting_agency', 'sup03sup_agency_name', 'sup03id', et_setFormVal('bri03supporting_agency', $objOldRec), array(array('sup03status', 'where', 1)), 'class="form-control"', array('SortBy' => 'sup03index')) ?>
 
 
 
@@ -365,7 +373,7 @@
 
 								<div class="col-lg-7 ">
 
-									<?php echo et_form_dropdown_db_dist('bri03district_name_rb', 'dist01district', 'dist01name', 'dist01id', et_setFormVal('bri03district_name_rb', $objOldRec), getPermittedDists(), 'class="form-control onChangeDist" data-targetvdc="#bri03municipality_rb" ' . $valDisableDist . '', array('SortBy' => 'dist01name')) ?>
+									<?php echo et_form_dropdown_db_dist('bri03district_name_rb', 'dist01district', 'dist01name', 'dist01id', et_setFormVal('bri03district_name_rb', $objOldRec), '', 'class="form-control onChangeDist" data-targetvdc="#bri03municipality_rb" ' . $valDisableDist . '', array('SortBy' => 'dist01name')) ?>
 
 								</div>
 
@@ -455,7 +463,7 @@
 
 								<div class="col-lg-7 ">
 
-									<?php echo et_form_dropdown_db('bri03ww_deck_type', 'wad01walkway_deck_type_table', 'wad01walkway_deck_type_name', 'wad01id', et_setFormVal('bri03ww_deck_type', $objOldRec), array(array('wad01status','where',1)), 'class="form-control"') ?>
+									<?php echo et_form_dropdown_db('bri03ww_deck_type', 'wad01walkway_deck_type_table', 'wad01walkway_deck_type_name', 'wad01id', et_setFormVal('bri03ww_deck_type', $objOldRec), array(array('wad01status', 'where', 1)), 'class="form-control"') ?>
 
 
 
@@ -473,7 +481,7 @@
 
 								<div class="col-lg-7 ">
 
-									<?php echo et_form_dropdown_db('bri03ww_width', 'wal01walkway_width_table', 'wal01walkway_width', 'wal01id', et_setFormVal('bri03ww_width', $objOldRec), '', 'class="form-control"',array('SortBy' => 'wal01walkway_sort')) ?>
+									<?php echo et_form_dropdown_db('bri03ww_width', 'wal01walkway_width_table', 'wal01walkway_width', 'wal01id', et_setFormVal('bri03ww_width', $objOldRec), '', 'class="form-control"', array('SortBy' => 'wal01walkway_sort')) ?>
 								</div>
 
 							</div>
@@ -612,21 +620,23 @@
 
 									<div class="col-lg-7 ">
 
-										<?php //echo et_form_dropdown_db('bri04anchorage_foundation_leftbank', 'anc01main_anchorage_foundation_table', 'anc01maf_type_name', 'anc01id', et_setFormVal('bri04anchorage_foundation_leftbank', $objbasicRec), '', 'class="form-control"') ?>
+										<?php //echo et_form_dropdown_db('bri04anchorage_foundation_leftbank', 'anc01main_anchorage_foundation_table', 'anc01maf_type_name', 'anc01id', et_setFormVal('bri04anchorage_foundation_leftbank', $objbasicRec), '', 'class="form-control"') 
+										?>
 										<select name="bri04anchorage_foundation_leftbank" id="bri04anchorage_foundation_leftbank" class="form-control">
 											<option>--Please Select--</option>
 											<?php $anc01maf_btype = '';
 											foreach ($brianchorage_foundation as $anchorage_foundation) {
-												if($anc01maf_btype != '' && $anchorage_foundation->anc01maf_btype != $anc01maf_btype) { ?>
+												if ($anc01maf_btype != '' && $anchorage_foundation->anc01maf_btype != $anc01maf_btype) { ?>
 													<optgroup label="&nbsp;&nbsp;">
-												<?php } 
+													<?php }
 												$anc01maf_btype  = $anchorage_foundation->anc01maf_btype;
-												if($anchorage_foundation->anc01maf_type_parent != '') {
-												?>
-												<optgroup label="<?=$anchorage_foundation->anc01maf_type_name;?>">
-												<?php } else { ?>
-												<option <?=(is_array($objbasicRec) && $anchorage_foundation->anc01id == $objbasicRec['bri04anchorage_foundation_leftbank'])?'selected="selected"':'';?> value="<?=$anchorage_foundation->anc01id;?>"><?=$anchorage_foundation->anc01maf_type_name;?></option>
-											<?php } } ?>
+												if ($anchorage_foundation->anc01maf_type_parent != '') {
+													?>
+													<optgroup label="<?= $anchorage_foundation->anc01maf_type_name; ?>">
+													<?php } else { ?>
+														<option <?= (is_array($objbasicRec) && $anchorage_foundation->anc01id == $objbasicRec['bri04anchorage_foundation_leftbank']) ? 'selected="selected"' : ''; ?> value="<?= $anchorage_foundation->anc01id; ?>"><?= $anchorage_foundation->anc01maf_type_name; ?></option>
+												<?php }
+											} ?>
 										</select>
 
 									</div>
@@ -643,16 +653,18 @@
 
 									<div class="col-lg-7 ">
 
-										<?php //echo et_form_dropdown_db('bri04anchorage_foundation_rb', 'anc01main_anchorage_foundation_table', 'anc01maf_type_name', 'anc01id', et_setFormVal('bri04anchorage_foundation_rb', $objbasicRec), '', 'class="form-control"') ?>
+										<?php //echo et_form_dropdown_db('bri04anchorage_foundation_rb', 'anc01main_anchorage_foundation_table', 'anc01maf_type_name', 'anc01id', et_setFormVal('bri04anchorage_foundation_rb', $objbasicRec), '', 'class="form-control"') 
+										?>
 										<select name="bri04anchorage_foundation_rb" id="bri04anchorage_foundation_rb" class="form-control">
 											<option>--Please Select--</option>
-											<?php foreach ($brianchorage_foundation as $anchorage_foundation) { 
-												if($anchorage_foundation->anc01maf_type_parent != '') {
-												?>
-												<optgroup label="<?=$anchorage_foundation->anc01maf_type_name;?>">
-												<?php } else { ?>
-												<option <?=(is_array($objbasicRec) && $objbasicRec['bri04anchorage_foundation_rb'] == $anchorage_foundation->anc01id)?'selected="selected"':'';?> value="<?=$anchorage_foundation->anc01id;?>"><?=$anchorage_foundation->anc01maf_type_name;?></option>
-											<?php } } ?>
+											<?php foreach ($brianchorage_foundation as $anchorage_foundation) {
+												if ($anchorage_foundation->anc01maf_type_parent != '') {
+											?>
+													<optgroup label="<?= $anchorage_foundation->anc01maf_type_name; ?>">
+													<?php } else { ?>
+														<option <?= (is_array($objbasicRec) && $objbasicRec['bri04anchorage_foundation_rb'] == $anchorage_foundation->anc01id) ? 'selected="selected"' : ''; ?> value="<?= $anchorage_foundation->anc01id; ?>"><?= $anchorage_foundation->anc01maf_type_name; ?></option>
+												<?php }
+											} ?>
 										</select>
 
 									</div>
@@ -663,26 +675,31 @@
 
 
 								<?php
-										if(isset($objbasicRec['bri04slope_protection_lb'])) {
-											$bri04slope_protection_lb = strtolower(trim($objbasicRec['bri04slope_protection_lb']));	
-										}
-										if(isset($objbasicRec['bri04slope_protection_rb'])) {
-											$bri04slope_protection_rb = strtolower(trim($objbasicRec['bri04slope_protection_rb']));
-										}
-										$none_arr = array("no","none","0","NA");
-										
-										?>
+								if (isset($objbasicRec['bri04slope_protection_lb'])) {
+									$bri04slope_protection_lb = strtolower(trim($objbasicRec['bri04slope_protection_lb']));
+								}
+								if (isset($objbasicRec['bri04slope_protection_rb'])) {
+									$bri04slope_protection_rb = strtolower(trim($objbasicRec['bri04slope_protection_rb']));
+								}
+								$none_arr = array("no", "none", "0", "NA");
+
+								?>
 								<div class="form-group clearfix">
 
 									<label class="col-lg-5  ">Bank and Slope Protection Left Bank</label>
 
 									<div class="col-lg-7 ">
 
-										<!-- <input type="text" class=" form-control " name="bri04slope_protection_lb" id="bri04slope_protection_lb" value="<?php //echo et_setFormVal('bri04slope_protection_lb', $objbasicRec); ?>" /> -->
+										<!-- <input type="text" class=" form-control " name="bri04slope_protection_lb" id="bri04slope_protection_lb" value="<?php //echo et_setFormVal('bri04slope_protection_lb', $objbasicRec); 
+																																							?>" /> -->
 										<select name="bri04slope_protection_lb" id="bri04slope_protection_lb" class="form-control valid">
 											<option value="">-Select-</option>
-											<option <?php if(isset($objbasicRec['bri04slope_protection_lb']) && ($bri04slope_protection_lb == 'yes' || ($bri04slope_protection_lb != '' && !in_array($bri04slope_protection_lb, $none_arr)))) { echo 'selected="selected"';}?> value="yes">Yes</option>
-											<option <?php if(isset($objbasicRec['bri04slope_protection_lb']) && (in_array($bri04slope_protection_lb, $none_arr) || $bri04slope_protection_lb == '')) { echo 'selected="selected"'; } ?> value="no">No</option>
+											<option <?php if (isset($objbasicRec['bri04slope_protection_lb']) && ($bri04slope_protection_lb == 'yes' || ($bri04slope_protection_lb != '' && !in_array($bri04slope_protection_lb, $none_arr)))) {
+														echo 'selected="selected"';
+													} ?> value="yes">Yes</option>
+											<option <?php if (isset($objbasicRec['bri04slope_protection_lb']) && (in_array($bri04slope_protection_lb, $none_arr) || $bri04slope_protection_lb == '')) {
+														echo 'selected="selected"';
+													} ?> value="no">No</option>
 										</select>
 
 									</div>
@@ -695,11 +712,16 @@
 
 									<div class="col-lg-7 ">
 
-										<!-- <input type="text" class=" form-control " name="bri04slope_protection_rb" id="bri04slope_protection_rb" value="<?php //echo et_setFormVal('bri04slope_protection_rb', $objbasicRec); ?>" /> -->
+										<!-- <input type="text" class=" form-control " name="bri04slope_protection_rb" id="bri04slope_protection_rb" value="<?php //echo et_setFormVal('bri04slope_protection_rb', $objbasicRec); 
+																																							?>" /> -->
 										<select name="bri04slope_protection_rb" id="bri04slope_protection_rb" class="form-control valid">
 											<option value="">-Select-</option>
-											<option <?php if(isset($objbasicRec['bri04slope_protection_rb']) && ($bri04slope_protection_rb == 'yes' || ($bri04slope_protection_rb != '' && !in_array($bri04slope_protection_rb, $none_arr)))) { echo 'selected="selected"';}?> value="yes">Yes</option>
-											<option <?php if(isset($objbasicRec['bri04slope_protection_rb']) && (in_array($bri04slope_protection_rb, $none_arr) || $bri04slope_protection_rb == '')) { echo 'selected="selected"'; } ?> value="no">No</option>
+											<option <?php if (isset($objbasicRec['bri04slope_protection_rb']) && ($bri04slope_protection_rb == 'yes' || ($bri04slope_protection_rb != '' && !in_array($bri04slope_protection_rb, $none_arr)))) {
+														echo 'selected="selected"';
+													} ?> value="yes">Yes</option>
+											<option <?php if (isset($objbasicRec['bri04slope_protection_rb']) && (in_array($bri04slope_protection_rb, $none_arr) || $bri04slope_protection_rb == '')) {
+														echo 'selected="selected"';
+													} ?> value="no">No</option>
 										</select>
 
 									</div>
@@ -1055,57 +1077,39 @@
 
 							</div>
 
-
-
-							<div class="form-group clearfix" <?php echo $mm_disable_field; ?>>
-
-								<label class="col-lg-5 nopad">Foundation Completed</label>
-
+							<div class="form-group clearfix">
+								<label class="col-lg-5 nopad" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#adabab"' : ''); ?>>Cable Pulling</label>
 								<div class="col-lg-7 datebox-container ">
-
 									<div class="col-lg-2 checkPad ">
+										<input type="checkbox" class=" form-control " name="bri05cable_pulling_check" id="bri05cable_pulling_check" value="1" <?php echo (et_setFormVal('bri05cable_pulling_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
+									</div>
+									<div class="col-lg-10 nopad  input-group <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? '' : 'date'); ?> ">
+										<span class="input-group-addon"><i class="glyphicon glyphicon-th" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#c6c6c6"' : ''); ?>></i></span>
 
-										<input type="checkbox" class=" form-control " name="bri05third_phase_construction_check" id="bri05third_phase_construction_check" value="1" <?php echo (et_setFormVal('bri05third_phase_construction_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> />
+										<input type="text" class=" form-control " name="bri05cable_pulling" id="bri05cable_pulling" value="<?php if (isset($objImplementationRec['bri05cable_pulling']) && $objImplementationRec['bri05cable_pulling'] != "0000-00-00") {									echo et_setFormVal('bri05cable_pulling', $objImplementationRec);					} ?>" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
 
 									</div>
-
-									<div class="col-lg-10 nopad  input-group date ">
-
-										<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-
-										<input type="text" class=" form-control " name="bri05third_phase_construction" id="bri05third_phase_construction" value="<?php if (isset($objImplementationRec['bri05third_phase_construction']) && $objImplementationRec['bri05third_phase_construction'] != "0000-00-00") {
-																																										echo et_setFormVal('bri05third_phase_construction', $objImplementationRec);
-																																									} ?>" />
-
-									</div>
-
-
-
 								</div>
-
 							</div>
-
-
 
 							<div class="form-group clearfix">
 
-								<label class="col-lg-5 nopad">Final Inspection</label>
+								<label class="col-lg-5 nopad" <?php //echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#adabab;"':'');
+																?>>Bridge Complete</label>
 
 								<div class="col-lg-7 datebox-container ">
 
 									<div class="col-lg-2 checkPad ">
 
-										<input type="checkbox" class=" form-control " name="bri05final_inspection_check" id="bri05final_inspection_check" value="1" <?php echo (et_setFormVal('bri05final_inspection_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> />
+										<input type="checkbox" class=" form-control " name="bri05bridge_complete_check" id="bri05bridge_complete_check" value="1" <?php echo (et_setFormVal('bri05bridge_complete_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> <?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? 'readonly="readonly"':''); ?> />
 
 									</div>
 
-									<div class="col-lg-10 nopad  input-group date ">
+									<div class="col-lg-10 nopad  input-group date">
 
-										<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+										<span class="input-group-addon"><i class="glyphicon glyphicon-th" <?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? 'style="color:#c6c6c6"':'');?>></i></span>
 
-										<input type="text" class=" form-control " name="bri05final_inspection" id="bri05final_inspection" value="<?php if (isset($objImplementationRec['bri05final_inspection']) && $objImplementationRec['bri05final_inspection'] != "0000-00-00") {
-																																						echo et_setFormVal('bri05final_inspection', $objImplementationRec);
-																																					} ?>" />
+										<input type="text" class=" form-control " name="bri05bridge_complete" id="bri05bridge_complete" value="<?php if (isset($objImplementationRec['bri05bridge_complete']) && $objImplementationRec['bri05bridge_complete'] != "0000-00-00") {					echo et_setFormVal('bri05bridge_complete', $objImplementationRec);				} ?>" <?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? 'readonly="readonly"':'');					?> />
 
 									</div>
 
@@ -1114,13 +1118,6 @@
 								</div>
 
 							</div>
-
-
-
-
-
-
-
 
 
 						</div>
@@ -1203,7 +1200,7 @@
 
 										<input type="text" class=" form-control " name="bri05bridge_completion_target" id="bri05bridge_completion_target" value="<?php if (isset($objImplementationRec['bri05bridge_completion_target']) && $objImplementationRec['bri05bridge_completion_target'] != "0000-00-00") {
 																																										echo et_setFormVal('bri05bridge_completion_target', $objImplementationRec);
-																												} ?>" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
+																																									} ?>" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
 									</div>
 								</div>
 							</div>
@@ -1219,56 +1216,21 @@
 										<span class="input-group-addon"><i class="glyphicon glyphicon-th" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#c6c6c6"' : ''); ?>></i></span>
 
 										<input type="text" class=" form-control " name="bri05bridge_fabrication_contract" id="bri05bridge_fabrication_contract" value="<?php if (isset($objImplementationRec['bri05bridge_fabrication_contract']) && $objImplementationRec['bri05bridge_fabrication_contract'] != "0000-00-00") {
-																																										echo et_setFormVal('bri05bridge_fabrication_contract', $objImplementationRec);
-																												} ?>" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
+																																											echo et_setFormVal('bri05bridge_fabrication_contract', $objImplementationRec);
+																																										} ?>" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
 									</div>
 								</div>
 							</div>
 
 							<div class="form-group clearfix">
 
-								<label class="col-lg-5 nopad" <?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? 'style="color:#adabab;"':'');
-																?>>Steel Parts Fabrication completed</label>
+								<label class="col-lg-5 nopad" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#adabab"' : ''); ?>>Material Supply to UC</label>
 
 								<div class="col-lg-7 datebox-container ">
 
 									<div class="col-lg-2 checkPad ">
 
-										<input type="checkbox" class=" form-control " name="bri05material_supply_target_check" id="bri05material_supply_target_check" value="1" <?php echo (et_setFormVal('bri05material_supply_target_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> <?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? 'readonly="readonly"':'');
-																																																																											?> />
-
-									</div>
-
-									<div class="col-lg-10 nopad  input-group date<?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? '':'date');
-																					?> ">
-
-										<span class="input-group-addon"><i class="glyphicon glyphicon-th" <?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? 'style="color:#c6c6c6"':'');
-																											?>></i></span>
-
-										<input type="text" class=" form-control " name="bri05material_supply_target" id="bri05material_supply_target" value="<?php if (isset($objImplementationRec['bri05material_supply_target']) && $objImplementationRec['bri05material_supply_target'] != "0000-00-00") {
-																																									echo et_setFormVal('bri05material_supply_target', $objImplementationRec);
-																																								} ?>" <?php //echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"':'');
-																																										?> />
-
-									</div>
-
-
-
-
-
-								</div>
-
-							</div>
-
-							<div class="form-group clearfix">
-
-								<label class="col-lg-5 nopad" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#adabab;"' : ''); ?>>Anchorage Concreting</label>
-
-								<div class="col-lg-7 datebox-container ">
-
-									<div class="col-lg-2 checkPad ">
-
-										<input type="checkbox" class=" form-control " name="bri05anchorage_concreting_check" id="bri05anchorage_concreting_check" value="1" <?php echo (et_setFormVal('bri05anchorage_concreting_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
+										<input type="checkbox" class=" form-control " name="bri05material_supply_uc_check" id="bri05material_supply_uc_check" value="1" <?php echo (et_setFormVal('bri05material_supply_uc_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
 
 									</div>
 
@@ -1276,55 +1238,24 @@
 
 										<span class="input-group-addon"><i class="glyphicon glyphicon-th" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#c6c6c6"' : ''); ?>></i></span>
 
-										<input type="text" class=" form-control " name="bri05anchorage_concreting" id="bri05anchorage_concreting" value="<?php if (isset($objImplementationRec['bri05anchorage_concreting']) && $objImplementationRec['bri05anchorage_concreting'] != "0000-00-00") {
-																																								echo et_setFormVal('bri05anchorage_concreting', $objImplementationRec);
-																																							} ?>" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
-
+										<input type="text" class=" form-control " name="bri05material_supply_uc" id="bri05material_supply_uc" value="<?php if (isset($objImplementationRec['bri05material_supply_uc']) && $objImplementationRec['bri05material_supply_uc'] != "0000-00-00") {																		echo et_setFormVal('bri05material_supply_uc', $objImplementationRec);						} ?>" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
 									</div>
-
-
-
 								</div>
 
 							</div>
 
-
-
-
-
-
-							<div class="form-group clearfix">
-
-								<label class="col-lg-5 nopad" <?php //echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#adabab;"':'');
-																?>>Bridge Complete</label>
-
+							<div class="form-group clearfix" <?php echo $mm_disable_field; ?>>
+								<label class="col-lg-5 nopad">Foundation Completed</label>
 								<div class="col-lg-7 datebox-container ">
-
 									<div class="col-lg-2 checkPad ">
-
-										<input type="checkbox" class=" form-control " name="bri05bridge_complete_check" id="bri05bridge_complete_check" value="1" <?php echo (et_setFormVal('bri05bridge_complete_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> <?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? 'readonly="readonly"':'');
-																																																																						?> />
-
+										<input type="checkbox" class=" form-control " name="bri05third_phase_construction_check" id="bri05third_phase_construction_check" value="1" <?php echo (et_setFormVal('bri05third_phase_construction_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> />
 									</div>
-
-									<div class="col-lg-10 nopad  input-group date">
-
-										<span class="input-group-addon"><i class="glyphicon glyphicon-th" <?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? 'style="color:#c6c6c6"':'');
-																											?>></i></span>
-
-										<input type="text" class=" form-control " name="bri05bridge_complete" id="bri05bridge_complete" value="<?php if (isset($objImplementationRec['bri05bridge_complete']) && $objImplementationRec['bri05bridge_complete'] != "0000-00-00") {
-																																					echo et_setFormVal('bri05bridge_complete', $objImplementationRec);
-																																				} ?>" <?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? 'readonly="readonly"':'');
-																																						?> />
-
+									<div class="col-lg-10 nopad  input-group date ">
+										<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+										<input type="text" class=" form-control " name="bri05third_phase_construction" id="bri05third_phase_construction" value="<?php if (isset($objImplementationRec['bri05third_phase_construction']) && $objImplementationRec['bri05third_phase_construction'] != "0000-00-00") {										echo et_setFormVal('bri05third_phase_construction', $objImplementationRec);	} ?>" />
 									</div>
-
-
-
 								</div>
-
 							</div>
-
 
 							<div class="form-group clearfix">
 
@@ -1342,31 +1273,12 @@
 
 										<span class="input-group-addon"><i class="glyphicon glyphicon-th" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#c6c6c6"' : ''); ?>></i></span>
 
-										<input type="text" class=" form-control " name="bri05work_completion_certificate" id="bri05work_completion_certificate" value="<?php if (isset($objImplementationRec['bri05work_completion_certificate']) && $objImplementationRec['bri05work_completion_certificate'] != "0000-00-00") {
-																																											echo et_setFormVal('bri05work_completion_certificate', $objImplementationRec);
-																																										} ?>" />
+										<input type="text" class=" form-control " name="bri05work_completion_certificate" id="bri05work_completion_certificate" value="<?php if (isset($objImplementationRec['bri05work_completion_certificate']) && $objImplementationRec['bri05work_completion_certificate'] != "0000-00-00") {											echo et_setFormVal('bri05work_completion_certificate', $objImplementationRec);} ?>" />
 
 									</div>
-
-
-
 								</div>
-
 							</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+							
 						</div>
 
 						<div class="col-lg-4">
@@ -1448,93 +1360,73 @@
 
 
 
-
 							<div class="form-group clearfix">
 
-								<label class="col-lg-5 nopad" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#adabab"' : ''); ?>>Material Supply to UC</label>
+								<label class="col-lg-5 nopad" <?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? 'style="color:#adabab;"':'');?>>Steel Parts Fabrication completed</label>
 
 								<div class="col-lg-7 datebox-container ">
 
 									<div class="col-lg-2 checkPad ">
 
-										<input type="checkbox" class=" form-control " name="bri05material_supply_uc_check" id="bri05material_supply_uc_check" value="1" <?php echo (et_setFormVal('bri05material_supply_uc_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
-
+										<input type="checkbox" class=" form-control " name="bri05material_supply_target_check" id="bri05material_supply_target_check" value="1" <?php echo (et_setFormVal('bri05material_supply_target_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> <?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? 'readonly="readonly"':'');	?> />
 									</div>
 
-									<div class="col-lg-10 nopad  input-group <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? '' : 'date'); ?> ">
-
-										<span class="input-group-addon"><i class="glyphicon glyphicon-th" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#c6c6c6"' : ''); ?>></i></span>
-
-										<input type="text" class=" form-control " name="bri05material_supply_uc" id="bri05material_supply_uc" value="<?php if (isset($objImplementationRec['bri05material_supply_uc']) && $objImplementationRec['bri05material_supply_uc'] != "0000-00-00") {
-																																							echo et_setFormVal('bri05material_supply_uc', $objImplementationRec);
-																																						} ?>" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
-
+									<div class="col-lg-10 nopad  input-group date<?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? '':'date');?> ">
+										<span class="input-group-addon"><i class="glyphicon glyphicon-th" <?php //echo (isset($objOldRec['bri03construction_type) && $objOldRec['bri03construction_type == 1 ? 'style="color:#c6c6c6"':'');?>></i></span>
+										<input type="text" class=" form-control " name="bri05material_supply_target" id="bri05material_supply_target" value="<?php if (isset($objImplementationRec['bri05material_supply_target']) && $objImplementationRec['bri05material_supply_target'] != "0000-00-00") {
+											echo et_setFormVal('bri05material_supply_target', $objImplementationRec);
+											} ?>" <?php //echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"':'');?> />
 									</div>
-
-
-
 								</div>
 
 							</div>
+							
+							<div class="form-group clearfix">
+								<label class="col-lg-5 nopad" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#adabab;"' : ''); ?>>Anchorage Concreting</label>
 
+								<div class="col-lg-7 datebox-container ">
+									<div class="col-lg-2 checkPad ">
+										<input type="checkbox" class=" form-control " name="bri05anchorage_concreting_check" id="bri05anchorage_concreting_check" value="1" <?php echo (et_setFormVal('bri05anchorage_concreting_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
+									</div>
+									<div class="col-lg-10 nopad  input-group <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? '' : 'date'); ?> ">
+										<span class="input-group-addon"><i class="glyphicon glyphicon-th" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#c6c6c6"' : ''); ?>></i></span>
+										<input type="text" class=" form-control " name="bri05anchorage_concreting" id="bri05anchorage_concreting" value="<?php if (isset($objImplementationRec['bri05anchorage_concreting']) && $objImplementationRec['bri05anchorage_concreting'] != "0000-00-00") {																				echo et_setFormVal('bri05anchorage_concreting', $objImplementationRec);																				} ?>" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
+									</div>
+								</div>
+							</div>
 
 
 							<div class="form-group clearfix">
 
-								<label class="col-lg-5 nopad" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#adabab"' : ''); ?>>Cable Pulling</label>
+								<label class="col-lg-5 nopad">Final Inspection</label>
 
 								<div class="col-lg-7 datebox-container ">
 
 									<div class="col-lg-2 checkPad ">
-
-										<input type="checkbox" class=" form-control " name="bri05cable_pulling_check" id="bri05cable_pulling_check" value="1" <?php echo (et_setFormVal('bri05cable_pulling_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
-
+										<input type="checkbox" class=" form-control " name="bri05final_inspection_check" id="bri05final_inspection_check" value="1" <?php echo (et_setFormVal('bri05final_inspection_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> />
 									</div>
 
-									<div class="col-lg-10 nopad  input-group <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? '' : 'date'); ?> ">
-
-										<span class="input-group-addon"><i class="glyphicon glyphicon-th" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#c6c6c6"' : ''); ?>></i></span>
-
-										<input type="text" class=" form-control " name="bri05cable_pulling" id="bri05cable_pulling" value="<?php if (isset($objImplementationRec['bri05cable_pulling']) && $objImplementationRec['bri05cable_pulling'] != "0000-00-00") {
-																																				echo et_setFormVal('bri05cable_pulling', $objImplementationRec);
-																																			} ?>" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'readonly="readonly"' : ''); ?> />
-
+									<div class="col-lg-10 nopad  input-group date ">
+										<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+										<input type="text" class=" form-control " name="bri05final_inspection" id="bri05final_inspection" value="<?php if (isset($objImplementationRec['bri05final_inspection']) && $objImplementationRec['bri05final_inspection'] != "0000-00-00") {																		echo et_setFormVal('bri05final_inspection', $objImplementationRec);				} ?>" />
 									</div>
-
-
-
 								</div>
-
 							</div>
 
-
-							<div class="form-group clearfix" <?php //echo ($is_admin == 0)?'style="display:none;"':''; 
-																?>>
+							<div class="form-group clearfix" <?php //echo ($is_admin == 0)?'style="display:none;"':''; ?>>
 
 								<label class="col-lg-5 nopad">Bridge Completion Fiscal Year</label>
-
 								<div class="col-lg-7 datebox-container ">
-
 									<div class="col-lg-2 checkPad ">
-
 										<input type="checkbox" class=" form-control " readonly="readonly" name="bri05bridge_completion_fiscalyear_check" id="bri05bridge_completion_fiscalyear_check" value="1" <?php echo (et_setFormVal('bri05bridge_completion_fiscalyear_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> />
 
 									</div>
 
 									<div class="col-lg-10 nopad  input-group  ">
-
 										<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-
 										<?php echo et_form_dropdown_db('bri05bridge_completion_fiscalyear', 'fis01fiscal_year', 'fis01year', 'fis01id', et_setFormVal('bri05bridge_completion_fiscalyear', $objImplementationRec), '', 'class="form-control" readonly="readonly"', array('SortBy' => 'fis01year desc')) ?>
-
-
-
 									</div>
-
-
-
 								</div>
-
 							</div>
 
 
@@ -1975,29 +1867,30 @@
 
 
 									<tr>
-										<?php $restrict_arr = array("sdc","raidp","drilp","rrrsdp","rap","unnati","ingo");?>
+										<?php $restrict_arr = array("sdc", "raidp", "drilp", "rrrsdp", "rap", "unnati", "ingo"); ?>
 										<th class="cost width center" rowspan="2">Cost Components</th>
 										<?php if (is_array($countLocal)) {
-											foreach ($countLocal as $LocalRow) { 
+											foreach ($countLocal as $LocalRow) {
 												$agency_name = strtolower(trim($LocalRow['sup01sup_agency_name']));
-												if(!(in_array($agency_name, $restrict_arr))) {
-												?>
-												<th class="LSA center" rowspan="2"><?php echo $LocalRow['sup01sup_agency_name']; ?></th>
+												if (!(in_array($agency_name, $restrict_arr))) {
+										?>
+													<th class="LSA center" rowspan="2"><?php echo $LocalRow['sup01sup_agency_name']; ?></th>
 										<?php
 												}
 											}
 										}
 										?>
 
-										<!-- <th class="GON center" colspan="<?php //echo count($countGovt); ?>">Government of Nepal</th> -->
+										<!-- <th class="GON center" colspan="<?php //echo count($countGovt); 
+																				?>">Government of Nepal</th> -->
 										<th class="GON center" colspan="<?php echo count($countGovt); ?>">&nbsp;</th>
 
 										<?php if (is_array($countOther)) {
-											foreach ($countOther as $OtherRow) { 
+											foreach ($countOther as $OtherRow) {
 												$agency_name = strtolower(trim($OtherRow['sup01sup_agency_name']));
-												if(!(in_array($agency_name, $restrict_arr))) {
-												?>
-												<th class="others center" rowspan="2"><?php echo $OtherRow['sup01sup_agency_name']; ?></th>
+												if (!(in_array($agency_name, $restrict_arr))) {
+										?>
+													<th class="others center" rowspan="2"><?php echo $OtherRow['sup01sup_agency_name']; ?></th>
 										<?php
 												}
 											}
@@ -2014,9 +1907,9 @@
 										<?php if (is_array($countGovt)) {
 											foreach ($countGovt as $GovtRow) {
 												$agency_name = strtolower(trim($GovtRow['sup01sup_agency_name']));
-												if(!(in_array($agency_name, $restrict_arr))) {
-											 ?>
-												<th class="GON center"><?php echo $GovtRow['sup01sup_agency_name']; ?></th>
+												if (!(in_array($agency_name, $restrict_arr))) {
+										?>
+													<th class="GON center"><?php echo $GovtRow['sup01sup_agency_name']; ?></th>
 										<?php
 												}
 											}
@@ -2332,7 +2225,8 @@
 										}
 										?>
 
-										<!-- <th class="GON center" colspan="<?php //echo count($countGovt); ?>">Government of Nepal</th> -->
+										<!-- <th class="GON center" colspan="<?php //echo count($countGovt); 
+																				?>">Government of Nepal</th> -->
 										<th class="GON center" colspan="<?php echo count($countGovt); ?>">&nbsp;</th>
 
 										<?php if (is_array($countOther)) {

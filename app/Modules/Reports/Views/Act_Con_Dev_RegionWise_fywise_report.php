@@ -75,7 +75,7 @@
                     <?php
                     if(is_array($dataRow['arrChildList'])){
                     foreach($dataRow['arrChildList'] as $dataRow2){
-                  //var_dump($dataRow2);
+                  //echo "<pre>"; var_dump($dataRow2);exit;
                     
                     
                     ?>
@@ -86,7 +86,7 @@
                                 <b><span>District:<?php   echo $dataRow2['info']->dist01name; ?></span></b>
                             </div>
                             <div class="col-lg-6">
-                                <b><span style="float:right;" >TBSU Regional Office:<?php echo  $dataRow2['info']->tbis01name; ?></span></b>
+                                <b><span style="float:right;" ><?php if(isset($dataRow2['info']->tbis01name)) { ?>TBSU Regional Office:<?php echo $dataRow2['info']->tbis01name; ?><?php } ?></span></b>
                             </div>
                         </div>     
                     </td>
