@@ -11,6 +11,7 @@ use App\Modules\view\Models\view_brigde_detail_site_assesment_survey_model;
 use App\Modules\view\Models\view_brigde_detail_site_assesment_survey_r7_model;
 use App\Modules\view\Models\view_district_model;
 use App\Modules\view\Models\view_district_new_reg_office_model;
+use App\Modules\User\Models\UserModel;
 
 //use App\Modules\Reports\Models\ReportsModel;
 
@@ -72,20 +73,12 @@ class R_Completed_report extends BaseController
     public function index($stat = '')
     {
 
-         $data['blnMM'] = $stat;
-         $Postback = @$this->request->getVar('submit');            
+        $data['blnMM'] = $stat;
+        $Postback = @$this->request->getVar('submit');
+		$userModel = new UserModel();
+		$arrPermittedDistList = $userModel->getArrPermitedDistList();
+		$intUserType = (session()->get('type')) ? session()->get('type') : ENUM_GUEST;
 
-            // $this->load->model('view/view_brigde_detail_site_assesment_survey_model');
-            // $this->load->model('regional_office/regional_office_model');
-            // $this->load->model('view/view_district_tbis_office_model');
-            // $this->load->model('view/view_brigde_detail_model');
-            // $this->load->model('view/view_district_model');
-            // $this->load->model('view/view_district_reg_office_model');
-            // $this->load->model('view/view_brigde_detail_model');
-            // $this->load->model('view/view_district_new_reg_office_model');
-            // $this->load->model('district_name/district_name_model');
-			// $this->load->model('view/view_brigde_detail_site_assesment_survey_r7_model');
-   
             
             if($this->request->getVar('rtype') && $this->request->getVar('rtype') == "regional") { //tbsu regional office wise
                 $dataDist = @$this->request->getVar('regionaloffice');
@@ -117,17 +110,28 @@ class R_Completed_report extends BaseController
               
                   }
               
-                                   
                   /*$brige_list= $this->view_brigde_detail_site_assesment_survey_model->where('tbis01id', $dataDist)->where('bri03construction_type',$x)->
                   where('bri05bridge_complete_check', '1')->findAll();*/
-				  
-				   $brige_list= $this->view_brigde_detail_site_assesment_survey_r7_model->where('dist01tbis01id',$dataDist)->where('bri03construction_type',$x)->
+				  if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
+					  //comma seperated value
+					  //var_dump($dataDist);exit;
+					  if (count($arrPermittedDistList) > 0) {
+						$brige_list= $this->view_brigde_detail_site_assesment_survey_r7_model->whereIn('dist01id', $arrPermittedDistList)->where('dist01tbis01id',$dataDist)->where('bri03construction_type',$x)->
                         where('bri05bridge_complete_check', '1')->where('bri03work_category !=','3')->asObject()->findAll();
-          
+						//$brige_list= $this->view_brigde_detail_site_assesment_survey_r7_model->whereIn('dist01id', $arrPermittedDistList)->where('bri03construction_type',$x)->
+                        //where('bri05bridge_complete_check', '1')->where('bri03work_category !=','3')->asObject()->findAll();
+					  }
+					} else {
+						$brige_list= $this->view_brigde_detail_site_assesment_survey_r7_model->where('dist01tbis01id',$dataDist)->where('bri03construction_type',$x)->
+							where('bri05bridge_complete_check', '1')->where('bri03work_category !=','3')->asObject()->findAll();
+					}
+				 //  echo $this->view_brigde_detail_site_assesment_survey_r7_model->getLastQuery()->getQuery();
+                  //   exit;
                    $arrDataList = array();
-                   foreach ($brige_list as $k => $v)
+                 /*  foreach ($brige_list as $k => $v)
                   
                       {
+						   
 						  if($v->tbis01id) {
                               
 								
@@ -135,9 +139,18 @@ class R_Completed_report extends BaseController
 						  }
                           
                           $arrDataList['dist_' . $v->tbis01id]['data'][]=$v;
-                      }
+                      }*/
+					  
+                         foreach ($brige_list as $k => $v)
+                        
+                            {
+                              
+                               $arrDataList['dist_' . $dataDist]['dist'] = $data['arrDistrictList'][ 'dist_' . $dataDist ];
+                                
+                                $arrDataList['dist_' . $dataDist]['data'][]=$v;
+                            }
                  
-              
+             // var_dump($arrDataList);exit;
                   
                   $data['arrPrintList'] = $arrDataList;
                  }
@@ -180,9 +193,19 @@ class R_Completed_report extends BaseController
                     
                         }
                     
-                                         
-                        $brige_list= $this->view_brigde_detail_site_assesment_survey_model->where('dist01id', $dataDist)->where('bri03construction_type',$x)->
-                        where('bri05bridge_complete_check', '1')->asObject()->findAll();
+                                       
+                        //$brige_list= $this->view_brigde_detail_site_assesment_survey_model->where('dist01id', $dataDist)->where('bri03construction_type',$x)->
+                        //where('bri05bridge_complete_check', '1')->asObject()->findAll();
+						if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
+						  //comma seperated value
+						 // $brige_list= $this->view_brigde_detail_site_assesment_survey_r7_model->whereIn('dist01id', $arrPermittedDistList)->where('dist01tbis01id',$dataDist)->where('bri03construction_type',$x)->
+                       // where('bri05bridge_complete_check', '1')->where('bri03work_category !=','3')->asObject()->findAll();
+						  if (count($arrPermittedDistList) > 0) {
+							$brige_list= $this->view_brigde_detail_site_assesment_survey_model->whereIn('dist01id', $arrPermittedDistList)->where('dist01id', $dataDist)->where('bri03construction_type',$x)->where('bri05bridge_complete_check', '1')->asObject()->findAll();
+						  }
+						} else {
+							$brige_list= $this->view_brigde_detail_site_assesment_survey_model->where('dist01id', $dataDist)->where('bri03construction_type',$x)->where('bri05bridge_complete_check', '1')->asObject()->findAll();
+						}
                 
                          $arrDataList = array();
                          foreach ($brige_list as $k => $v)

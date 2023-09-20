@@ -17,8 +17,8 @@ class bridge_design_standard_model extends Model
     protected $allowedFields    = [
         'bri02bds_type_code',
         'bri02bds_type_name',
-        'bri02description'
-    ];
+        'bri02description',
+        'bri02_status'];
   
     // Dates
     protected $useTimestamps = false;

@@ -13,7 +13,7 @@
                    <div class="col-lg-3 clearfix">
                     </div>
                     <div class="col-lg-5 clearfix">
-                   <form action="<?php echo site_url();?>/reports/Pro_Cumulative_Overall_report<?php echo (isset($blnMM) && $blnMM)? '/'.MM_CODE: ''; ?>" method="post"> 
+                   <form action="<?php echo site_url();?>/reports/Pro_Cumulative_Overall_report<?php echo (isset($blnMM) && $blnMM)? '/'.MM_CODE: ''; ?>" method="get"> 
                 <div class="form-group clearfix">
                 <label class="col-lg-4 ">Start Year:</label>
                     <div class="col-lg-8">

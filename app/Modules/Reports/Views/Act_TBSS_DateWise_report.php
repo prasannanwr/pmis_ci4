@@ -56,7 +56,7 @@
                  <td colspan="22">
                  <div class="row">
                             <div class="center" style="font-size: 12px;">
-                                <b><span>TBBS Region Office:<?php echo $dataRow['info']->tbis01name; ?></span></b>
+                                <b><span>Province:<?php echo $dataRow['info']->tbis01name; ?></span></b>
                             </div>
                         </div>
                  </td>

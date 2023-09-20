@@ -122,6 +122,7 @@ class Act_Dev_FYWise_report extends BaseController
             } else {
                 $arrBridgeList = $this->view_bridge_detail_model->getbridgesbyProv($dataStart, $dateEnd, '', $ctype, 'asObject', '', 'dist01state');
             }
+			//echo "<pre>";var_dump($arrBridgeList);exit;
             // $arrBridgeList = $this->view_brigde_detail_model->
             // where('bri05bridge_completion_fiscalyear =', $dateEnd)->
             // orderBy('dist01state')->
@@ -135,7 +136,8 @@ class Act_Dev_FYWise_report extends BaseController
                 {
                     //print_r($v2);exit;
                     $arrChild2=null;
-                    $arrBridgeIdList[] = $v2->bri03bridge_no;
+                    //$arrBridgeIdList[] = $v2->bri03bridge_no;
+					$arrBridgeIdList = $v2->bri03bridge_no;
                     // $arrPrintList['dev_'.$v2->dev01id]['info']=$v2;
                     // $arrPrintList['dev_'.$v2->dev01id]['arrChildList']['dist_'.$v2->dist01id]['info']=$v2;
                     // $arrPrintList['dev_'.$v2->dev01id]['arrChildList']['dist_'.$v2->dist01id]['arrChildList'][] = array('info'=>$v2);
@@ -145,7 +147,7 @@ class Act_Dev_FYWise_report extends BaseController
                     $arrPrintList['dev_'.$v2->dist01state]['arrChildList']['dist_'.$v2->dist01id]['arrChildList'][] = array('info'=>$v2);
 
                     $arrBridgeCostList = $this->view_bridge_actual_cost->
-                    whereIn('bri08bridge_no', $arrBridgeIdList)->
+                    where('bri08bridge_no', $arrBridgeIdList)->
                     asObject()->
                     findAll();
                     
@@ -153,11 +155,25 @@ class Act_Dev_FYWise_report extends BaseController
                     {
                         $arrCostList['bri_'.$x2->bri08bridge_no]['id_' . $x2->bri08cmp01id] = $x2;
                     }
+                    //var_dump($arrBridgeCostList);exit;
+
+                    // foreach ($arrBridgeCostList as $x2)
+                    // {
+                    
+                    // $arrChild2['bri_'.$x2['bri08bridge_no']]['id_' . $x2['bri08cmp01id']] = $x2;
+                    // }
+                    
+                    //$arrChild = array('info' => $v);//, 'arrChildList' => $arrChild2);
+
+                    $data['arrCostList'] = $arrCostList;
+					//$arrCostList = array();
 
                 }
+               // echo "<pre>";
+                //var_dump($data['arrCostList']);exit;
 
                 $data['arrPrintList'] = $arrPrintList;
-                $data['arrCostList'] = $arrCostList;
+                //$data['arrCostList'] = $arrCostList;
 
             }
             

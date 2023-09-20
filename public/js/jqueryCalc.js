@@ -99,6 +99,31 @@ function calcPerc(){
         setVal( this, $v);
     }
 }
+function sumActCost(){
+	//console.log('sum act cost');
+    $src = $(this).data('sum');
+    $src_class = $src.split(' ');
+    $total_span_class = $src_class[0].substring(1);
+    console.log($total_span_class);
+    $sum = 0;
+    $($src).each(function(){
+        $val = getVal( this );
+        //console.log('sss');
+        //console.log( $val );
+        if( !isNaN( $val )){
+            $sum += parseFloat( $val );
+        }
+    });
+   // console.log($sum);
+    setVal( this, $sum.toFixed(2));
+    //average
+    //$total_span = $(this).data($total_span_class);
+    //$total_span = $("#total_span_cost"+$total_span_class).val();
+    $total_span = $("#total_span_cost"+$total_span_class).text();
+    console.log("total_span: "+$total_span);
+    $avg = $sum/$total_span;
+    $('#avgTotal_'+$total_span_class).val($avg);
+}
 function reCalc(){
     //for(i=1;i<=2;i++){
     $('.sumCalc_dig').each(sumCalc_dig);
@@ -109,7 +134,8 @@ function reCalc(){
     $('.divCalc').each(calcDiv);
     $('.calcPerc').each(calcPerc);
     $('.SameVal').each(SameVal);	
-	$('.sc24').each(sumCalc1)
+	$('.sc24').each(sumCalc1);
+	$('.sumActCost').each(sumActCost);
 	
     //}
 }

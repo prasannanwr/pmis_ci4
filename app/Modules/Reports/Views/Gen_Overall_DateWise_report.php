@@ -24,7 +24,7 @@
                                                 <th colspan="4" class="center">Bridge</th>
                                                 <th style="width:150px;" rowspan="2" class="center">River Name</th>
                                                 <th colspan="2" class="center">Walk Way Deck</th>
-                                                <th rowspan="2">Topo Map sheet Number</th>
+                                          <!--       <th rowspan="2">Topo Map sheet Number</th> -->
                                                 <th colspan="2" class="center">Co-ordinate</th>
                                                 <th rowspan="2" class="center">Major Palika</th>
                                                 <th colspan="2" class="center">RM/UM</th>
@@ -53,7 +53,7 @@
                         <tr>
                           	<td colspan="14" style="line-height: 18px;">
                                <div class="col-lg-12"><b><span>District:<?php echo $dataRow['dist']['dist01name'];  ?></span></b></div>
-                                <div class="col-lg-6"><b><span><!--TBSU Region:<?php //echo $dataRow['dist']->tbis01name;  ?>-->&nbsp;</span></b></div><div class="col-lg-6"><b><span style="float:right;">Province:<?php echo $dataRow['dist']['dist01state'];  ?></span></b></div>
+                                <div class="col-lg-6"><b><span><!--TBSU Region:<?php //echo $dataRow['dist']->tbis01name;  ?>-->&nbsp;</span></b></div><div class="col-lg-6"><b><span style="float:right;">Province:<?php echo $dataRow['dist']['province_name'];  ?></span></b></div>
                                 </td>
                             </tr>
 
@@ -71,7 +71,7 @@
                                         <td style="width:150px;"><?php echo $dataRow1['bri03river_name'] ?></td>
                                         <td style="width:120px;"><?php echo $dataRow1['wad01walkway_deck_type_name'] ?></td>
                                         <td style="width:100px;"><?php echo $dataRow1['wal01walkway_width'] ?></td>
-                                        <td><?php echo $dataRow1['bri03topo_map_no'] ?></td>
+                                   <!--      <td><?php //echo $dataRow1['bri03topo_map_no'] ?></td> -->
                                         <td><?php echo $dataRow1['bri03coordinate_north'] ?></td>
                                         <td><?php echo $dataRow1['bri03coordinate_east'] ?></td>
                                         <td><?php echo ($dataRow1['bri03major_vdc'] == 0? $dataRow1['left_muni01name']:$dataRow1['right_muni01name']); ?></td>

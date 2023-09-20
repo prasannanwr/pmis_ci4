@@ -254,6 +254,7 @@ class bridge extends BaseController
 				if ($this->request->getVar('cmdSubmit') == 'Save' || $this->request->getVar('cmdSubmit') == 'Save and Close') {
 				//	log_message('error', 'inside the save condition');
 					//save
+					//var_dump($this->request->getVar('bri04anchorage_foundation_rb'));exit;
 					$bridge_no = @$this->request->getVar('bri03bridge_no');
 					$bridge_id = @$this->request->getVar('bri03id');
 					$bridge_name = @$this->request->getVar('bri03bridge_name');
@@ -270,7 +271,6 @@ class bridge extends BaseController
 					}
 
 					$enumMajorVDC = @$this->request->getVar('bri03major_vdc');
-
 
 					if ($blnIsNew) {
 						//die("new");
@@ -435,16 +435,39 @@ class bridge extends BaseController
 					$xx = $this->bridge_basic_data_model->save($form_data1);
 
 					//die($bridge_no);
-					if (!empty(trim($this->request->getVar('bri04anchorage_foundation_leftbank')))) {
+
+					if (!empty($this->request->getVar('bri04anchorage_foundation_leftbank'))) {
 						$bri04anchorage_foundation_leftbank = $this->request->getVar('bri04anchorage_foundation_leftbank');
+							if(is_array($bri04anchorage_foundation_leftbank)) {
+								$bri04anchorage_foundation_leftbank = implode(',', $bri04anchorage_foundation_leftbank);
+							} else {
+								$bri04anchorage_foundation_leftbank = $this->request->getVar('bri04anchorage_foundation_leftbank');
+							}
 					} else {
 						$bri04anchorage_foundation_leftbank = 0;
 					}
-					if (!empty(trim($this->request->getVar('bri04anchorage_foundation_rb')))) {
+					if (!empty($this->request->getVar('bri04anchorage_foundation_rb'))) {
 						$bri04anchorage_foundation_rb = $this->request->getVar('bri04anchorage_foundation_rb');
+							if(is_array($bri04anchorage_foundation_rb)) {
+								$bri04anchorage_foundation_rb = implode(',', $bri04anchorage_foundation_rb);
+							} else{
+								$bri04anchorage_foundation_rb = $this->request->getVar('bri04anchorage_foundation_rb');
+							}
 					} else {
 						$bri04anchorage_foundation_rb = 0;
 					}
+					//var_dump($bri04anchorage_foundation_rb);exit;
+
+					// if (!empty(trim($this->request->getVar('bri04anchorage_foundation_leftbank')))) {
+					// 	$bri04anchorage_foundation_leftbank = $this->request->getVar('bri04anchorage_foundation_leftbank');
+					// } else {
+					// 	$bri04anchorage_foundation_leftbank = 0;
+					// }
+					// if (!empty(trim($this->request->getVar('bri04anchorage_foundation_rb')))) {
+					// 	$bri04anchorage_foundation_rb = $this->request->getVar('bri04anchorage_foundation_rb');
+					// } else {
+					// 	$bri04anchorage_foundation_rb = 0;
+					// }
 					if (!empty(trim($this->request->getVar('bri04handrail_cable_two')))) {
 						$bri04handrail_cable_two = $this->request->getVar('bri04handrail_cable_two');
 					} else {
@@ -466,6 +489,17 @@ class bridge extends BaseController
 						$bri04rust_prevention_measures = 0;
 					}
 
+					if (!empty(trim($this->request->getVar('bri04_windguy_cable_nos')))) {
+						$bri04_windguy_cable_nos = $this->request->getVar('bri04_windguy_cable_nos');
+					} else {
+						$bri04_windguy_cable_nos = 0;
+					}
+					if (!empty(trim($this->request->getVar('bri04_windguy_cable_dia')))) {
+						$bri04_windguy_cable_dia = $this->request->getVar('bri04_windguy_cable_dia');
+					} else {
+						$bri04_windguy_cable_dia = 0;
+					}
+
 
 					$form_data2 = array(
 						'bri04id' => @$this->request->getVar('bri04id'),
@@ -479,9 +513,11 @@ class bridge extends BaseController
 						'bri04main_ww_cable_dia' => $bri04main_ww_cable_dia,
 						'bri04rust_prevention_measures' => $bri04rust_prevention_measures,
 						'bri04bridge_design_standard' => @$this->request->getVar('bri04bridge_design_standard'),
-						'bri04windguy_arrangement' => @$this->request->getVar('bri04windguy_arrangement')
+						'bri04windguy_arrangement' => @$this->request->getVar('bri04windguy_arrangement'),
+						'bri04_windguy_cable_nos' => $bri04_windguy_cable_nos,
+						'bri04_windguy_cable_dia' => $bri04_windguy_cable_dia
 					);
-					//var_dump($form_data2);
+					// var_dump($form_data2);
 					// 	die();
 
 
@@ -597,6 +633,7 @@ class bridge extends BaseController
 						'bri06uc_chairperson' => trim(@$this->request->getVar('bri06uc_chairperson')),
 						'bri06ddc_technician_trained' => trim(@$this->request->getVar('bri06ddc_technician_trained')),
 						'bri06bmc_members' => trim(@$this->request->getVar('bri06bmc_members')),
+						'bri06uc_contractor' => trim(@$this->request->getVar('bri06uc_contractor'))
 					);
 					$this->personnel_information_model->save($form_data4);
 

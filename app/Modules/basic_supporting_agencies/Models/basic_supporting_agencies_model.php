@@ -15,12 +15,15 @@ class basic_supporting_agencies_model extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-      'sup03id',
-      'sup03sup_agency_code',
-      'sup03sup_agency_name',
-      'sup03sup_agency_type',
-      'sup03description',
-      'sup03index'
+      'fis02year',
+      'fis02dist01codeid',
+      'fis02name1',
+      'fis02name2',
+      'fis02name3',
+      'fis02name4',
+      'fis02sup01id',
+      'fis02carryover',
+      'fis02constype'
     ];
 
     // Dates

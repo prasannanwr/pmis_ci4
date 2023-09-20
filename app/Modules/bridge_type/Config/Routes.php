@@ -8,5 +8,4 @@ $routes->group("bridge_type", ["namespace" => "App\Modules\bridge_type\Controlle
 	$routes->get('create/(:any)', 'bridge_type::create/$1', ['filter' => 'auth']);
 	$routes->post('create', 'bridge_type::create', ['filter' => 'auth']);
 	$routes->post('create/(:any)', 'bridge_type::create/$1', ['filter' => 'auth']);
-	$routes->match(['get','post'],'delete/(:any)', 'bridge_type::delete/$1', ['filter' => 'auth']);
 });

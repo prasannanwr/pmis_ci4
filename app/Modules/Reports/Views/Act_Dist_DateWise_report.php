@@ -69,7 +69,7 @@
                         ?>
    
    <tbody class="distRegion_<?php echo $dataRow['info']->dist01id; ?>">
-<tr>
+<!--<tr>
 	<td colspan="22">
                  <div >  
                  	    <div class="row">
@@ -78,7 +78,7 @@
                             </div>
                         </div>    
     </td>
-</tr>                       
+</tr>-->                       
 
                    
 
@@ -86,10 +86,10 @@
 	<td colspan="22">
                         <div class="row">
                         <div class="col-lg-6">
-                                <b><span>State:<?php echo $dataRow['info']->province_name; ?></span></b>
+                                <b><span>District:<?php echo $dataRow['info']->dist01name; ?></span></b>
                             </div>
                             <div class="col-lg-6">
-                                <b><span style="float:right;" >TBSU Regional Office:<?php  echo  $dataRow['info']->tbis01name; ?></span></b>
+                                <b><span style="float:right;" >Province:<?php  echo  $dataRow['info']->province_name; ?></span></b>
                             </div>
                         </div>     
     </td>

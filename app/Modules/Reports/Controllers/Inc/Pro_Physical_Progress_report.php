@@ -97,9 +97,16 @@ class Pro_Physical_Progress_report extends BaseController
     $arrSupList = $this->supporting_agencies_model->findAll();
     if(trim($regionaloffice) != '') {
         $arrDistList = $this->district_name_model->where('dist01state',$regionaloffice)->findAll();
-    } else {
-        $arrDistList = $this->district_name_model->findAll();
+    } else { 
+        if($intUserType == ENUM_ADMINISTRATOR) { // default load from province 1
+            $regionaloffice = 1; //province 1
+            $arrDistList = $this->district_name_model->where('dist01state',$regionaloffice)->findAll();
+        } else {
+            $arrDistList = $this->district_name_model->findAll();
+        }
     }
+
+    $data['regionaloffice'] = $regionaloffice;
 
     // echo $regionaloffice."<pre>";
     // var_dump($arrDistList);exit;
@@ -307,5 +314,9 @@ class Pro_Physical_Progress_report extends BaseController
     }  //die();
     return view('\Modules\Reports\Views\Pro_Physical_Progress_report', $data);
 
+  }
+
+  public function loadmore() {
+    
   }
 }

@@ -16,7 +16,7 @@
                    <div class="col-lg-3 clearfix">
                     </div>
 					<div class="col-lg-5 clearfix">
-                   <form action="<?php echo site_url();?>/reports/Gen_Dev_DateWise_report<?php echo (isset($blnMM) && $blnMM)? '/'.MM_CODE: ''; ?>" method="post"> 
+                   <form action="<?php echo site_url();?>/reports/Gen_Dev_DateWise_report<?php echo (isset($blnMM) && $blnMM)? '/'.MM_CODE: ''; ?>" method="get"> 
                 <div class="form-group clearfix">
                 <label class="col-lg-4 ">Start Date:</label>
                 <div class="col-lg-8 datebox-container ">

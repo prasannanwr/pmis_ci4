@@ -24,7 +24,7 @@
                     ?>
 
 								<div class="col-lg-6"><b><span>District: <?php echo $dataRow['dist']['dist01name'];  ?></span></b></div><div class="col-lg-6"><b><span style="float:right;" >Status as of <?php echo _day(); ?></span></b></div>
-                        		<div class="col-lg-6"><b><span>Development Region:&nbsp;</span><span class="bold "> <?php echo $dataRow['dist']['dev01name'];  ?></span></b></div>
+                        		<div class="col-lg-6"><b><span>Province:&nbsp;</span><span class="bold "> <?php echo $dataRow['dist']['province_name'];  ?></span></b></div>
 
 								<!-- <div class="table-responsive"> -->
 								<div>

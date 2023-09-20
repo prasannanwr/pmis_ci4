@@ -26,17 +26,7 @@ div.c10 {padding-right: 10px;}
                 <div class="col-lg-12 mainBoard">
                    <p class="reportHeader center">Actual Bridge Cost (Between <?php echo $startdate." - ".$enddate;?>)</p>
                    <!-- <p class="reportHeader center" >Project Status:Commited Bridges</p>-->
-                   <p>
-                    <form name="frmProvinceFilter" method="get" action="<?php echo site_url(); ?>/reports/Act_Dev_DateWise_report">
-                    <div style="width: 200px; margin-bottom: 5px">
-                        <h4>Filter by Province</h4>
-                        <?php echo et_form_dropdown_db('province', 'province', 'province_name', 'province_id','', '', 'class="form-control regional_search"') ?>
-                        <input type="hidden" name="start_date" value="<?php echo $startdate; ?>">
-                        <input type="hidden" name="end_date" value="<?php echo $enddate; ?>">
-                        </div>
-                        
-                    </form>
-                    </p>
+
                     <div class=" table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead>
@@ -88,7 +78,7 @@ div.c10 {padding-right: 10px;}
                 <td colspan="22">
                     <div class="row">
                         <div class="col-lg-6">
-                            <b><span>State:<?php echo $dataRow['info']->province_name; ?></span></b>
+                            <b><span>Province:<?php echo $dataRow['info']->province_name; ?></span></b>
                         </div>
                     </div>
                 </td>
@@ -107,7 +97,7 @@ div.c10 {padding-right: 10px;}
                                     <b><span>District:<?php echo $dataRow2['info']->dist01name;?></span></b>
                                 </div>
                                 <div class="col-lg-6">
-                                    <b><span style="float:right;" >TBSU Regional Office:<?php  echo  $dataRow2['info']->tbis01name;?></span></b>
+                                    <!--<b><span style="float:right;" >TBSU Regional Office:<?php  //echo  $dataRow2['info']->tbis01name;?></span></b>-->
                                 </div>
                             </div>    
                         </td>
@@ -250,11 +240,4 @@ div.c10 {padding-right: 10px;}
             <div class="clear"></div>
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
-    <script type="text/javascript">
-    jQuery(document).ready(function() {
-        jQuery("#province").on('change',function() {
-            document.frmProvinceFilter.submit();
-        });
-    });
-</script>
 <?=$this->endSection();?>

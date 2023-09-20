@@ -27,6 +27,7 @@ class personnel_information_model extends Model
         "bri06uc_chairperson",
         "bri06ddc_technician_trained",
         "bri06bmc_members",
+        "bri06uc_contractor",
         "bri06deleted",
         "bri06status"
     ];

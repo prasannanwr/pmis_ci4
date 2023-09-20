@@ -140,6 +140,9 @@ $routes->group("reports", ["namespace" => "App\Modules\Reports\Controllers"], fu
 
 	$routes->post('Pro_Cumulative_Overall_agencywise_report', 'Reports::Pro_Cumulative_Overall_agencywise_report', ['filter' => 'auth']);
 	$routes->post('Pro_Cumulative_Overall_agencywise_report/(:any)', 'Reports::Pro_Cumulative_Overall_agencywise_report\$1', ['filter' => 'auth']);
+	
+	$routes->post('Pro_Physical_Progress_report', 'Reports::Pro_Physical_Progress_report', ['filter' => 'auth']);
+	$routes->post('Pro_Physical_Progress_report/(:any)', 'Reports::Pro_Physical_Progress_report\$1', ['filter' => 'auth']);
 
 	$routes->get('Act_Con_Dev_RegionWise_fywise_report', 'Reports::Act_Con_Dev_RegionWise_fywise_report', ['filter' => 'auth']);
 	$routes->get('Act_Con_Dev_RegionWise_fywise_report/(:any)', 'Reports::Act_Con_Dev_RegionWise_fywise_report/$1', ['filter' => 'auth']);
@@ -147,20 +150,18 @@ $routes->group("reports", ["namespace" => "App\Modules\Reports\Controllers"], fu
 	$routes->get('Act_Con_Dev_RegionWise_datewise_report', 'Reports::Act_Con_Dev_RegionWise_datewise_report', ['filter' => 'auth']);
 	$routes->get('Act_Con_Dev_RegionWise_datewise_report/(:any)', 'Reports::Act_Con_Dev_RegionWise_datewise_report/$1', ['filter' => 'auth']);
 
-	$routes->post('Act_Con_TBSSPRegionWise_FYwise_report', 'Reports::Act_Con_TBSSPRegionWise_FYwise_report', ['filter' => 'auth']);
-	$routes->post('Act_Con_TBSSPRegionWise_FYwise_report/(:any)', 'Reports::Act_Con_TBSSPRegionWise_FYwise_report/$1', ['filter' => 'auth']);
+	$routes->get('Act_Con_TBSSPRegionWise_FYwise_report', 'Reports::Act_Con_TBSSPRegionWise_FYwise_report', ['filter' => 'auth']);
+	$routes->get('Act_Con_TBSSPRegionWise_FYwise_report/(:any)', 'Reports::Act_Con_TBSSPRegionWise_FYwise_report/$1', ['filter' => 'auth']);
 
-	$routes->post('Act_Con_TBSSPRegionWise_datewise_report', 'Reports::Act_Con_TBSSPRegionWise_datewise_report', ['filter' => 'auth']);
-	$routes->post('Act_Con_TBSSPRegionWise_datewise_report/(:any)', 'Reports::Act_Con_TBSSPRegionWise_datewise_report/$1', ['filter' => 'auth']);
+	$routes->get('Act_Con_TBSSPRegionWise_datewise_report', 'Reports::Act_Con_TBSSPRegionWise_datewise_report', ['filter' => 'auth']);
+	$routes->get('Act_Con_TBSSPRegionWise_datewise_report/(:any)', 'Reports::Act_Con_TBSSPRegionWise_datewise_report/$1', ['filter' => 'auth']);
 
-	$routes->post('Act_Con_Supporting_AgencyWise_FYwise_report', 'Reports::Act_Con_Supporting_AgencyWise_FYwise_report', ['filter' => 'auth']);
-	$routes->post('Act_Con_Supporting_AgencyWise_FYwise_report/(:any)', 'Reports::Act_Con_Supporting_AgencyWise_FYwise_report/$1', ['filter' => 'auth']);
+	$routes->get('Act_Con_Supporting_AgencyWise_FYwise_report', 'Reports::Act_Con_Supporting_AgencyWise_FYwise_report', ['filter' => 'auth']);
+	$routes->get('Act_Con_Supporting_AgencyWise_FYwise_report/(:any)', 'Reports::Act_Con_Supporting_AgencyWise_FYwise_report/$1', ['filter' => 'auth']);
 
-	$routes->post('Act_Con_Supporting_AgencyWise_datewise_report', 'Reports::Act_Con_Supporting_AgencyWise_datewise_report', ['filter' => 'auth']);
-	$routes->post('Act_Con_Supporting_AgencyWise_datewise_report/(:any)', 'Reports::Act_Con_Supporting_AgencyWise_datewise_report/$1', ['filter' => 'auth']);
+	$routes->get('Act_Con_Supporting_AgencyWise_datewise_report', 'Reports::Act_Con_Supporting_AgencyWise_datewise_report', ['filter' => 'auth']);
+	$routes->get('Act_Con_Supporting_AgencyWise_datewise_report/(:any)', 'Reports::Act_Con_Supporting_AgencyWise_datewise_report/$1', ['filter' => 'auth']);
 
-	$routes->post('Act_Con_Munc_FYWise_report', 'Reports::Act_Con_Munc_FYWise_report', ['filter' => 'auth']);
-	$routes->post('Act_Con_Munc_FYWise_report/(:any)', 'Reports::Act_Con_Munc_FYWise_report/$1', ['filter' => 'auth']);
 	$routes->get('Act_Con_Munc_FYWise_report', 'Reports::Act_Con_Munc_FYWise_report', ['filter' => 'auth']);
 	$routes->get('Act_Con_Munc_FYWise_report/(:any)', 'Reports::Act_Con_Munc_FYWise_report/$1', ['filter' => 'auth']);
 
@@ -170,27 +171,37 @@ $routes->group("reports", ["namespace" => "App\Modules\Reports\Controllers"], fu
 	$routes->post('Bridgewise_report', 'Reports::Bridgewise_report', ['filter' => 'auth']);
 	$routes->post('Bridgewise_report/(:any)', 'Reports::Bridgewise_report/$1', ['filter' => 'auth']);
 	
+	//$routes->post('Gen_Overall_FYWise_report', 'Reports::Gen_Overall_FYWise_report', ['filter' => 'auth']);
+	//$routes->post('Gen_Overall_FYWise_report/(:any)', 'Reports::Gen_Overall_FYWise_report/$1', ['filter' => 'auth']);
+	
+	//$routes->get('Gen_Overall_FYWise_report', 'Reports::Gen_Overall_FYWise_report', ['filter' => 'auth']);
+	//$routes->get('Gen_Overall_FYWise_report/(:any)', 'Reports::Gen_Overall_FYWise_report/$1', ['filter' => 'auth']);
+	
 	
 });
 $routes->post('reports/Gen_Overall_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Overall_FYWise_report::index', ['filter' => 'auth']);
 $routes->post('reports/Gen_Overall_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Overall_FYWise_report::index/$1', ['filter' => 'auth']);
-$routes->post('reports/Gen_Overall_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Overall_DateWise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Gen_Overall_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Overall_DateWise_report::index/$1', ['filter' => 'auth']);
-$routes->post('reports/Gen_Dev_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_FYWise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Gen_Dev_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_FYWise_report::index/$1', ['filter' => 'auth']);
-$routes->post('reports/Gen_Dev_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_DateWise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Gen_Dev_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_DateWise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Gen_Overall_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Overall_FYWise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Gen_Overall_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Overall_FYWise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Gen_Overall_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Overall_DateWise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Gen_Overall_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Overall_DateWise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Gen_Dev_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_FYWise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Gen_Dev_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_FYWise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Gen_Dev_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_FYWise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Gen_Dev_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_FYWise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Gen_Dev_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_DateWise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Gen_Dev_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Dev_DateWise_report::index/$1', ['filter' => 'auth']);
 $routes->get('reports/Gen_Munc_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Munc_FYWise_report::index', ['filter' => 'auth']);
 $routes->get('reports/Gen_Munc_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Munc_FYWise_report::index/$1', ['filter' => 'auth']);
 $routes->get('reports/Gen_Munc_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Gen_Munc_DateWise_report::index', ['filter' => 'auth']);
 $routes->get('reports/Gen_Munc_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Gen_Munc_DateWise_report::index/$1', ['filter' => 'auth']);
-$routes->post('reports/Act_Overall_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Act_Overall_FYWise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Act_Overall_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Overall_FYWise_report::index/$1', ['filter' => 'auth']);
-$routes->post('reports/Act_Overall_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Act_Overall_DateWise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Act_Overall_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Overall_DateWise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Act_Overall_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Act_Overall_FYWise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Act_Overall_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Overall_FYWise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Act_Overall_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Act_Overall_DateWise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Act_Overall_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Overall_DateWise_report::index/$1', ['filter' => 'auth']);
 
-$routes->post('reports/Act_Dist_FYWise', '\App\Modules\Reports\Controllers\Inc\Act_Dist_FYWise::index', ['filter' => 'auth']);
-$routes->post('reports/Act_Dist_FYWise/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Dist_FYWise::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Act_Dist_FYWise', '\App\Modules\Reports\Controllers\Inc\Act_Dist_FYWise::index', ['filter' => 'auth']);
+$routes->get('reports/Act_Dist_FYWise/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Dist_FYWise::index/$1', ['filter' => 'auth']);
 
 $routes->get('reports/Act_Dist_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Act_Dist_FYWise_report::index', ['filter' => 'auth']);
 $routes->get('reports/Act_Dist_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Dist_FYWise_report::index/$1', ['filter' => 'auth']);
@@ -207,15 +218,15 @@ $routes->get('reports/Act_Dev_DateWise_report/(:any)', '\App\Modules\Reports\Con
 $routes->get('reports/Act_TBSS_FYWise', '\App\Modules\Reports\Controllers\Inc\Act_TBSS_FYWise::index', ['filter' => 'auth']);
 $routes->get('reports/Act_TBSS_FYWise/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_TBSS_FYWise::index/$1', ['filter' => 'auth']);
 
-$routes->post('reports/Act_TBSS_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Act_TBSS_FYWise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Act_TBSS_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_TBSS_FYWise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Act_TBSS_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Act_TBSS_FYWise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Act_TBSS_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_TBSS_FYWise_report::index/$1', ['filter' => 'auth']);
 
-$routes->post('reports/Act_TBSS_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Act_TBSS_DateWise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Act_TBSS_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_TBSS_DateWise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Act_TBSS_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Act_TBSS_DateWise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Act_TBSS_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_TBSS_DateWise_report::index/$1', ['filter' => 'auth']);
 
 
-$routes->post('reports/Act_Supporting_AgencyWise_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Act_Supporting_AgencyWise_FYWise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Act_Supporting_AgencyWise_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Supporting_AgencyWise_FYWise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Act_Supporting_AgencyWise_FYWise_report', '\App\Modules\Reports\Controllers\Inc\Act_Supporting_AgencyWise_FYWise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Act_Supporting_AgencyWise_FYWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Supporting_AgencyWise_FYWise_report::index/$1', ['filter' => 'auth']);
 
 $routes->get('reports/Act_Supporting_AgencyWise_DateWise_report', '\App\Modules\Reports\Controllers\Inc\Act_Supporting_AgencyWise_DateWise_report::index', ['filter' => 'auth']);
 $routes->get('reports/Act_Supporting_AgencyWise_DateWise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Supporting_AgencyWise_DateWise_report::index/$1', ['filter' => 'auth']);
@@ -229,29 +240,23 @@ $routes->get('reports/Act_Munc_DateWise_report/(:any)', '\App\Modules\Reports\Co
 // $routes->post('Act_Con_Overall_Fywise_report', 'Reports::Act_Con_Overall_Fywise_report', ['filter' => 'auth']);
 // $routes->post('Act_Con_Overall_Fywise_report/(:any)', 'Reports::Act_Con_Overall_Fywise_report/$1', ['filter' => 'auth']);
 
-$routes->post('reports/Act_Con_Overall_Fywise_report', '\App\Modules\Reports\Controllers\Inc\Act_Con_Overall_Fywise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Act_Con_Overall_Fywise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Con_Overall_Fywise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Act_Con_Overall_Fywise_report', '\App\Modules\Reports\Controllers\Inc\Act_Con_Overall_Fywise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Act_Con_Overall_Fywise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Con_Overall_Fywise_report::index/$1', ['filter' => 'auth']);
 
-$routes->post('reports/Act_Con_Overall_datewise_report', '\App\Modules\Reports\Controllers\Inc\Act_Con_Overall_datewise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Act_Con_Overall_datewise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Con_Overall_datewise_report::index/$1', ['filter' => 'auth']);
-
-$routes->post('reports/Act_Con_Districtwise_FYwise_report', '\App\Modules\Reports\Controllers\Inc\Act_Con_Districtwise_FYwise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Act_Con_Districtwise_FYwise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Con_Districtwise_FYwise_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Act_Con_Overall_datewise_report', '\App\Modules\Reports\Controllers\Inc\Act_Con_Overall_datewise_report::index', ['filter' => 'auth']);
+$routes->get('reports/Act_Con_Overall_datewise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Con_Overall_datewise_report::index/$1', ['filter' => 'auth']);
 
 $routes->get('reports/Act_Con_Districtwise_FYwise_report', '\App\Modules\Reports\Controllers\Inc\Act_Con_Districtwise_FYwise_report::index', ['filter' => 'auth']);
 $routes->get('reports/Act_Con_Districtwise_FYwise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Con_Districtwise_FYwise_report::index/$1', ['filter' => 'auth']);
 
-
-$routes->post('reports/Act_Con_Districtwise_datewise_report', '\App\Modules\Reports\Controllers\Inc\Act_Con_Districtwise_datewise_report::index', ['filter' => 'auth']);
-$routes->post('reports/Act_Con_Districtwise_datewise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Con_Districtwise_datewise_report::index/$1', ['filter' => 'auth']);
 $routes->get('reports/Act_Con_Districtwise_datewise_report', '\App\Modules\Reports\Controllers\Inc\Act_Con_Districtwise_datewise_report::index', ['filter' => 'auth']);
 $routes->get('reports/Act_Con_Districtwise_datewise_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Act_Con_Districtwise_datewise_report::index/$1', ['filter' => 'auth']);
 
 $routes->get('reports/Pro_Physical_Progress_report', '\App\Modules\Reports\Controllers\Inc\Pro_Physical_Progress_report::index', ['filter' => 'auth']);
 $routes->get('reports/Pro_Physical_Progress_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Pro_Physical_Progress_report::index/$1', ['filter' => 'auth']);
 
-$routes->post('reports/Pro_Cumulative_Overall_report', '\App\Modules\Reports\Controllers\Inc\Pro_Cumulative_Overall_report::index', ['filter' => 'auth']);
-$routes->post('reports/Pro_Cumulative_Overall_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Pro_Cumulative_Overall_report::index/$1', ['filter' => 'auth']);
+$routes->get('reports/Pro_Cumulative_Overall_report', '\App\Modules\Reports\Controllers\Inc\Pro_Cumulative_Overall_report::index', ['filter' => 'auth']);
+$routes->get('reports/Pro_Cumulative_Overall_report/(:any)', '\App\Modules\Reports\Controllers\Inc\Pro_Cumulative_Overall_report::index/$1', ['filter' => 'auth']);
 
 $routes->post('reports/R_Completed_report', '\App\Modules\Reports\Controllers\Inc\R_Completed_report::index', ['filter' => 'auth']);
 $routes->post('reports/R_Completed_report/(:any)', '\App\Modules\Reports\Controllers\Inc\R_Completed_report::index/$1', ['filter' => 'auth']);

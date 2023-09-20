@@ -74,11 +74,11 @@
 		                          <td>
                     				<?php if (check_access_general(array('emp_edit'))): ?>
                     				<?php echo anchor("basic_supporting_agencies/create/".$objData->sup03id, '<span class="form-edit floatRight">
-                                        <img src="'.base_url('images/edit-btn.png').'" width="15" height="15"></span>'); ?>
+                                        <img src="'.site_url().'images/edit-btn.png" width="15" height="15"></span>'); ?>
                     			
-                                          <a class="confirmation" data-href="<?php echo site_url('basic_supporting_agencies');?>/delete/<?php echo $objData->sup03id;?>" data-toggle="confirmation"  data-singleton="true" data-placement="left" data-btnOkClass="btn-danger" data-btnCancelClass="btn-success" data-title="Are you sure to delete?" data-data accesskey="ss" >
+                                          <a class="confirmation" data-href="<?php echo site_url('basic_supporting_agencies');?>/delete/?id=<?php echo $objData->sup03id;?>" data-toggle="confirmation"  data-singleton="true" data-placement="left" data-btnOkClass="btn-danger" data-btnCancelClass="btn-success" data-title="Are you sure to delete?" data-data accesskey="ss" >
                                         <span class="form-edit floatRight margL">
-                                        <img src="<?php echo base_url('images/del-btn.png');?>" width="15" height="15"></span>
+                                        <img src="<?php echo site_url();?>images/del-btn.png" width="15" height="15"></span>
                                             </a>
                                 	<?php endif ?>
                     			</td>

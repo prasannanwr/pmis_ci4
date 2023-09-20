@@ -209,11 +209,16 @@
                     	//
                     	$bridge_complete_new = isset( $dataRow1['bridges_complet_total_new'])? $dataRow1['bridges_complet_total_new']: 0;
                     	$bridge_complete_carry = isset( $dataRow1['bridges_complet_total_carry'])? $dataRow1['bridges_complet_total_carry']: 0;
+                        //echo $bridge_complete_carry;exit;
 						//deducted new complete bridges on carryover
 						$bridge_complete_carry = $bridge_complete_carry - $bridge_complete_new;
                     	$total_complete = $bridge_complete_carry + $bridge_complete_new;
 						
 						$exp_co_fy = $total_under_constuction_brdg - $total_complete;
+
+                        if($exp_co_fy < 0) {
+                            $exp_co_fy = 0;
+                        }
 						
                     	$first_constraction_new = isset( $dataRow1['first_constraction_new'])? $dataRow1['first_constraction_new']: 0;
                     	$first_constraction_carry = isset( $dataRow1['first_constraction_carry'])? $dataRow1['first_constraction_carry']: 0;

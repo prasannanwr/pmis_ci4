@@ -19,8 +19,7 @@
 							Code:
 						</label>
 						<div class="col-sm-6">
-                            <input id="bri02bds_type_code" class="form-control" type="text" name="bri02bds_type_code" maxlength="4" value="<?php echo et_setFormValBlank('bri02bds_type_code', $objOldRec); ?>"  />
-                            
+                            <input id="bri02bds_type_code" class="form-control" type="text" name="bri02bds_type_code" maxlength="4" value="<?php echo et_setFormVal('bri02bds_type_code', $objOldRec); ?>"  />
 						</div>
 					</div>
 					<div class="form-group">
@@ -29,7 +28,6 @@
 						</label>
 						<div class="col-sm-6">
                             <input id="bri02bds_type_name" class="form-control" type="text" name="bri02bds_type_name" maxlength="50" value="<?php echo et_setFormValBlank('bri02bds_type_name', $objOldRec); ?>"  />
-                            
 						</div>
 					</div>
 					
@@ -38,8 +36,7 @@
 							Description:
 						</label>
 						<div class="col-sm-6">
-                            <textarea id="bri02description" class="form-control" name="bri02description" maxlength="100"><?php echo et_setFormVal('bri02description', $objOldRec); ?></textarea>
-                            
+                            <textarea id="bri02description" class="form-control" name="bri02description" maxlength="100"><?php echo et_setFormValBlank('bri02description', $objOldRec); ?></textarea>
 						</div>
 					</div>
 					<div class="form-group">
@@ -102,4 +99,4 @@ $(document).ready(function()
             });
       });
 </script>
-<?= $this->endSection() ?>
+<?= $this->endSection() ?> 

@@ -62,7 +62,7 @@
                                 <td colspan="22">
                                 <div class="row">
                                         <div class="center" style="font-size: 12px;">
-                                            <b><span>TBSU Regional Office: :<?php echo $arrSupData->tbis01name; ?></span></b>
+                                            <b><span>Province :<?php echo $arrSupData->tbis01name; ?></span></b>
                                         </div>
                                     </div>
                                 </td>
@@ -87,7 +87,7 @@
                                             <b><span>District:<?php   echo $arrDistInfo->dist01name; ?></span></b>
                                         </div>
                                         <div class="col-lg-6">
-                                            <b><span style="float:right;" >TBSU Regional Office:<?php  echo  $arrDistInfo->tbis01name; ?></span></b>
+                                            <b><span style="float:right;" >Province:<?php  echo  $arrDistInfo->tbis01name; ?></span></b>
                                         </div>
                                     </div> 
                                 </td>

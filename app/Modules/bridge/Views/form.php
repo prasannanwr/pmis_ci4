@@ -619,10 +619,33 @@
 									<label class="col-lg-5 ">Foundation Blocks Left Bank</label>
 
 									<div class="col-lg-7 ">
+										<?php
+										$multiple = '';
+										$bri03bridge_type = '';
+										$foundation_leftbank_name = "bri04anchorage_foundation_leftbank";
+										$foundation_rb_name = "bri04anchorage_foundation_rb";
+										$sel_foundation_leftbank = array();
+										$sel_foundation_rb = array();
 
-										<?php //echo et_form_dropdown_db('bri04anchorage_foundation_leftbank', 'anc01main_anchorage_foundation_table', 'anc01maf_type_name', 'anc01id', et_setFormVal('bri04anchorage_foundation_leftbank', $objbasicRec), '', 'class="form-control"') 
+										if(isset($objOldRec['bri03bridge_type'])) {
+											$bri03bridge_type = $objOldRec['bri03bridge_type'];
+										}
+
+										if(isset($objbasicRec['bri04anchorage_foundation_leftbank'])) {
+											$sel_foundation_leftbank = explode(',', $objbasicRec['bri04anchorage_foundation_leftbank']);
+										}
+
+										if(isset($objbasicRec['bri04anchorage_foundation_rb'])) {
+											$sel_foundation_rb = explode(',', $objbasicRec['bri04anchorage_foundation_rb']);
+										}
+
+										if($bri03bridge_type == 20 || $bri03bridge_type == 23) {
+											$multiple = "multiple";
+											$foundation_leftbank_name = "bri04anchorage_foundation_leftbank[]";
+											$foundation_rb_name = "bri04anchorage_foundation_rb[]";
+										} 
 										?>
-										<select name="bri04anchorage_foundation_leftbank" id="bri04anchorage_foundation_leftbank" class="form-control">
+										<select name="<?=$foundation_leftbank_name;?>" id="bri04anchorage_foundation_leftbank" class="form-control" <?=$multiple;?>>
 											<option>--Please Select--</option>
 											<?php $anc01maf_btype = '';
 											foreach ($brianchorage_foundation as $anchorage_foundation) {
@@ -634,7 +657,7 @@
 													?>
 													<optgroup label="<?= $anchorage_foundation->anc01maf_type_name; ?>">
 													<?php } else { ?>
-														<option <?= (is_array($objbasicRec) && $anchorage_foundation->anc01id == $objbasicRec['bri04anchorage_foundation_leftbank']) ? 'selected="selected"' : ''; ?> value="<?= $anchorage_foundation->anc01id; ?>"><?= $anchorage_foundation->anc01maf_type_name; ?></option>
+														<option <?= (is_array($objbasicRec) && in_array($anchorage_foundation->anc01id, $sel_foundation_leftbank)) ? 'selected="selected"' : ''; ?> value="<?= $anchorage_foundation->anc01id; ?>"><?= $anchorage_foundation->anc01maf_type_name; ?></option>
 												<?php }
 											} ?>
 										</select>
@@ -655,14 +678,14 @@
 
 										<?php //echo et_form_dropdown_db('bri04anchorage_foundation_rb', 'anc01main_anchorage_foundation_table', 'anc01maf_type_name', 'anc01id', et_setFormVal('bri04anchorage_foundation_rb', $objbasicRec), '', 'class="form-control"') 
 										?>
-										<select name="bri04anchorage_foundation_rb" id="bri04anchorage_foundation_rb" class="form-control">
+										<select name="<?=$foundation_rb_name;?>" id="bri04anchorage_foundation_rb" class="form-control" <?=$multiple;?>>
 											<option>--Please Select--</option>
 											<?php foreach ($brianchorage_foundation as $anchorage_foundation) {
 												if ($anchorage_foundation->anc01maf_type_parent != '') {
 											?>
 													<optgroup label="<?= $anchorage_foundation->anc01maf_type_name; ?>">
 													<?php } else { ?>
-														<option <?= (is_array($objbasicRec) && $objbasicRec['bri04anchorage_foundation_rb'] == $anchorage_foundation->anc01id) ? 'selected="selected"' : ''; ?> value="<?= $anchorage_foundation->anc01id; ?>"><?= $anchorage_foundation->anc01maf_type_name; ?></option>
+														<option <?= (is_array($objbasicRec) && in_array($anchorage_foundation->anc01id, $sel_foundation_rb) ) ? 'selected="selected"' : ''; ?> value="<?= $anchorage_foundation->anc01id; ?>"><?= $anchorage_foundation->anc01maf_type_name; ?></option>
 												<?php }
 											} ?>
 										</select>
@@ -863,6 +886,38 @@
 											<option value="Yes" <?php echo ('Yes' == et_setFormVal('bri04windguy_arrangement', $objbasicRec)) ? 'selected' : ''; ?>>Yes</option>
 											<option value="No" <?php echo ('No' == et_setFormVal('bri04windguy_arrangement', $objbasicRec)) ? 'selected' : ''; ?>>No</option>
 										</select>
+
+									</div>
+
+									<div class="clear"></div>
+
+								</div>
+								
+								<div class="form-group clearfix">
+
+									<label class="col-lg-5  ">Windguy Cable no.</label>
+
+									<div class="col-lg-7 ">
+
+										<?php echo et_form_dropdown_db('bri04_windguy_cable_nos', 'cab01main_cable_number_ww_table', 'cab01mcnww_type_number', 'cab01id', et_setFormVal('bri04_windguy_cable_nos', $objbasicRec), '', 'class="form-control"') ?>
+
+
+
+									</div>
+
+									<div class="clear"></div>
+
+								</div>
+
+								<div class="form-group clearfix">
+
+									<label class="col-lg-5  ">Windguy Cable dia (mm)</label>
+
+									<div class="col-lg-7 ">
+
+										<?php echo et_form_dropdown_db('bri04_windguy_cable_dia', 'cad01main_cable_diam_ww_table', 'cad01mcdww_type_number', 'cad01id', et_setFormVal('bri04_windguy_cable_dia', $objbasicRec), '', 'class="form-control"') ?>
+
+
 
 									</div>
 
@@ -1092,7 +1147,7 @@
 								</div>
 							</div>
 
-							<div class="form-group clearfix">
+							<div class="form-group clearfix" >
 
 								<label class="col-lg-5 nopad" <?php //echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#adabab;"':'');
 																?>>Bridge Complete</label>
@@ -1263,7 +1318,7 @@
 
 								<div class="col-lg-7 datebox-container ">
 
-									<div class="col-lg-2 checkPad ">
+									<div class="col-lg-2 checkPad">
 
 										<input type="checkbox" class=" form-control " name="bri05work_completion_certificate_check" id="bri05work_completion_certificate_check" value="1" <?php echo (et_setFormVal('bri05work_completion_certificate_check', $objImplementationRec) == 1) ? 'checked="checked"' : '' ?> />
 
@@ -1273,7 +1328,7 @@
 
 										<span class="input-group-addon"><i class="glyphicon glyphicon-th" <?php echo (isset($objOldRec['bri03construction_type']) && $objOldRec['bri03construction_type'] == 1 ? 'style="color:#c6c6c6"' : ''); ?>></i></span>
 
-										<input type="text" class=" form-control " name="bri05work_completion_certificate" id="bri05work_completion_certificate" value="<?php if (isset($objImplementationRec['bri05work_completion_certificate']) && $objImplementationRec['bri05work_completion_certificate'] != "0000-00-00") {											echo et_setFormVal('bri05work_completion_certificate', $objImplementationRec);} ?>" />
+										<input type="text" class=" form-control " name="bri05work_completion_certificate" id="bri05work_completion_certificate" value="<?php if (isset($objImplementationRec['bri05work_completion_certificate']) && $objImplementationRec['bri05work_completion_certificate'] != "0000-00-00") {											echo et_setFormVal('bri05work_completion_certificate', $objImplementationRec);} ?>"/>
 
 									</div>
 								</div>
@@ -2587,7 +2642,24 @@
 				},
 				success: function(msg) {
 					if (msg) {
+						//$("#bri04anchorage_foundation_rb,#bri04anchorage_foundation_leftbank").html(msg);
 						$("#bri04anchorage_foundation_rb,#bri04anchorage_foundation_leftbank").html(msg);
+						$("#bri04anchorage_foundation_leftbank").attr("multiple");
+						$("#bri04anchorage_foundation_rb").attr("multiple");
+						bri04anchorage_foundation_leftbank = document.getElementById('bri04anchorage_foundation_leftbank');
+						bri04anchorage_foundation_rb = document.getElementById('bri04anchorage_foundation_rb');
+						
+						if(btype == 20 || btype == 23) {
+							bri04anchorage_foundation_leftbank.setAttribute('multiple', true);
+							bri04anchorage_foundation_rb.setAttribute('multiple', true);
+							document.getElementById("bri04anchorage_foundation_leftbank").setAttribute('name','bri04anchorage_foundation_leftbank[]');
+							document.getElementById("bri04anchorage_foundation_rb").setAttribute('name','bri04anchorage_foundation_rb[]');
+						} else {
+							bri04anchorage_foundation_leftbank.removeAttribute('multiple');
+							bri04anchorage_foundation_rb.removeAttribute('multiple');
+							document.getElementById("bri04anchorage_foundation_leftbank").setAttribute('name','bri04anchorage_foundation_leftbank');
+							document.getElementById("bri04anchorage_foundation_rb").setAttribute('name','bri04anchorage_foundation_rb');
+						}
 					}
 				}
 			});

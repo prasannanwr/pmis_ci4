@@ -15,7 +15,7 @@
                    <div class="col-lg-3 clearfix">
                     </div>
 					<div class="col-lg-5 clearfix">
-                   <form action="<?php echo site_url();?>/reports/Act_Con_Districtwise_datewise_report" method="post"> 
+                   <form action="<?php echo site_url();?>/reports/Act_Con_Districtwise_datewise_report" method="get"> 
                 <div class="form-group clearfix">
                 <label class="col-lg-4 ">Start Date:</label>
                 <div class="col-lg-8 datebox-container ">

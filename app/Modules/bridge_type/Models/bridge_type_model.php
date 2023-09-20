@@ -14,11 +14,7 @@ class bridge_type_model extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'bri01bridge_type_code',
-        'bri01bridge_type_name',
-        'bri01description'
-    ];
+    protected $allowedFields    = [];
 
     // Dates
     protected $useTimestamps = false;

@@ -80,11 +80,12 @@ class Gen_Munc_FYWise_report extends BaseController
         }
 
         $data['sel_district_filter'] = '';
-        $this->view_bridge_detail_model->where('bri05bridge_completion_fiscalyear >=', $dataStart)->where('bri05bridge_completion_fiscalyear <=', $dateEnd);
-        $this->view_bridge_detail_model->where('bri05bridge_complete_check', 1)->where('bri05bridge_completion_fiscalyear_check', 1);
-        //$dist= $this->view_bridge_detail_model->where('dist01id',$rr)->findAll();
-        $dist = $this->view_bridge_detail_model->where('left_muni01id', $bri03municipality)->findAll();
-
+        // $this->view_bridge_detail_model->where('bri05bridge_completion_fiscalyear >=', $dataStart)->where('bri05bridge_completion_fiscalyear <=', $dateEnd);
+        // $this->view_bridge_detail_model->where('bri05bridge_complete_check', 1)->where('bri05bridge_completion_fiscalyear_check', 1);
+        // //$dist= $this->view_bridge_detail_model->where('dist01id',$rr)->findAll();
+        // $dist = $this->view_bridge_detail_model->where('left_muni01id', $bri03municipality)->findAll();
+        $dist = $this->view_bridge_detail_model->munc_wise_report($dataStart,$dateEnd, $bri03municipality);
+        // var_dump($dist);exit;
 
         if (is_array($dist) && !empty($dist)) {
           //print header

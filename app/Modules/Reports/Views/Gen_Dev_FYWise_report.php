@@ -27,7 +27,7 @@
                                                 <th style="width:150px;" rowspan="2" class="center">River Name</th>
                                                 <!-- <th style="width:80px;" rowspan="2" class="center">Palika</th> -->
                                                 <th colspan="2" class="center">Walk Way Deck</th>
-                                                <th rowspan="2">Topo Map sheet Number</th>
+                                          <!--       <th rowspan="2">Topo Map sheet Number</th> -->
                                                 <th colspan="2" class="center">Co-ordinate</th>
                                                 <th rowspan="2" class="center">Major Palika</th>
                                                 <th colspan="2" class="center">RM/UM</th>
@@ -99,7 +99,7 @@
                                                <!--  <td><?php //echo $major_palika; ?></td> -->
                                                 <td style="width:120px;"><?php echo $dataRow1['info']['wad01walkway_deck_type_name']; ?></td>
                                                 <td style="width:100px;"><?php echo $dataRow1['info']['wal01walkway_width']; ?></td>
-                                                <td><?php echo $dataRow1['info']['bri03topo_map_no']; ?></td>
+                                                <!-- <td><?php //echo $dataRow1['info']['bri03topo_map_no']; ?></td> -->
                                                 <td><?php echo $dataRow1['info']['bri03coordinate_north']; ?></td>
                                                 <td><?php echo $dataRow1['info']['bri03coordinate_east']; ?></td>
                                                 <td><?php echo ($dataRow1['info']['bri03major_vdc'] == 0? $dataRow1['info']['left_muni01name']:$dataRow1['info']['right_muni01name']); ?></td>

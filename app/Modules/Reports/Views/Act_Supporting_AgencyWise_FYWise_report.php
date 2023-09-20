@@ -16,7 +16,7 @@
 				<div class="col-lg-12 mainBoard">
 				<p class="reportHeader center">Actual Bridge Cost (Between <?php echo $startyear->fis01code." - ".$endyear->fis01code;?>)</p>
                 <p><h4>Filter by Supporting Agency</h4>
-                    <form name="frmAgencyFilter" method="post" action="<?php echo site_url();?>/reports/Act_Supporting_AgencyWise_FYWise_report<?php echo (isset($blnMM) && $blnMM)? '/'.MM_CODE: ''; ?>">      
+                    <form name="frmAgencyFilter" method="get" action="<?php echo site_url();?>/reports/Act_Supporting_AgencyWise_FYWise_report<?php echo (isset($blnMM) && $blnMM)? '/'.MM_CODE: ''; ?>">      
                         <select name="selAgency" onchange="document.frmAgencyFilter.submit();">
                             <option value="">--Select--</option>
                             <?php                         
@@ -96,7 +96,7 @@
                                             <b><span>District:<?php   echo $arrDistInfo->dist01name; ?></span></b>
                                         </div>
                                         <div class="col-lg-6">
-                                            <b><span style="float:right;" >TBSU Regional Office:<?php  echo  $arrDistInfo->province_name; ?></span></b>  <!--echo  $arrDistInfo->tbis01name; -->
+                                            <b><span style="float:right;" >Province:<?php  echo  $arrDistInfo->province_name; ?></span></b>  <!--echo  $arrDistInfo->tbis01name; -->
                                         </div>
                                     </div> 
                                 </td>

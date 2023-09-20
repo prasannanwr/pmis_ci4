@@ -13,6 +13,7 @@ class Cost_Components extends BaseController
 
 	function __construct()
 	{
+		helper(['form', 'html', 'et_helper']);
 		if (count(self::$arrDefData) <= 0) {
 
 			$FName = basename(__FILE__, '.php');
@@ -24,7 +25,7 @@ class Cost_Components extends BaseController
 				'view_file'     => 'index',
 			);
 		}
-		helper(['form', 'html', 'et_helper']);
+
 		$model = new CostComponentsModel();
 		$this->model = $model;
 	}
@@ -34,19 +35,18 @@ class Cost_Components extends BaseController
 		$data = self::$arrDefData;
 		$data['view_file'] = __FUNCTION__;
 		$data['arrDataList'] = $this->model->asObject()->findAll();
+		// echo "<pre>";
+		// var_dump($data['arrDataList']);exit;
 		return view('\Modules\cost_components\Views'. DIRECTORY_SEPARATOR .__FUNCTION__, $data);
 	}
 
-
-
 	function create($emp_id = FALSE)
 	{
-
 		$data = self::$arrDefData;
 		$data['title'] = 'Add Cost Components';
 		$data['view_file'] = __FUNCTION__;
 		$data['objOldRec'] = '';
-		$data['postURL'] = "cost_components/create";
+		$data['postURL'] = self::$fName . "/create";
 		if ($emp_id !== false) {
 			$data['objOldRec'] = $this->model->where('cmp01id', $emp_id)->first();
 			$data['postURL'] .= '/' . $emp_id;
@@ -55,7 +55,7 @@ class Cost_Components extends BaseController
 		if ($this->request->getMethod() == 'post') {
             if ($this->request->getVar('submit') == 'Cancel') {
                 //die("cancel");
-                return redirect()->to('bridge_design_standard/index');
+                return redirect()->to('cost_components/index');
             }
             //check if the form is submitted or not bri03project_fiscal_year
             $rules = [
@@ -99,6 +99,7 @@ class Cost_Components extends BaseController
 		}
 		return view('\Modules\cost_components\Views'. DIRECTORY_SEPARATOR .__FUNCTION__, $data);
 	}
+
 
 	function delete($delete_id)
 	{

@@ -70,16 +70,21 @@ class fiscal_data_model extends Model
 
 		//check if the data exists 
 		$sql = "SELECT `fis02id` FROM `fis02fiscal_data` WHERE `fis02dist01codeid` = '$dId' AND `fis02year` = '$fy' AND `fis02constype` = '$ctype' AND `fis02sup01id` = '$sa'";
+        // echo $sql;
+        // echo "<br>";
 		$query = $this->db->query($sql);
 		$row = $query->getRow();
+//echo $query->getNumRows();exit;
+       // var_dump($row);exit;
 
-		if($row->Count() > 0) {
+		if($query->getNumRows() > 0) {
 			$fis02id = $row->fis02id;
 			//echo $fis02id;exit;
 			$sql = "UPDATE `fis02fiscal_data` SET `fis02carryover` = `fis02carryover` + '$cc' WHERE `fis02id` = '$fis02id'";
 		} else {
 			$sql = "INSERT INTO `fis02fiscal_data`(`fis02year`,`fis02dist01codeid`,`fis02name1`,`fis02name2`,`fis02name3`,`fis02name4`,`fis02sup01id`,`fis02carryover`,`fis02constype`) VALUES('$fy','$dId',0,0,0,0,'$sa','$cc','$ctype')";
 		}
+        //echo $sql;exit;
 		$query = $this->db->query($sql);
 		
 		
@@ -95,8 +100,8 @@ class fiscal_data_model extends Model
     public function checkExistingData($dId, $fy) {
     	$sql = "SELECT * FROM `fis02fiscal_data` WHERE `fis02year` LIKE '%".$fy."%' AND `fis02dist01codeid` = '$dId'";
 		$query = $this->db->query($sql);
-		$row = $query->getRow();
-		if($row->Count() > 0) {
+		// $row = $query->getRow();
+		if($query->getNumRows() > 0) {
 			return true;
 		} else {
 			return false;

@@ -101,16 +101,14 @@ class fiscal_year extends BaseController {
 				
 				// run insert model to write data to db
 				if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
-				
 				{
 					/* save fiscal data */
 					
 					$arrDistList= $this->district_name_model->findAll();
 					// build array for the model
-					foreach($arrDistList as $distData){
-						//var_dump($SupData);	        	            
+					foreach($arrDistList as $distData){   	            
 						$form_data = array(
-							'fis02dist01codeid' =>$distData->dist01id,
+							'fis02dist01codeid' =>$distData['dist01id'],
 										//'fis02dist01codeid' => @$this->request->getVar('fis02dist01codeid'),
 										'fis02year' => @$this->request->getVar('fis01year'),
 										'fis02name1' => 0,
@@ -123,7 +121,7 @@ class fiscal_year extends BaseController {
 						$this->fiscal_data_model->save($form_data);
 
 						$form_data1 = array(
-							'fis02dist01codeid' =>$distData->dist01id,
+							'fis02dist01codeid' =>$distData['dist01id'],
 										//'fis02dist01codeid' => @$this->request->getVar('fis02dist01codeid'),
 										'fis02year' => @$this->request->getVar('fis01year'),
 										'fis02name1' => 0,
@@ -141,12 +139,18 @@ class fiscal_year extends BaseController {
 					
 					//new construction
 					$Previous_carry= $this->view_all_views_model->view_sup03_dist01_bri05_count_carry_previous_data(0,$fis01year);
-					//var_dump($Previous_carry);
-					//exit;
+					//  echo "<pre>";
+					// 		var_dump($Previous_carry);
+					// exit;
 					
 					foreach($Previous_carry as $previous) {
-										
+					// 	if($previous->dist01id != NULL) {
+					// 	 echo "<pre>";
+					// 		var_dump($previous->bri03supporting_agency);
+					// exit;			
 						$this->fiscal_data_model->dbInsertAData($previous->dist01id, @$this->request->getVar('fis01year'), 0, $previous->bri03supporting_agency, $previous->bri03total_previous_carry_count);
+
+						//}
 						
 					}
 					
@@ -159,7 +163,7 @@ class fiscal_year extends BaseController {
 
 					//set_message('Fiscal Year successfully created.', 'success');
 					session()->setFlashdata('message', 'Fiscal Year successfully created.');
-					return redirect()->to(base_url('fiscal_year/index'));
+					return redirect()->to(base_url('fiscal_year'));
 				}
 				else
 				{

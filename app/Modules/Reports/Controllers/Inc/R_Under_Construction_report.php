@@ -11,6 +11,7 @@ use App\Modules\view\Models\view_brigde_detail_site_assesment_survey_model;
 use App\Modules\view\Models\view_brigde_detail_site_assesment_survey_r7_model;
 use App\Modules\view\Models\view_district_model;
 use App\Modules\view\Models\view_district_new_reg_office_model;
+use App\Modules\User\Models\UserModel;
 
 //use App\Modules\Reports\Models\ReportsModel;
 
@@ -71,9 +72,11 @@ class R_Under_Construction_report extends BaseController
 
     public function index($stat = '')
     {
-
-         $data['blnMM'] = $stat;
-         $Postback = @$this->request->getVar('submit');
+		$data['blnMM'] = $stat;
+        $Postback = @$this->request->getVar('submit');
+		$userModel = new UserModel();
+		$arrPermittedDistList = $userModel->getArrPermitedDistList();
+		$intUserType = (session()->get('type')) ? session()->get('type') : ENUM_GUEST;
          
          if($this->request->getVar('rtype') && $this->request->getVar('rtype') == "regional") { //tbsu regional office wise
              $dataDist = @$this->request->getVar('regionaloffice');
@@ -86,7 +89,7 @@ class R_Under_Construction_report extends BaseController
 
                  //$arrDistList = $this->view_district_new_reg_office_model->findAll();
                  $arrDistList = $this->regional_office_model->findAll();
-                  if (is_array($arrDistList))
+                 if (is_array($arrDistList))
                  {
                      foreach ($arrDistList as $k => $v)
                      {
@@ -95,24 +98,26 @@ class R_Under_Construction_report extends BaseController
                       }
                  }
                  
-                 
                  //$data['arrDistList'] = $this->view_district_tbis_office_model->findAll();
-                 
-                     if (empty($stat))
-                         {                       
-                          $x = ENUM_NEW_CONSTRUCTION;
-                         } else
-                         {
-                          $x = ENUM_MAJOR_MAINTENANCE;
-                 
-                     }
-                 
+				 if (empty($stat))
+					 {                       
+					  $x = ENUM_NEW_CONSTRUCTION;
+					 } else
+					 {
+					  $x = ENUM_MAJOR_MAINTENANCE;
+				 }
                                       
-                     /*$brige_list= $this->view_brigde_detail_site_assesment_survey_model->where('bri03tbsu_regional_office',$dataDist)->where('bri03construction_type',$x)->
-                     where('bri05bridge_complete_check', '0')->findAll();*/
-                     
-                      $brige_list= $this->view_brigde_detail_site_assesment_survey_r7_model->where('dist01tbis01id',$dataDist)->where('bri03construction_type',$x)->
-                     where('bri05bridge_complete_check', '0')->where('bri03work_category !=','3')->asObject()->findAll();
+				 /*$brige_list= $this->view_brigde_detail_site_assesment_survey_model->where('bri03tbsu_regional_office',$dataDist)->where('bri03construction_type',$x)->
+				 where('bri05bridge_complete_check', '0')->findAll();*/
+				 if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
+					  //comma seperated value
+					  if (count($arrPermittedDistList) > 0) {
+						$brige_list= $this->view_brigde_detail_site_assesment_survey_r7_model->whereIn('dist01id', $arrPermittedDistList)->where('dist01tbis01id',$dataDist)->where('bri03construction_type',$x)->
+				 where('bri05bridge_complete_check', '0')->where('bri03work_category !=','3')->asObject()->findAll();
+					  }
+				} else {
+					$brige_list= $this->view_brigde_detail_site_assesment_survey_r7_model->where('dist01tbis01id',$dataDist)->where('bri03construction_type',$x)->where('bri05bridge_complete_check', '0')->where('bri03work_category !=','3')->asObject()->findAll();
+				}
                      
                      
              
@@ -160,24 +165,30 @@ class R_Under_Construction_report extends BaseController
                  
                  //$data['arrDistList'] = $this->view_district_tbis_office_model->findAll();
                  
-                     if (empty($stat))
-                         {                       
-                          $x = ENUM_NEW_CONSTRUCTION;
-                         } else
-                         {
-                          $x = ENUM_MAJOR_MAINTENANCE;
-                 
-                     }
+				 if (empty($stat))
+					 {                       
+					  $x = ENUM_NEW_CONSTRUCTION;
+					 } else
+					 {
+					  $x = ENUM_MAJOR_MAINTENANCE;
+			 
+				 }
+				 
+				 if ($intUserType == ENUM_REGIONAL_MANAGER || $intUserType == ENUM_REGIONAL_OPERATOR) {
+					  //comma seperated value
+					  if (count($arrPermittedDistList) > 0) {
+						$brige_list= $this->view_brigde_detail_site_assesment_survey_model->whereIn('dist01id', $arrPermittedDistList)->where('dist01id',$dataDist)->where('bri03construction_type',$x)->
+                     where('bri05bridge_complete_check', '0')->where('bri03work_category !=','3')->asObject()->findAll();
+					  }
+				} else {
+					$brige_list= $this->view_brigde_detail_site_assesment_survey_model->where('dist01id',$dataDist)->where('bri03construction_type',$x)->
+                     where('bri05bridge_complete_check', '0')->where('bri03work_category !=','3')->asObject()->findAll();
+				}
                  
                                       
                      /*$brige_list= $this->view_brigde_detail_site_assesment_survey_model->where('dist01id',$dataDist)->where('bri03construction_type',$x)->
                      where('bri05bridge_complete_check', '0')->findAll();*/
-                     // echo $dataDist;
-                     // echo "<br>";
-                     // echo $x;
-                     // exit;
-                     $brige_list= $this->view_brigde_detail_site_assesment_survey_model->where('dist01id',$dataDist)->where('bri03construction_type',$x)->
-                     where('bri05bridge_complete_check', '0')->where('bri03work_category !=','3')->asObject()->findAll();
+                     
 
 
                       $arrDataList = array();

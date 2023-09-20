@@ -19,8 +19,8 @@
 							Code:
 						</label>
 						<div class="col-sm-6">
-                            <input id="ssr01surveyor_id" class="form-control" type="text" name="ssr01surveyor_id" maxlength="3" value="<?php echo et_setFormVal('ssr01surveyor_id', $objOldRec); ?>"  />
-                            <?php echo form_error('ssr01surveyor_id'); ?>
+                            <input id="ssr01surveyor_id" class="form-control" type="text" name="ssr01surveyor_id" maxlength="3" value="<?php echo et_setFormValBlank('ssr01surveyor_id', $objOldRec); ?>"  />
+                    
 						</div>
 					</div>
 					<div class="form-group">
@@ -29,7 +29,6 @@
 						</label>
 						<div class="col-sm-6">
                             <input id="ssr01surveyor_name" class="form-control" type="text" name="ssr01surveyor_name" maxlength="30" value="<?php echo et_setFormVal('ssr01surveyor_name', $objOldRec); ?>"  />
-                            <?php echo form_error('ssr01surveyor_name'); ?>
 						</div>
 					</div>
                     <div class="form-group">
@@ -38,7 +37,6 @@
 						</label>
 						<div class="col-sm-6">
                             <input id="ssr01birth_date" class="form-control input-group date" type="text" name="ssr01birth_date" maxlength="30" value="<?php echo et_setFormVal('ssr01birth_date', $objOldRec); ?>"  />
-                            <?php echo form_error('ssr01birth_date'); ?>
 						</div>
 					</div>
                     <div class="form-group">
@@ -47,7 +45,6 @@
 						</label>
 						<div class="col-sm-6">
                             <input id="ssr01address" class="form-control" type="text" name="ssr01address" maxlength="30" value="<?php echo et_setFormVal('ssr01address', $objOldRec); ?>"  />
-                            <?php echo form_error('ssr01address'); ?>
 						</div>
 					</div>
                     <div class="form-group">
@@ -56,7 +53,6 @@
 						</label>
 						<div class="col-sm-6">
                             <input id="ssr01agency_id" class="form-control" type="text" name="ssr01agency_id" maxlength="30" value="<?php echo et_setFormVal('ssr01agency_id', $objOldRec); ?>"  />
-                            <?php echo form_error('ssr01agency_id'); ?>
 						</div>
 					</div>
 					
@@ -66,7 +62,7 @@
 						</label>
 						<div class="col-sm-6">
                             <textarea id="ssr01description" class="form-control" name="ssr01description" maxlength="100"><?php echo et_setFormVal('ssr01description', $objOldRec); ?></textarea>
-                            <?php echo form_error('ssr01description'); ?>
+
 						</div>
 					</div>
 					<div class="form-group">
@@ -81,7 +77,7 @@
                                       'class' => 'btn btn-primary'
                                 );
                           ?>
-                        <?php echo form_hidden('id', et_setFormVal('id', $objOldRec)); ?>
+                        <?php echo form_hidden('id', et_setFormVal('ssr01id', $objOldRec)); ?>
                         <?php echo form_button($btn_submit); ?>
                         <?php echo anchor('site_surveyors', 'Cancel', array('class' => 'btn btn-default')); ?>
 						</div>

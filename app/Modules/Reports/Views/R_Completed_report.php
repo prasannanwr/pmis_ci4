@@ -22,7 +22,7 @@
                     ?>
 								<?php if($rtype == "district") { ?>
 								<div class="col-lg-6"><b><span>District: <?php echo $dataRow['dist']['dist01name'];  ?></span></b></div><div class="col-lg-6"><b><span style="float:right;" >Status as of <?php echo _day(); ?></span></b></div>
-                        		<div class="col-lg-6"><b><span>Development Region:&nbsp;</span><span class="bold "> <?php echo $dataRow['dist']['dev01name'];  ?></span></b></div>			
+                        		<div class="col-lg-6"><b><span>Province:&nbsp;</span><span class="bold "> <?php echo $dataRow['dist']['province_name'];  ?></span></b></div>			
 								<?php } else { ?>
 								<div class="col-lg-6"><b><span>TBSU Regional Office: <?php echo $tbsu_regional_off->tbis01name;  ?></span></b></div><div class="col-lg-6"><b><span style="float:right;" >Status as of <?php echo _day(); ?></span></b></div>
                         		<!-- <div class="col-lg-6"><b><span>Development Region:&nbsp;</span><span class="bold "> <?php //echo $dataRow['dist']->dev01name;  ?></span></b></div>			 -->
@@ -107,8 +107,9 @@
                                                 <td colspan="14"><strong>Total completed: <?php echo $i-1; ?></strong></td>                                               
                                             </tr>                                                         
 										</tbody>
-									</table>         				                              
-							<?php  }} else {  ?>        
+									</table>
+									<?php  }  ?>
+							<?php  } else {  ?>        
 							 
 							 <div class="table-responsive">
 									<table class="table table-bordered table-hover">

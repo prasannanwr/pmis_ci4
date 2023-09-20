@@ -15,6 +15,4 @@ $routes->group("bridge", ["namespace" => "App\Modules\bridge\Controllers"], func
 	$routes->post('saveCostRef', 'Bridge::saveCostRef', ['filter' => 'auth']);
 	$routes->post('getAnchorageFoundations', 'Bridge::getAnchorageFoundations', ['filter' => 'auth']);
 	$routes->get('getAnchorageFoundations', 'Bridge::getAnchorageFoundations', ['filter' => 'auth']);
-
-	$routes->get('delete/(:any)', 'bridge::delete/$1', ['filter' => 'auth']);
 });

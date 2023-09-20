@@ -89,7 +89,7 @@ class Bridge_type extends BaseController
     			// run insert model to write data to db
     			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
     			{
-    				session()->setFlashdata('message', 'Bridge type successfully created.');
+    				session()->setFlashdata('message', 'Bridge successfully created.');
                     redirect('bridge_type');
     			}
     			else
@@ -99,8 +99,8 @@ class Bridge_type extends BaseController
     				session()->setFlashdata('alert-class', 'alert-danger');
     			}
     		}
+            return view('\Modules\bridge_type\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
         }
-        return view('\Modules\bridge_type\Views' . DIRECTORY_SEPARATOR . __FUNCTION__, $data);
     }
 
     function delete($delete_id)

@@ -77,7 +77,7 @@
                 <td colspan="22">
                     <div class="row">
                         <div class="col-lg-6">
-                            <b><span>State:<?php echo $dataRow['info']->province_name; ?></span></b>
+                            <b><span>Province:<?php echo $dataRow['info']->province_name; ?></span></b>
                         </div>
                     </div>
                 </td>
@@ -107,16 +107,16 @@
                         {
                         ?>
                             <tr class="row<?php echo $i;?>">
-								<td class="center" style="width:40px;"><?php echo $i;?></td>
+                                <td class="center" style="width:40px;"><?php echo $i;?></td>
                                 <td class="center"><?php echo $dataRow1['info']->bri03bridge_no;?></td>
-								<td class="center"><?php echo $dataRow1['info']->bri03bridge_name;?></td>
-								<td class="center"><?php echo $dataRow1['info']->bri01bridge_type_code;?></td>
-								<td class="center spw_bri_<?php echo $dataRow1['info']->bri03id;?> spw"><?php echo $dataRow1['info']->bri03e_span;?></td>
-								<td class="center"><?php echo $dataRow1['info']->bri03river_name;?></td>
-								<td class="center"><?php echo $dataRow1['info']->wad01walkway_deck_type_name;?></td>
-								<td class="center"><?php  echo $dataRow1['info']->wal01walkway_width;?></td>
+                                <td class="center"><?php echo $dataRow1['info']->bri03bridge_name;?></td>
+                                <td class="center"><?php echo $dataRow1['info']->bri01bridge_type_code;?></td>
+                                <td class="center spw_bri_<?php echo $dataRow1['info']->bri03id;?> spw"><?php echo $dataRow1['info']->bri03e_span;?></td>
+                                <td class="center"><?php echo $dataRow1['info']->bri03river_name;?></td>
+                                <td class="center"><?php echo $dataRow1['info']->wad01walkway_deck_type_name;?></td>
+                                <td class="center"><?php  echo $dataRow1['info']->wal01walkway_width;?></td>
                             <?php
-                                foreach ($arrCostCompList as $dataRow5)
+                                /*foreach ($arrCostCompList as $dataRow5)
                                 {
                             ?>
                                 <td class="center costAmt bri_<?php echo $dataRow1['info']->bri03id; ?> col<?php echo $dataRow5->cmp01id;?>">
@@ -124,20 +124,30 @@
                                 
                                 </td>
                             <?php
-                                }
+                                }*/
                             ?>
+                             <?php 
+                        //$dataRow['arrCostData']; 
+                        foreach($arrCostCompList as $dataRow5){ 
+                            //  print_r($dataRow5);?>
+                            <td class="center bri_<?php echo $dataRow1['info']->bri03id; ?> costAmt col<?php echo $dataRow5->cmp01id;?>">
+    
+                                <?php echo isset($arrCostList['bri_'.$dataRow1['info']->bri03bridge_no][ 'id_' . $dataRow5->cmp01id ])? round($arrCostList['bri_'.$dataRow1['info']->bri03bridge_no][ 'id_' . $dataRow5->cmp01id ]->totalAmt,2): 0; ?>
+                                </td>
+                                
+                            <?php }?>
                             <td class="center est">
                                 <label class="sumCalc colSumCostAmt" data-sum=".row<?php echo $i;?> .bri_<?php echo $dataRow1['info']->bri03id;?>.costAmt">0.00</label>
                              </td>
                             <td class="center est_per divCalc" data-numerator=".row<?php echo $i;?> .colSumCostAmt" data-denominator=".row<?php echo $i;?> .spw_bri_<?php echo $dataRow1['info']->bri03id;?>"><label>0.00</label></td>
-							</tr>
+                            </tr>
                         <?php 
                         $i++;
                         }
                         ?>
                          <tr>
                                 <td colspan="4" class="center">Total span and cost per </td>
-                                <td class="center sumCalc summeryspan" data-sum=".distRegion_<?php
+                                <td class="center sumCalc summeryspan" id="total_span_cost<?=$dataRow2['info']->dist01id;?>" data-sum=".distRegion_<?php
 
         echo $dataRow2['info']->dist01id;
 
@@ -169,7 +179,12 @@
         echo $dataRow2['info']->dist01id;
 
 ?> .colSumCostAmt"></td> 
-                                <td>&nbsp;</td> 
+                                <!-- <td>&nbsp;</td>  -->
+                                 <td class="center sumActCost actualTotal" data-sum=".distRegion_<?php
+
+        echo $dataRow2['info']->dist01id;
+
+?> .est_per"></td> 
                                 <input type="hidden" class="cntCalc totalcnt" data-cnt=".distRegion_<?php echo $dataRow2['info']->dist01id;?> .spw"/>
                                                                                           
                             </tr>
@@ -206,7 +221,7 @@
 
 ?>
                                  <td>&nbsp;</td> 
-                                <td class="center sumCalc " data-sum=".distRegion_<?php
+                                <td class="center avgTotal sumCalc " id="avgTotal_distRegion_<?php echo $dataRow2['info']->dist01id;?>" data-sum=".distRegion_<?php
 
         echo $dataRow2['info']->dist01id;
 
@@ -287,9 +302,9 @@
              <div class="col-lg-4 right" style="padding-right: 10px;"><span><b>Reporting Period(Fiscal Year): <?php echo $startyear->fis01year; ?> To <?php echo $endyear->fis01year; ?></b></span></div>  
          </div>  
          <div class="clear"></div>                                
-	<div class="col-lg-4 right"></div>   
+    <div class="col-lg-4 right"></div>   
                 <div class="footer_border2">
- 		<div class="col-lg-3"><?php echo _day(); ?></div><div class="col-lg-6 "><span class="center">TBSU Programme Monitoring and Information System (PMIS)</span></div><div class="col-lg-3 right"><!--<span>Page 1 of 3<span> --></div>
+        <div class="col-lg-3"><?php echo _day(); ?></div><div class="col-lg-6 "><span class="center">TBSU Programme Monitoring and Information System (PMIS)</span></div><div class="col-lg-3 right"><!--<span>Page 1 of 3<span> --></div>
                </div>                           
         <!---footer-->  
             </div><!--mainBoard Ends-->

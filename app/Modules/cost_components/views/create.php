@@ -1,5 +1,5 @@
 <?= $this->extend("\Modules\Template\Views\my_template") ?>
-<?= $this->section("body") ?>    
+<?= $this->section("body") ?>
     <div class="container-fluid">
 		<div class="panel panel-default">
 			<div class="AddEdit-form ">
@@ -19,7 +19,7 @@
 							Code:
 						</label>
 						<div class="col-sm-6">
-                            <input id="cmp01component_id" class="form-control" type="text" name="cmp01component_id" maxlength="5" value="<?php echo et_setFormValBlank('cmp01component_id', $objOldRec); ?>"  />
+                            <input id="cmp01component_id" class="form-control" type="text" name="cmp01component_id" maxlength="5" value="<?php echo et_setFormVal('cmp01component_id', $objOldRec); ?>"  />
 						</div>
 					</div>
 					<div class="form-group">
@@ -27,7 +27,7 @@
 							Name:
 						</label>
 						<div class="col-sm-6">
-                            <input id="cmp01component_name" class="form-control" type="text" name="cmp01component_name" maxlength="40" value="<?php echo et_setFormValBlank('cmp01component_name', $objOldRec); ?>"  />
+                            <input id="cmp01component_name" class="form-control" type="text" name="cmp01component_name" maxlength="40" value="<?php echo et_setFormVal('cmp01component_name', $objOldRec); ?>"  />
 						</div>
 					</div>
 					
@@ -36,7 +36,7 @@
 							Description:
 						</label>
 						<div class="col-sm-6">
-                            <textarea id="cmp01description" class="form-control" name="cmp01description" maxlength="100"><?php echo et_setFormValBlank('cmp01description', $objOldRec); ?></textarea>
+                            <textarea id="cmp01description" class="form-control" name="cmp01description" maxlength="100"><?php echo et_setFormVal('cmp01description', $objOldRec); ?></textarea>
 						</div>
 					</div>
 					<div class="form-group">
@@ -100,4 +100,4 @@ $(document).ready(function()
             });
       });
 </script>
-<?= $this->endSection() ?>
+<?=$this->endSection();?>

@@ -29,7 +29,7 @@
                                 <th>Code</th>
                                 <th>Width</th>
                                 
-                                <th><?php echo lang('index_action_th'); ?></th>
+                                <th><?php echo lang('Locale.index_action_th'); ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,10 +51,10 @@
                                         
           
                     				<?php echo anchor("bridge_design_standard/create/".$objData->bri02id, '<span class="form-edit floatRight">
-                                        <img src="'.site_url().'images/edit-btn.png" width="15" height="15"></span>'); ?>
+                                        <img src="'.base_url('images/edit-btn.png').'" width="15" height="15"></span>'); ?>
                     				<a class="confirmation" data-href="<?php echo site_url('bridge_design_standard');?>/delete/?id=<?php echo $objData->bri02id;?>" data-toggle="confirmation"  data-singleton="true" data-placement="left" data-btnOkClass="btn-danger" data-btnCancelClass="btn-success" data-title="Are you sure to delete?" data-data accesskey="ss" >
                                        <span class="form-edit floatRight margL">
-                                        <img src="<?php echo site_url();?>images/del-btn.png" width="15" height="15"></span>
+                                        <img src="<?php echo base_url('images/del-btn.png');?>" width="15" height="15"></span>
                                         </a>
                                     <?php endif ?>
                     			</td>

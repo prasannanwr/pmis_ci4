@@ -59,12 +59,11 @@ class Bridge_Design_Standard extends BaseController
         $data['objOldRec'] ='';
         $data['postURL'] = "bridge_design_standard/create";
         if( $emp_id !== false){
-            $data['objOldRec'] = $this->model->where('bri01id',$emp_id)->first();
+            $data['objOldRec'] = $this->model->where('bri02id',$emp_id)->first();
             $data['postURL'] .= '/'.$emp_id;
         }
 
 		if ($this->request->getMethod() == 'post') {
-
             if ($this->request->getVar('submit') == 'Cancel') {
                 //die("cancel");
                 return redirect()->to('bridge_design_standard/index');
@@ -82,12 +81,11 @@ class Bridge_Design_Standard extends BaseController
             {
     		 	// build array for the model
     			$form_data = array(
-    		       	'bri01id' =>$emp_id,
-    		       	'bri02bds_type_code' => @$this->request->getVar('bri02bds_type_code'),
-    		       	'bri02bds_type_name' => @$this->request->getVar('bri02bds_type_name'),
-    		       	'bri02description' => @$this->request->getVar('bri02description')
+    		       	'bri02id' =>$emp_id,
+    					       	'bri02bds_type_code' => @$this->request->getVar('bri02bds_type_code'),
+    					       	'bri02bds_type_name' => @$this->request->getVar('bri02bds_type_name'),
+    					       	'bri02description' => @$this->request->getVar('bri02description')
     			);
-    					
     			// run insert model to write data to db
     			if ($this->model->save($form_data) == TRUE) // the information has therefore been successfully saved in the db
     			{
@@ -101,7 +99,6 @@ class Bridge_Design_Standard extends BaseController
     	       		// Or whatever error handling is necessary
     				   session()->setFlashdata('message', 'An error occurred saving your information. Please try again later');
     				   session()->setFlashdata('alert-class', 'alert-danger');
-    				   return redirect()->to(base_url('bridge_design_standard/index'));
     			}
     		}
         }
