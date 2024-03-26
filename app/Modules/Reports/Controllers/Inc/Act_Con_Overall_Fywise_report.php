@@ -69,6 +69,7 @@ class Act_Con_Overall_Fywise_report extends BaseController
         if ($dataStart != 0 || $dateEnd != 0) {
             $data['arrCostCompList'] = $this->supporting_agencies_model->asObject()->findAll();
              $arrPrintList = array();
+             $arrCostList = array();
              $data['arrDevList'] = $this->district_name_model->asObject()->findAll();
 
             $arrChild1 = null;
@@ -108,12 +109,14 @@ class Act_Con_Overall_Fywise_report extends BaseController
 
                 }
             }
-            
-            $arrBridgeCostList = $this->view_bridge_actual_supporting_cost->whereIn('bri08bridge_no', $arrBridgeIdList)->asObject()->findAll();
+            if($arrBridgeIdList) {
+                $arrBridgeCostList = $this->view_bridge_actual_supporting_cost->whereIn('bri08bridge_no', $arrBridgeIdList)->asObject()->findAll();
 
-            foreach ($arrBridgeCostList as $x2) {
-                $arrCostList['bri_' . $x2->bri08bridge_no]['id_' . $x2->bri08sup01id] = $x2;
+                foreach ($arrBridgeCostList as $x2) {
+                    $arrCostList['bri_' . $x2->bri08bridge_no]['id_' . $x2->bri08sup01id] = $x2;
+                }
             }
+            
 // echo "<pre>";
 // var_dump($arrPrintList);exit;
             $data['arrPrintList'] = $arrPrintList;

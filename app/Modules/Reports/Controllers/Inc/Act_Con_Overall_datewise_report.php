@@ -107,9 +107,17 @@ class Act_Con_Overall_datewise_report extends BaseController
                 //     $arrCostList['bri_' . $x2->bri08bridge_no]['id_' . $x2->bri08sup01id] = $x2;
                 // }
                 // $data['arrCostList'] = $arrCostList;
+                if($arrBridgeIdList) {
+                    $arrBridgeCostList = $this->view_bridge_actual_supporting_cost->whereIn('bri08bridge_no', $arrBridgeIdList)->asObject()->findAll();
+
+                    foreach ($arrBridgeCostList as $x2) {
+                        $arrCostList['bri_' . $x2->bri08bridge_no]['id_' . $x2->bri08sup01id] = $x2;
+                    }
+                }
             }
 
             $data['arrPrintList'] = $arrPrintList;
+            $data['arrCostList'] = $arrCostList;
             
         } else {
             redirect("reports/Act_Con_Overall_datewise/" . $stat);

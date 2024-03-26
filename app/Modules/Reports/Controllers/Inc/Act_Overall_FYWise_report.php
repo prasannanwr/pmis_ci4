@@ -81,7 +81,7 @@ class Act_Overall_FYWise_report extends BaseController
         {
             if ($dataStart != 0 || $dateEnd != 0)
             {
-                $data['arrCostCompList'] = $this->cost_components_model->findAll();
+                $data['arrCostCompList'] = $this->cost_components_model->where('cmp01component_status',1)->findAll();
 				
                 $arrDistList = $this->view_regional_office_model->orderBy('dist01name','ASC')->findAll();
                 

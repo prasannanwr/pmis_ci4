@@ -45,6 +45,7 @@
                           
                         if(is_array($arrPrintList)){
 							$m =1;
+                            $i =1;
                         foreach($arrPrintList as $dataRow){
                         //var_dump($dataRow);
                         if( isset($dataRow['info']) ){
@@ -69,7 +70,7 @@
                        <?php 
                        //aa
                        //echo 'aaa';
-                       $i=1; foreach($dataRow['arrChildList'] as $dataRow1){
+                       foreach($dataRow['arrChildList'] as $dataRow1){
                        // var_dump($dataRow1);
                         
                         ?>
