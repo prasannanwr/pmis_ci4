@@ -193,5 +193,15 @@ class fiscal_year extends BaseController {
         
 			return redirect()->to(base_url('fiscal_year/index'));
 	}
+
+	/* 
+        * TODO
+        * Automatically change the current fiscal year when new fiscal year comes up
+        * Usually fisal year is updated in July of the current year
+        */
+        function fiscalYearAutomation() {
+		
+        }
+
     
 }
